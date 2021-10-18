@@ -20,8 +20,7 @@ class RequestSortParameterBuilder
      */
     public function buildRequest(GlueRequestTransfer $glueRequest): GlueRequestTransfer
     {
-        $queryParameters = [];
-        parse_str(parse_url($glueRequest->getPath(), PHP_URL_QUERY), $queryParameters);
+        $queryParameters = $glueRequest->getQueryFields();
 
         if (!isset($queryParameters[GlueRestApiConventionConstants::QUERY_SORT]) || empty($queryParameters[GlueRestApiConventionConstants::QUERY_SORT])) {
             return $glueRequest;

@@ -11,6 +11,7 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueSortingTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
+use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
  * Auto-generated group annotations
@@ -42,27 +43,9 @@ class RequestSortParameterBuilderTest extends Unit
     /**
      * @return void
      */
-    public function testNoSorting(): void
-    {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/foo/bar');
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
-
-        $this->assertCount(0, $result->getSortings());
-    }
-
-    /**
-     * @return void
-     */
     public function testEmptySorting(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER);
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest([]);
 
         $this->assertCount(0, $result->getSortings());
     }
@@ -72,11 +55,7 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testAscendingSortField(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER . static::FIRST_FIELD_NAME);
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest([static::FIRST_FIELD_NAME]);
 
         $this->assertCount(1, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
@@ -90,11 +69,7 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testDescendingSortField(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER . '-' . static::FIRST_FIELD_NAME);
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME]);
 
         $this->assertCount(1, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
@@ -108,11 +83,7 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleAscendingSortingFields(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER . implode(',', [static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]));
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest([static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
@@ -131,11 +102,7 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleDescendingSortingFields(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER . '-' . implode(',-', [static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]));
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, '-' . static::SECOND_FIELD_NAME]);
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
@@ -154,11 +121,7 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleSortingFieldsWithDifferentDirections(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath(static::URL_WITH_SORT_PARAMETER . '-' . implode(',', [static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]));
-
-        $builder = new RequestSortParameterBuilder();
-        $result = $builder->buildRequest($glueRequest);
+        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
@@ -170,5 +133,20 @@ class RequestSortParameterBuilderTest extends Unit
         $this->assertInstanceOf(GlueSortingTransfer::class, $secondSorting);
         $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
         $this->assertTrue($secondSorting->getIsAscending());
+    }
+
+    /**
+     * @param array $sorting
+     *
+     * @return \Generated\Shared\Transfer\GlueRequestTransfer
+     */
+    protected function buildRequest(array $sorting = []): GlueRequestTransfer
+    {
+        $glueRequest = new GlueRequestTransfer();
+        $glueRequest->setQueryFields([GlueRestApiConventionConstants::QUERY_SORT => implode(',', $sorting)]);
+
+        $builder = new RequestSortParameterBuilder();
+
+        return $builder->buildRequest($glueRequest);
     }
 }
