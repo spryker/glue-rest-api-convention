@@ -19,13 +19,13 @@ interface GlueRestApiConventionConstants
     /**
      * @var string
      */
-    public const QUERY_PAGE = 'page';
+    public const QUERY_PAGINATION = 'page';
     /**
      * @var string
      */
-    public const QUERY_OFFSET = 'offset';
+    public const PAGINATION_OFFSET = 'offset';
     /**
      * @var string
      */
-    public const QUERY_LIMIT = 'limit';
+    public const PAGINATION_LIMIT = 'limit';
 }
