@@ -19,11 +19,8 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testEmptyUrl(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '';
+        $result = $this->buildRequest($path);
 
         $this->assertNull($result->getResource());
         $this->assertCount(0, $result->getParentResources());
@@ -34,11 +31,8 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testNoResource(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '/';
+        $result = $this->buildRequest($path);
 
         $this->assertNull($result->getResource());
         $this->assertCount(0, $result->getParentResources());
@@ -49,11 +43,8 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testSingleResource(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/foo/foo-id');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '/foo/foo-id';
+        $result = $this->buildRequest($path);
 
         $this->assertInstanceOf(GlueResourceTransfer::class, $result->getResource());
         $this->assertCount(0, $result->getParentResources());
@@ -66,11 +57,8 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testSingleParentResource(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/foo/foo-id/bar/bar-id');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '/foo/foo-id/bar/bar-id';
+        $result = $this->buildRequest($path);
 
         $this->assertInstanceOf(GlueResourceTransfer::class, $result->getResource());
         $this->assertCount(1, $result->getParentResources());
@@ -89,11 +77,8 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testSeveralParentResources(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/foo/foo-id/bar/bar-id/baz/baz-id');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '/foo/foo-id/bar/bar-id/baz/baz-id';
+        $result = $this->buildRequest($path);
 
         $this->assertInstanceOf(GlueResourceTransfer::class, $result->getResource());
         $this->assertCount(2, $result->getParentResources());
@@ -116,15 +101,27 @@ class RequestRestResourceBuilderTest extends Unit
      */
     public function testResourceWithoutId(): void
     {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setPath('/foo/');
-
-        $builder = new RequestRestResourceBuilder();
-        $result = $builder->build($glueRequest);
+        $path = '/foo/';
+        $result = $this->buildRequest($path);
 
         $this->assertInstanceOf(GlueResourceTransfer::class, $result->getResource());
         $this->assertCount(0, $result->getParentResources());
         $this->assertSame('foo', $result->getResource()->getType());
         $this->assertNull($result->getResource()->getId());
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return \Generated\Shared\Transfer\GlueRequestTransfer
+     */
+    protected function buildRequest(string $path): GlueRequestTransfer
+    {
+        $glueRequest = new GlueRequestTransfer();
+        $glueRequest->setPath($path);
+
+        $builder = new RequestRestResourceBuilder();
+
+        return $builder->build($glueRequest);
     }
 }
