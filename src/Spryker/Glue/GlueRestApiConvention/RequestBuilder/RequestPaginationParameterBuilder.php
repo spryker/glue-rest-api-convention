@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\GluePaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
-class RequestPaginationParameterBuilder
+class RequestPaginationParameterBuilder implements RequestPaginationParameterBuilderInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
