@@ -10,7 +10,6 @@ namespace Spryker\Glue\GlueRestApiConvention\Router;
 use ArrayObject;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
-use Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRouteWithParentsPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\VersionedResourceRoutePluginInterface;
@@ -21,35 +20,19 @@ class RequestResourcePluginFilter
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
      *
-     * @throws \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
-     *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
      */
-    public function filterPlugins(GlueRequestTransfer $glueRequest, array $routePlugins): ?ResourceRoutePluginInterface
+    public function filterPlugins(GlueRequestTransfer $glueRequest, array $routePlugins): array
     {
         if (!$glueRequest->getResource()) {
-            return null;
+            return [];
         }
 
         $filteredRoutePlugins = $this->filterByResource($routePlugins, $glueRequest);
         $filteredRoutePlugins = $this->filterByVersion($filteredRoutePlugins, $glueRequest->getVersion());
         $filteredRoutePlugins = $this->filterByParents($filteredRoutePlugins, $glueRequest->getParentResources());
-        $filteredRoutePluginsCount = count($filteredRoutePlugins);
 
-        if ($filteredRoutePluginsCount === 0) {
-            return null;
-        }
-
-        if ($filteredRoutePluginsCount > 1) {
-            throw new AmbiguousRouteMatchingException(sprintf(
-                'More than one %s matched, did you missed to add %s or %s to one of the plugins?',
-                ResourceRoutePluginInterface::class,
-                VersionedResourceRoutePluginInterface::class,
-                ResourceRouteWithParentsPluginInterface::class
-            ));
-        }
-
-        return $filteredRoutePlugins[0];
+        return array_values($filteredRoutePlugins);
     }
 
     /**
