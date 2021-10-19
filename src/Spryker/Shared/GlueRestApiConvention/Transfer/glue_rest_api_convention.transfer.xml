@@ -2,8 +2,8 @@
 <transfers xmlns="spryker:transfer-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
     <transfer name="GlueRequest">
         <property name="path" type="string"/>
-        <property name="meta" type="array" associative="true"/>
-        <property name="queryFields" type="array" associative="true"/>
+        <property name="meta" type="array" associative="true" singular="meta"/>
+        <property name="queryFields" type="array" associative="true" singular="queryField"/>
         <property name="version" type="GlueVersion"/>
         <property name="filters" type="GlueFilter[]" singular="filter"/>
         <property name="sortings" type="GlueSorting[]" singular="sorting"/>

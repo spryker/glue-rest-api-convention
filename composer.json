@@ -6,6 +6,7 @@
     "require": {
         "php": ">=7.4",
         "spryker/kernel": "^3.30.0",
+        "spryker/transfer": "^3.8.0",
         "spryker/glue-http": "^1.0.0",
         "spryker/glue-application-extension": "^1.6.0"
     },
