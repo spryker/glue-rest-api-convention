@@ -13,6 +13,16 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
+/**
+ * Auto-generated group annotations
+ *
+ * @group SprykerTest
+ * @group Glue
+ * @group GlueRestApiConvention
+ * @group RequestBuilder
+ * @group RequestPaginationParameterBuilderTest
+ * Add your own group annotations below this line
+ */
 class RequestPaginationParameterBuilderTest extends Unit
 {
     /**

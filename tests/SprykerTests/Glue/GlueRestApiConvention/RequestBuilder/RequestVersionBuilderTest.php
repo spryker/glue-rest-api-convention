@@ -5,13 +5,23 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Bundles\GlueRestApiConvention\tests\SprykerTests\Glue\GlueRestApiConvention\RequestBuilder;
+namespace SprykerTests\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestVersionBuilder;
 
+/**
+ * Auto-generated group annotations
+ *
+ * @group SprykerTest
+ * @group Glue
+ * @group GlueRestApiConvention
+ * @group RequestBuilder
+ * @group RequestVersionBuilderTest
+ * Add your own group annotations below this line
+ */
 class RequestVersionBuilderTest extends Unit
 {
     /**

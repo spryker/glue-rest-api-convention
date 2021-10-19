@@ -20,7 +20,7 @@ use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
  * @group Glue
  * @group GlueHttp
  * @group GlueContext
- * @group GlueContextHttpExpanderTest
+ * @group RequestSortParameterBuilderTest
  * Add your own group annotations below this line
  */
 class RequestSortParameterBuilderTest extends Unit

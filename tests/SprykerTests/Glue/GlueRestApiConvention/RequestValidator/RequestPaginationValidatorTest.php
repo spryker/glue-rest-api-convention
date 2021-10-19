@@ -13,6 +13,16 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidator;
 
+/**
+ * Auto-generated group annotations
+ *
+ * @group SprykerTest
+ * @group Glue
+ * @group GlueRestApiConvention
+ * @group RequestValidator
+ * @group RequestPaginationValidatorTest
+ * Add your own group annotations below this line
+ */
 class RequestPaginationValidatorTest extends Unit
 {
     /**
