@@ -40,7 +40,7 @@
     <transfer name="GlueResponse">
         <property name="alternativePath" type="string"/>
         <property name="status" type="string"/>
-        <property name="meta" type="array" associative="true"/>
+        <property name="meta" type="array" associative="true" singular="meta"/>
         <property name="filters" type="GlueFilter[]" singular="filter"/>
         <property name="sortings" type="GlueSorting[]" singular="sorting"/>
         <property name="pagination" type="GluePagination"/>
