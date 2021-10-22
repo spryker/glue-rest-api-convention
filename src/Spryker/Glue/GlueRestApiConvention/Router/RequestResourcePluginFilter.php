@@ -10,6 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\Router;
 use ArrayObject;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
+use Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRouteWithParentsPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Plugin\VersionedResourceRoutePluginInterface;
@@ -20,26 +21,25 @@ class RequestResourcePluginFilter
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
      *
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
      */
-    public function filterPlugins(GlueRequestTransfer $glueRequest, array $routePlugins): array
+    public function filterPlugins(GlueRequestTransfer $glueRequest, array $routePlugins): ?ResourceRoutePluginInterface
     {
         if (!$glueRequest->getResource()) {
-            return [];
+            return null;
         }
 
         $filteredRoutePlugins = $this->filterByResource($routePlugins, $glueRequest);
-        $filteredRoutePlugins = $this->filterByVersion($filteredRoutePlugins, $glueRequest->getVersion());
         $filteredRoutePlugins = $this->filterByParents($filteredRoutePlugins, $glueRequest->getParentResources());
 
-        return array_values($filteredRoutePlugins);
+        return $this->findBestMatchingRouteByVersion($glueRequest, $filteredRoutePlugins);
     }
 
     /**
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
      *
-     * @return array<ResourceRoutePluginInterface>
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
      */
     protected function filterByResource(array $routePlugins, GlueRequestTransfer $glueRequest): array
     {
@@ -53,11 +53,11 @@ class RequestResourcePluginFilter
 
     /**
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
-     * @param \Generated\Shared\Transfer\GlueVersionTransfer|null $versionTransfer
+     * @param \Generated\Shared\Transfer\GlueVersionTransfer $versionTransfer
      *
      * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
      */
-    protected function filterByVersion(array $routePlugins, ?GlueVersionTransfer $versionTransfer): array
+    protected function filterByVersion(array $routePlugins, GlueVersionTransfer $versionTransfer): array
     {
         $versionedPlugins = array_filter($routePlugins, function (ResourceRoutePluginInterface $routePlugin) {
             return $routePlugin instanceof VersionedResourceRoutePluginInterface;
@@ -65,10 +65,6 @@ class RequestResourcePluginFilter
 
         if (count($versionedPlugins) === 0) {
             return $routePlugins;
-        }
-
-        if (!$versionTransfer) {
-            return [];
         }
 
         return array_filter(
@@ -125,5 +121,82 @@ class RequestResourcePluginFilter
                 return count($diff) === 0;
             }
         );
+    }
+
+    /**
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
+     *
+     * @throws \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
+     *
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
+     */
+    protected function findNewestRoutePlugin(array $filteredRoutePlugins): ?ResourceRoutePluginInterface
+    {
+        $newestRoutePlugin = null;
+
+        foreach ($filteredRoutePlugins as $currentRoutePlugin) {
+            if (!$currentRoutePlugin instanceof VersionedResourceRoutePluginInterface) {
+                continue;
+            }
+
+            if (!$newestRoutePlugin) {
+                $newestRoutePlugin = $currentRoutePlugin;
+            }
+
+            $resourceVersion = $currentRoutePlugin->getMatchingVersion()->getMajor() . $currentRoutePlugin->getMatchingVersion()->getMinor();
+            $newestVersion = $newestRoutePlugin->getMatchingVersion()->getMajor() . $newestRoutePlugin->getMatchingVersion()->getMinor();
+
+            if ($resourceVersion > $newestVersion) {
+                $newestRoutePlugin = $currentRoutePlugin;
+            }
+        }
+
+        if ($newestRoutePlugin) {
+            return $newestRoutePlugin;
+        }
+
+        $nonVersionedPlugins = array_filter($filteredRoutePlugins, function (ResourceRoutePluginInterface $routePlugin): bool {
+            return !$routePlugin instanceof VersionedResourceRoutePluginInterface;
+        });
+
+        if (count($nonVersionedPlugins) <= 1) {
+            return array_shift($nonVersionedPlugins);
+        }
+
+        throw $this->createAmbiguousRouteException();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
+     *
+     * @throws \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
+     *
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
+     */
+    protected function findBestMatchingRouteByVersion(GlueRequestTransfer $glueRequest, array $filteredRoutePlugins): ?ResourceRoutePluginInterface
+    {
+        if ($glueRequest->getVersion() && $glueRequest->getVersion()->getMajor()) {
+            $filteredRoutePlugins = $this->filterByVersion($filteredRoutePlugins, $glueRequest->getVersion());
+
+            if (count($filteredRoutePlugins) > 1) {
+                throw $this->createAmbiguousRouteException();
+            }
+
+            return array_shift($filteredRoutePlugins);
+        }
+
+        return $this->findNewestRoutePlugin($filteredRoutePlugins);
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
+     */
+    protected function createAmbiguousRouteException(): AmbiguousRouteMatchingException
+    {
+        return new AmbiguousRouteMatchingException(sprintf(
+            'More than one %s plugin was found to match',
+            ResourceRoutePluginInterface::class
+        ));
     }
 }

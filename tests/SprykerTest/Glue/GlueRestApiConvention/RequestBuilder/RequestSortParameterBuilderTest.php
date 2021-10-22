@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTests\Glue\GlueRestApiConvention\RequestBuilder;
+namespace SprykerTest\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
@@ -18,8 +18,8 @@ use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
  *
  * @group SprykerTest
  * @group Glue
- * @group GlueHttp
- * @group GlueContext
+ * @group GlueRestApiConvention
+ * @group RequestBuilder
  * @group RequestSortParameterBuilderTest
  * Add your own group annotations below this line
  */
