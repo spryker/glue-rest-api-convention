@@ -11,6 +11,9 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueSortingTransfer;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
+/**
+ * Should run after @see \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
+ */
 class RequestSortParameterBuilder implements RequestSortParameterBuilderInterface
 {
     /**

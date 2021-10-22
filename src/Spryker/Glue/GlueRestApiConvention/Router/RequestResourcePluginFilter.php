@@ -11,17 +11,17 @@ use ArrayObject;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
 use Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRouteWithParentsPluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\VersionedResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteWithParentsPluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\VersionedResourceRoutePluginInterface;
 
-class RequestResourcePluginFilter
+class RequestResourcePluginFilter implements RequestResourcePluginFilterInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $routePlugins
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface|null
      */
     public function filterPlugins(GlueRequestTransfer $glueRequest, array $routePlugins): ?ResourceRoutePluginInterface
     {
@@ -36,10 +36,10 @@ class RequestResourcePluginFilter
     }
 
     /**
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $routePlugins
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
      *
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface>
      */
     protected function filterByResource(array $routePlugins, GlueRequestTransfer $glueRequest): array
     {
@@ -52,10 +52,10 @@ class RequestResourcePluginFilter
     }
 
     /**
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $routePlugins
      * @param \Generated\Shared\Transfer\GlueVersionTransfer $versionTransfer
      *
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface>
      */
     protected function filterByVersion(array $routePlugins, GlueVersionTransfer $versionTransfer): array
     {
@@ -92,10 +92,10 @@ class RequestResourcePluginFilter
     }
 
     /**
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $routePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $routePlugins
      * @param \ArrayObject<\Generated\Shared\Transfer\GlueResourceTransfer> $parentResources
      *
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface>
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface>
      */
     protected function filterByParents(array $routePlugins, ArrayObject $parentResources): array
     {
@@ -124,11 +124,11 @@ class RequestResourcePluginFilter
     }
 
     /**
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
      *
      * @throws \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface|null
      */
     protected function findNewestRoutePlugin(array $filteredRoutePlugins): ?ResourceRoutePluginInterface
     {
@@ -168,11 +168,11 @@ class RequestResourcePluginFilter
 
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $filteredRoutePlugins
      *
      * @throws \Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface|null
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface|null
      */
     protected function findBestMatchingRouteByVersion(GlueRequestTransfer $glueRequest, array $filteredRoutePlugins): ?ResourceRoutePluginInterface
     {

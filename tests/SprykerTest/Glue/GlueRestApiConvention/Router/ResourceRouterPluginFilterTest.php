@@ -13,9 +13,9 @@ use Generated\Shared\Transfer\GlueResourceTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
 use Spryker\Glue\GlueRestApiConvention\Exception\Router\AmbiguousRouteMatchingException;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilter;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRouteWithParentsPluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Plugin\VersionedResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteWithParentsPluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\VersionedResourceRoutePluginInterface;
 use SprykerTest\Glue\GlueRestApiConvention\Router\Stub\RouterPluginStub;
 
 /**
@@ -377,7 +377,7 @@ class ResourceRouterPluginFilterTest extends Unit
      * @param \Generated\Shared\Transfer\GlueResourceTransfer|null $resourceTransfer
      * @param \Generated\Shared\Transfer\GlueVersionTransfer|null $version
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface
      */
     protected function findPlugin(
         array $routingPlugins,
@@ -396,7 +396,7 @@ class ResourceRouterPluginFilterTest extends Unit
      * @param string $expectedResource
      * @param array<string>|null $expectedParentResources
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRouteWithParentsPluginInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteWithParentsPluginInterface
      */
     protected function createRoutePluginWithParentsMock(
         string $expectedResource,
@@ -416,7 +416,7 @@ class ResourceRouterPluginFilterTest extends Unit
     /**
      * @param string $expectedResource
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Plugin\ResourceRoutePluginInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface
      */
     protected function createSimpleRoutePluginMock(string $expectedResource): ResourceRoutePluginInterface
     {
@@ -432,7 +432,7 @@ class ResourceRouterPluginFilterTest extends Unit
      * @param string $expectedResource
      * @param \Generated\Shared\Transfer\GlueVersionTransfer $expectedVersion
      *
-     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Plugin\VersionedResourceRoutePluginInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\VersionedResourceRoutePluginInterface
      */
     protected function createVersionedRoutePluginMock(string $expectedResource, GlueVersionTransfer $expectedVersion): VersionedResourceRoutePluginInterface
     {

@@ -11,6 +11,9 @@ use Generated\Shared\Transfer\GluePaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
+/**
+ * Should run after @see \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
+ */
 class RequestPaginationParameterBuilder implements RequestPaginationParameterBuilderInterface
 {
     /**

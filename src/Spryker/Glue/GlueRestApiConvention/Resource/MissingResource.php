@@ -8,13 +8,13 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueApplication\Resource\MissingResource as GlueApplicationMissingResource;
-use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Resource\MissingResourceInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\MissingResourceInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 class MissingResource extends GlueApplicationMissingResource implements MissingResourceInterface
 {
     /**
-     * @return \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface|null
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface|null
      */
     public function getMatchingResourceCollection(): ?ResourceRouteCollectionInterface
     {

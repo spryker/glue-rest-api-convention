@@ -10,7 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueVersionTransfer;
 
-class RequestVersionBuilder
+class RequestVersionBuilder implements RequestVersionBuilderInterface
 {
     /**
      * @var string
@@ -60,10 +60,6 @@ class RequestVersionBuilder
 
         if (preg_match(static::VERSION_REGULAR_EXPRESSION, $contentType, $versionParts) !== 1) {
             return [];
-        }
-
-        if (count($versionParts) < 2) {
-            return $versionParts;
         }
 
         array_shift($versionParts);

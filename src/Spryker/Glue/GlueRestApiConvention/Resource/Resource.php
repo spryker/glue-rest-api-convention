@@ -8,7 +8,30 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueApplication\Resource\Resource as GlueApplicationResource;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
-class Resource extends GlueApplicationResource
+class Resource extends GlueApplicationResource implements ResourceInterface
 {
+    protected ?ResourceRouteCollectionInterface $resourceRouteCollection;
+
+    /**
+     * @param callable $executableResource
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     */
+    public function __construct(
+        callable $executableResource,
+        ResourceRouteCollectionInterface $resourceRouteCollection
+    ) {
+        parent::__construct($executableResource);
+        $this->resourceRouteCollection = $resourceRouteCollection;
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface|null
+     */
+    public function getMatchingResourceCollection(): ?ResourceRouteCollectionInterface
+    {
+        return $this->resourceRouteCollection;
+    }
 }

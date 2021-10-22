@@ -131,6 +131,31 @@ class RequestVersionBuilderTest extends Unit
     }
 
     /**
+     * @return void
+     */
+    public function testNoMatchingVersion(): void
+    {
+        $contentType = 'application/json; version=';
+
+        $result = $this->buildRequest($contentType);
+
+        $this->assertNull($result->getVersion());
+    }
+
+    /**
+     * @return void
+     */
+    public function testNoContentTypeHeader(): void
+    {
+        $glueRequest = new GlueRequestTransfer();
+        $builder = new RequestVersionBuilder();
+
+        $result = $builder->build($glueRequest);
+
+        $this->assertNull($result->getVersion());
+    }
+
+    /**
      * @param string $contentType
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
