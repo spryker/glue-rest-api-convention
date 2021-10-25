@@ -8,9 +8,9 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Router\Stub;
 
 use Generated\Shared\Transfer\GlueVersionTransfer;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRouteCollectionInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteWithParentsPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\VersionedResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 class RouterPluginStub extends AbstractPlugin implements VersionedResourceRoutePluginInterface, ResourceRouteWithParentsPluginInterface
@@ -85,5 +85,13 @@ class RouterPluginStub extends AbstractPlugin implements VersionedResourceRouteP
     public function getMatchingVersion(): GlueVersionTransfer
     {
         return $this->versionTransfer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResourceAttributesClassName(): string
+    {
+        return 'foo';
     }
 }

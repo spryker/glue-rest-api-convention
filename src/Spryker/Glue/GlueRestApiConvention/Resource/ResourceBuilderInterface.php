@@ -15,10 +15,14 @@ interface ResourceBuilderInterface
 {
     /**
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
      * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
      */
-    public function buildPreFlightResource(ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface;
+    public function buildPreFlightResource(
+        ResourceRouteCollectionInterface $resourceRouteCollection,
+        ResourceRoutePluginInterface $resourceRoutePlugin
+    ): ResourceInterface;
 
     /**
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\MissingResource

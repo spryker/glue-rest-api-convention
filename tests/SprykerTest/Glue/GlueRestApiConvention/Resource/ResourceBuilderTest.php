@@ -42,9 +42,13 @@ class ResourceBuilderTest extends Unit
             ->method('getCorsAllowedHeaders')
             ->willReturn($expectedCorsAllowHeaders);
         $controllerResolverMock = $this->createNonCalledControllerResolverMock();
+        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
 
         $builder = new ResourceBuilder($controllerResolverMock, $config);
-        $result = $builder->buildPreFlightResource((new ResourceRouteCollection())->addGet('foo')->addDelete('bar'));
+        $result = $builder->buildPreFlightResource(
+            (new ResourceRouteCollection())->addGet('foo')->addDelete('bar'),
+            $resourceRoutePluginMock
+        );
 
         $this->assertInstanceOf(ResourceInterface::class, $result);
         $response = call_user_func($result->getResource());

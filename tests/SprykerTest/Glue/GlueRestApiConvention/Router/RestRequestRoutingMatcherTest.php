@@ -117,10 +117,10 @@ class RestRequestRoutingMatcherTest extends Unit
             ->willReturn(new MissingResource('foo', 'bar'));
         $resourceBuilderMock->expects($this->once())
             ->method('buildPreFlightResource')
-            ->willReturnCallback(function (ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface {
+            ->willReturnCallback(function (ResourceRouteCollectionInterface $resourceRouteCollection, ResourceRoutePluginInterface $resourceRoutePlugin): ResourceInterface {
                 return new Resource(function (): void {
                     //do nothing
-                }, $resourceRouteCollection);
+                }, $resourceRoutePlugin, $resourceRouteCollection);
             });
 
         $requestMatcher = $this->createRequestMatcher($resourceBuilderMock);
@@ -300,10 +300,10 @@ class RestRequestRoutingMatcherTest extends Unit
             ->willReturn(new MissingResource('foo', 'bar'));
         $resourceBuilderMock->expects($this->never())
             ->method('buildPreFlightResource')
-            ->willReturnCallback(function (ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface {
+            ->willReturnCallback(function (ResourceRouteCollectionInterface $resourceRouteCollection, ResourceRoutePluginInterface $resourceRoutePlugin): ResourceInterface {
                 return new Resource(function (): void {
                     //do nothing
-                }, $resourceRouteCollection);
+                }, $resourceRoutePlugin, $resourceRouteCollection);
             });
         $resourceBuilderMock->expects($this->once())
             ->method('buildResource')
@@ -313,7 +313,7 @@ class RestRequestRoutingMatcherTest extends Unit
             ): ResourceInterface {
                 return new Resource(function (): void {
                     //do nothing
-                }, $resourceRouteCollection);
+                }, $routePlugin, $resourceRouteCollection);
             });
 
         $requestMatcher = $this->createRequestMatcher($resourceBuilderMock);

@@ -52,7 +52,7 @@ class RestRequestRoutingMatcher implements RestRequestRoutingMatcherInterface
             $requestMethod === ResourceRouteCollection::METHOD_OPTIONS
             && !$resourceMethodCollection->has(ResourceRouteCollection::METHOD_OPTIONS)
         ) {
-            return $this->resourceBuilder->buildPreFlightResource($resourceMethodCollection);
+            return $this->resourceBuilder->buildPreFlightResource($resourceMethodCollection, $resourceRoutePlugin);
         }
 
         if (!$resourceMethodCollection->has($requestMethod)) {

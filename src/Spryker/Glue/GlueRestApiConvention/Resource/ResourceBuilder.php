@@ -37,17 +37,21 @@ class ResourceBuilder implements ResourceBuilderInterface
 
     /**
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
      * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
      */
-    public function buildPreFlightResource(ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface
-    {
+    public function buildPreFlightResource(
+        ResourceRouteCollectionInterface $resourceRouteCollection,
+        ResourceRoutePluginInterface $resourceRoutePlugin
+    ): ResourceInterface {
         return $this->createResource(
             function () use ($resourceRouteCollection): GlueResponseTransfer {
                 return (new GlueResponseTransfer())
                     ->addMeta('access-control-allow-methods', implode(', ', $resourceRouteCollection->getAvailableMethods()))
                     ->addMeta('access-control-allow-headers', $this->config->getCorsAllowedHeaders());
             },
+            $resourceRoutePlugin,
             $resourceRouteCollection
         );
     }
@@ -84,13 +88,13 @@ class ResourceBuilder implements ResourceBuilderInterface
         }
 
         if (method_exists($controller, $method)) {
-            return $this->createResource([$controller, $method], $resourceRouteCollection);
+            return $this->createResource([$controller, $method], $resourceRoutePlugin, $resourceRouteCollection);
         }
 
         $methodAction = $method . 'Action';
 
         if (method_exists($controller, $methodAction)) {
-            return $this->createResource([$controller, $methodAction], $resourceRouteCollection);
+            return $this->createResource([$controller, $methodAction], $resourceRoutePlugin, $resourceRouteCollection);
         }
 
         return new MissingResource('500', sprintf(
@@ -103,13 +107,17 @@ class ResourceBuilder implements ResourceBuilderInterface
 
     /**
      * @param callable $action
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      *
      * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
      */
-    protected function createResource(callable $action, ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface
-    {
-        return new Resource($action, $resourceRouteCollection);
+    protected function createResource(
+        callable $action,
+        ResourceRoutePluginInterface $resourceRoutePlugin,
+        ResourceRouteCollectionInterface $resourceRouteCollection
+    ): ResourceInterface {
+        return new Resource($action, $resourceRoutePlugin, $resourceRouteCollection);
     }
 
     /**

@@ -9,7 +9,6 @@ namespace Spryker\Glue\GlueRestApiConvention\Router;
 
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
-//@todo unittests
 class ResourceRouteCollection implements ResourceRouteCollectionInterface
 {
     /**
