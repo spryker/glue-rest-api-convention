@@ -8,6 +8,7 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Generated\Shared\Transfer\GlueResponseTransfer;
+use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
@@ -48,8 +49,8 @@ class ResourceBuilder implements ResourceBuilderInterface
         return $this->createResource(
             function () use ($resourceRouteCollection): GlueResponseTransfer {
                 return (new GlueResponseTransfer())
-                    ->addMeta('access-control-allow-methods', implode(', ', $resourceRouteCollection->getAvailableMethods()))
-                    ->addMeta('access-control-allow-headers', $this->config->getCorsAllowedHeaders());
+                    ->addMeta(CorsConstants::HEADER_ACCESS_CONTROL_ALLOW_METHODS, implode(', ', $resourceRouteCollection->getAvailableMethods()))
+                    ->addMeta(CorsConstants::HEADER_ACCESS_CONTROL_ALLOW_HEADERS, $this->config->getCorsAllowedHeaders());
             },
             $resourceRoutePlugin,
             $resourceRouteCollection

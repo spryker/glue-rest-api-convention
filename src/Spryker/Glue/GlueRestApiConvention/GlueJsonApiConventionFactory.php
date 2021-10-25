@@ -18,6 +18,8 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilde
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestVersionBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestVersionBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
@@ -80,6 +82,14 @@ class GlueJsonApiConventionFactory extends AbstractFactory
     public function createRequestPaginationValidator(): RequestPaginationValidatorInterface
     {
         return new RequestPaginationValidator();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface
+     */
+    public function createRequestCorsValidator(): RequestCorsValidatorInterface
+    {
+        return new RequestCorsValidator($this->getConfig());
     }
 
     /**

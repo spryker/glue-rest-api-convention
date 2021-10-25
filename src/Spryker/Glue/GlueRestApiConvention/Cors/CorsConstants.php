@@ -33,4 +33,24 @@ interface CorsConstants
      * @var string
      */
     public const HEADER_AUTHORIZATION = 'authorization';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ACCESS_CONTROL_ALLOW_HEADERS = 'access-control-allow-headers';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ACCESS_CONTROL_REQUEST_HEADERS = 'access-control-request-headers';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ACCESS_CONTROL_REQUEST_METHOD = 'access-control-request-method';
+
+    /**
+     * @var string
+     */
+    public const HEADER_ACCESS_CONTROL_ALLOW_METHODS = 'access-control-allow-methods';
 }
