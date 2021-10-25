@@ -11,8 +11,9 @@ use Generated\Shared\Transfer\GlueVersionTransfer;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteWithParentsPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\VersionedResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
+use Spryker\Glue\Kernel\AbstractPlugin;
 
-class RouterPluginStub implements VersionedResourceRoutePluginInterface, ResourceRouteWithParentsPluginInterface
+class RouterPluginStub extends AbstractPlugin implements VersionedResourceRoutePluginInterface, ResourceRouteWithParentsPluginInterface
 {
     /**
      * @var string

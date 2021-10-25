@@ -15,6 +15,10 @@ use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\MissingResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
+use Spryker\Glue\Kernel\BundleControllerAction;
+use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
+use Spryker\Shared\Kernel\ClassResolver\Controller\ControllerNotFoundException;
+use SprykerTest\Glue\GlueRestApiConvention\Resource\Stub\ControllerStub;
 
 /**
  * Auto-generated group annotations
@@ -37,8 +41,9 @@ class ResourceBuilderTest extends Unit
         $config->expects($this->once())
             ->method('getCorsAllowedHeaders')
             ->willReturn($expectedCorsAllowHeaders);
+        $controllerResolverMock = $this->createNonCalledControllerResolverMock();
 
-        $builder = new ResourceBuilder($config);
+        $builder = new ResourceBuilder($controllerResolverMock, $config);
         $result = $builder->buildPreFlightResource((new ResourceRouteCollection())->addGet('foo')->addDelete('bar'));
 
         $this->assertInstanceOf(ResourceInterface::class, $result);
@@ -55,12 +60,10 @@ class ResourceBuilderTest extends Unit
      */
     public function testBuildMissingResource(): void
     {
-        $config = $this->createMock(GlueRestApiConventionConfig::class);
-        $config->expects($this->never())
-            ->method('getCorsAllowedHeaders')
-            ->willReturn([]);
+        $config = $this->createMockConfig();
+        $controllerResolverMock = $this->createNonCalledControllerResolverMock();
 
-        $builder = new ResourceBuilder($config);
+        $builder = new ResourceBuilder($controllerResolverMock, $config);
         $result = $builder->buildMissingResource();
 
         $this->assertInstanceOf(MissingResourceInterface::class, $result);
@@ -75,7 +78,7 @@ class ResourceBuilderTest extends Unit
      */
     public function testBuildResourceWithMissingController(): void
     {
-        $expectController = 'NonExistingController';
+        $expectController = 'Spryker\\SomeModule\\NonExistingController';
         $expectedAction = 'getAction';
         $result = $this->createResourceForControllerAction($expectController, $expectedAction);
 
@@ -83,7 +86,7 @@ class ResourceBuilderTest extends Unit
         $response = call_user_func($result->getResource());
         $this->assertInstanceOf(GlueResponseTransfer::class, $response);
         $this->assertSame('500', $response->getStatus());
-        $this->assertSame('Controller NonExistingController not found', $response->getContent());
+        $this->assertStringContainsString('Can not resolve NonExistingController for your bundle', $response->getContent());
     }
 
     /**
@@ -91,13 +94,13 @@ class ResourceBuilderTest extends Unit
      */
     public function testBuildResourceWithMissingControllerAction(): void
     {
-        $result = $this->createResourceForControllerAction(ResourceBuilderTest::class, 'get');
+        $result = $this->createResourceForControllerAction(ControllerStub::class, 'NonExisting');
 
         $this->assertInstanceOf(MissingResourceInterface::class, $result);
         $response = call_user_func($result->getResource());
         $this->assertInstanceOf(GlueResponseTransfer::class, $response);
         $this->assertSame('500', $response->getStatus());
-        $this->assertSame('Neither get() nor getAction() found in ' . ResourceBuilderTest::class, $response->getContent());
+        $this->assertSame('Neither NonExisting() nor NonExistingAction() found in ' . ControllerStub::class, $response->getContent());
     }
 
     /**
@@ -114,22 +117,8 @@ class ResourceBuilderTest extends Unit
                 return 1;
             }
         };
-        $config = $this->createMock(GlueRestApiConventionConfig::class);
-        $config->expects($this->never())
-            ->method('getCorsAllowedHeaders')
-            ->willReturn([]);
-        $resourceRoutePlugin = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePlugin->expects($this->once())
-            ->method('getController')
-            ->willReturn(get_class($controllerStub));
 
-        $builder = new ResourceBuilder($config);
-
-        $result = $builder->buildResource(
-            $resourceRoutePlugin,
-            (new ResourceRouteCollection())->addGet('get'),
-            'GET'
-        );
+        $result = $this->executeResourceBuilderWithMockedController($controllerStub);
 
         $this->assertInstanceOf(ResourceInterface::class, $result);
         $response = call_user_func($result->getResource());
@@ -150,22 +139,7 @@ class ResourceBuilderTest extends Unit
                 return 1;
             }
         };
-        $config = $this->createMock(GlueRestApiConventionConfig::class);
-        $config->expects($this->never())
-            ->method('getCorsAllowedHeaders')
-            ->willReturn([]);
-        $resourceRoutePlugin = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePlugin->expects($this->once())
-            ->method('getController')
-            ->willReturn(get_class($controllerStub));
-
-        $builder = new ResourceBuilder($config);
-
-        $result = $builder->buildResource(
-            $resourceRoutePlugin,
-            (new ResourceRouteCollection())->addGet('get'),
-            'GET'
-        );
+        $result = $this->executeResourceBuilderWithMockedController($controllerStub);
 
         $this->assertInstanceOf(ResourceInterface::class, $result);
         $response = call_user_func($result->getResource());
@@ -182,21 +156,88 @@ class ResourceBuilderTest extends Unit
         string $expectController,
         string $expectedAction
     ): ResourceInterface {
-        $config = $this->createMock(GlueRestApiConventionConfig::class);
-        $config->expects($this->never())
-            ->method('getCorsAllowedHeaders')
-            ->willReturn([]);
+        $config = $this->createMockConfig();
         $resourceRoutePlugin = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePlugin->expects($this->once())
+        $resourceRoutePlugin->expects($this->atLeast(1))
             ->method('getController')
             ->willReturn($expectController);
 
-        $builder = new ResourceBuilder($config);
+        $controllerResolverMock = $this->createMock(AbstractControllerResolver::class);
+
+        if (class_exists($expectController)) {
+            $controllerResolverMock->expects($this->once())
+                ->method('resolve')
+                ->willReturn(new $expectController());
+        } else {
+            $controllerResolverMock->expects($this->once())
+                ->method('resolve')
+                ->willReturnCallback(function (BundleControllerAction $bundleControllerAction): void {
+                    throw new ControllerNotFoundException($bundleControllerAction);
+                });
+        }
+
+        $builder = new ResourceBuilder($controllerResolverMock, $config);
 
         return $builder->buildResource(
             $resourceRoutePlugin,
             (new ResourceRouteCollection())->addGet($expectedAction),
             'GET'
         );
+    }
+
+    /**
+     * @param object $controllerStub
+     *
+     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     */
+    protected function executeResourceBuilderWithMockedController($controllerStub): ResourceInterface
+    {
+        $config = $this->createMock(GlueRestApiConventionConfig::class);
+        $config->expects($this->never())
+            ->method('getCorsAllowedHeaders')
+            ->willReturn([]);
+        $expectedController = new $controllerStub();
+        $resourceRoutePlugin = $this->createMock(ResourceRoutePluginInterface::class);
+        $resourceRoutePlugin->expects($this->once())
+            ->method('getController')
+            ->willReturn(get_class($controllerStub));
+        $mockControllerResolver = $this->createMock(AbstractControllerResolver::class);
+        $mockControllerResolver->expects($this->once())
+            ->method('resolve')
+            ->willReturn($expectedController);
+
+        $builder = new ResourceBuilder($mockControllerResolver, $config);
+
+        return $builder->buildResource(
+            $resourceRoutePlugin,
+            (new ResourceRouteCollection())->addGet('get'),
+            'GET'
+        );
+    }
+
+    /**
+     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver
+     */
+    protected function createNonCalledControllerResolverMock()
+    {
+        $controllerResolverMock = $this->createMock(AbstractControllerResolver::class);
+        $controllerResolverMock->expects($this->never())
+            ->method('resolve')
+            ->willReturn(null);
+
+        return $controllerResolverMock;
+    }
+
+    /**
+     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig
+     */
+    protected function createMockConfig()
+    {
+        $config = $this->createMock(GlueRestApiConventionConfig::class);
+        $config->expects($this->never())
+            ->method('getCorsAllowedHeaders')
+            ->willReturn([]);
+
+        return $config;
     }
 }

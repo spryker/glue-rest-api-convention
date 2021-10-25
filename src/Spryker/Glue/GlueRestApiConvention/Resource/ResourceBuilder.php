@@ -13,18 +13,26 @@ use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
+use Spryker\Glue\Kernel\BundleControllerAction;
+use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
+use Spryker\Shared\Kernel\ClassResolver\Controller\ControllerNotFoundException;
 
-//@todo unit test
 class ResourceBuilder implements ResourceBuilderInterface
 {
     protected GlueRestApiConventionConfig $config;
 
+    protected AbstractControllerResolver $controllerResolver;
+
     /**
+     * @param \Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver $controllerResolver
      * @param \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig $config
      */
-    public function __construct(GlueRestApiConventionConfig $config)
-    {
+    public function __construct(
+        AbstractControllerResolver $controllerResolver,
+        GlueRestApiConventionConfig $config
+    ) {
         $this->config = $config;
+        $this->controllerResolver = $controllerResolver;
     }
 
     /**
@@ -67,14 +75,13 @@ class ResourceBuilder implements ResourceBuilderInterface
         ResourceRouteCollectionInterface $resourceRouteCollection,
         string $requestMethod
     ): ResourceInterface {
-        //@todo use controller resolver to be able to overwrite controller in project
-        $controller = $resourceRoutePlugin->getController();
-
-        if (!class_exists($controller)) {
-            return new MissingResource('500', sprintf('Controller %s not found', $controller));
-        }
-
         $method = $resourceRouteCollection->get($requestMethod)[ResourceRouteCollection::CONTROLLER_ACTION];
+
+        try {
+            $controller = $this->getController($resourceRoutePlugin, $method);
+        } catch (ControllerNotFoundException $exception) {
+            return new MissingResource('500', $exception->getMessage());
+        }
 
         if (method_exists($controller, $method)) {
             return $this->createResource([$controller, $method], $resourceRouteCollection);
@@ -90,7 +97,7 @@ class ResourceBuilder implements ResourceBuilderInterface
             'Neither %s() nor %s() found in %s',
             $method,
             $methodAction,
-            $controller
+            get_class($controller)
         ));
     }
 
@@ -103,5 +110,27 @@ class ResourceBuilder implements ResourceBuilderInterface
     protected function createResource(callable $action, ResourceRouteCollectionInterface $resourceRouteCollection): ResourceInterface
     {
         return new Resource($action, $resourceRouteCollection);
+    }
+
+    /**
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param string $action
+     *
+     * @return object
+     */
+    protected function getController(ResourceRoutePluginInterface $resourceRoutePlugin, string $action)
+    {
+        // Reflection would be faster but will trigger an autoloading error if the controller does not exists in core
+        $controllerNameParts = explode('\\', $resourceRoutePlugin->getController());
+        $controllerName = array_pop($controllerNameParts);
+        $controllerName = preg_replace('/Controller$/', '', $controllerName);
+
+        $bundleControllerAction = new BundleControllerAction(
+            $resourceRoutePlugin->getModuleName(),
+            $controllerName,
+            $action
+        );
+
+        return $this->controllerResolver->resolve($bundleControllerAction);
     }
 }

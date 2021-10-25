@@ -7,6 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
+use Spryker\Glue\GlueRestApiConvention\Controller\ControllerResolver;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilder;
@@ -17,8 +18,20 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilde
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestVersionBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestVersionBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidator;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilter;
+use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface;
+use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher;
+use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcherInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
+use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 
+/**
+ * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig getConfig()
+ */
 class GlueJsonApiConventionFactory extends AbstractFactory
 {
     /**
@@ -59,5 +72,48 @@ class GlueJsonApiConventionFactory extends AbstractFactory
     public function createRequestRestResourceBuilder(): RequestRestResourceBuilderInterface
     {
         return new RequestRestResourceBuilder();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface
+     */
+    public function createRequestPaginationValidator(): RequestPaginationValidatorInterface
+    {
+        return new RequestPaginationValidator();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcherInterface
+     */
+    public function createRequestRoutingMatcher(): RestRequestRoutingMatcherInterface
+    {
+        return new RestRequestRoutingMatcher(
+            $this->createRequestResourcePluginFilter(),
+            $this->createResourceBuilder()
+        );
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface
+     */
+    protected function createRequestResourcePluginFilter(): RequestResourcePluginFilterInterface
+    {
+        return new RequestResourcePluginFilter();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface
+     */
+    protected function createResourceBuilder(): ResourceBuilderInterface
+    {
+        return new ResourceBuilder($this->createControllerResolver(), $this->getConfig());
+    }
+
+    /**
+     * @return \Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver
+     */
+    protected function createControllerResolver(): AbstractControllerResolver
+    {
+        return new ControllerResolver();
     }
 }

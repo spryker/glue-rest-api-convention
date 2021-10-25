@@ -10,7 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 
-class RequestPaginationValidator
+class RequestPaginationValidator implements RequestPaginationValidatorInterface
 {
     /**
      * @var string
