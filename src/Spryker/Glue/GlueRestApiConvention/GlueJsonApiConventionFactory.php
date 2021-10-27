@@ -99,7 +99,7 @@ class GlueJsonApiConventionFactory extends AbstractFactory
     {
         return new RestRequestRoutingMatcher(
             $this->createRequestResourcePluginFilter(),
-            $this->createResourceBuilder()
+            $this->createResourceBuilder(),
         );
     }
 

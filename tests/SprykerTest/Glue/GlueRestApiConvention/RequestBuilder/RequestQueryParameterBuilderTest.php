@@ -27,18 +27,22 @@ class RequestQueryParameterBuilderTest extends Unit
      * @var string
      */
     protected const FIRST_FIELD_NAME = 'field1';
+
     /**
      * @var string
      */
     protected const FIRST_FIELD_VALUE = 'value1';
+
     /**
      * @var string
      */
     protected const SECOND_FIELD_NAME = 'field2';
+
     /**
      * @var string
      */
     protected const SECOND_FIELD_VALUE = 'value2';
+
     /**
      * @var string
      */

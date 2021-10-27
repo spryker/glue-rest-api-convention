@@ -40,7 +40,7 @@ class RequestSortParameterBuilder implements RequestSortParameterBuilderInterfac
             $glueRequest->addSorting(
                 (new GlueSortingTransfer())
                     ->setField($field)
-                    ->setIsAscending($isAscending)
+                    ->setIsAscending($isAscending),
             );
         }
 

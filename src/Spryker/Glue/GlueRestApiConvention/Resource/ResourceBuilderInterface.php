@@ -8,7 +8,6 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 interface ResourceBuilderInterface
@@ -17,7 +16,7 @@ interface ResourceBuilderInterface
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     public function buildPreFlightResource(
         ResourceRouteCollectionInterface $resourceRouteCollection,
@@ -34,7 +33,7 @@ interface ResourceBuilderInterface
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param string $requestMethod
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     public function buildResource(
         ResourceRoutePluginInterface $resourceRoutePlugin,

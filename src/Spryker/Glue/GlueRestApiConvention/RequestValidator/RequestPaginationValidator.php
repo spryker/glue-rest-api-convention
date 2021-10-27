@@ -16,6 +16,7 @@ class RequestPaginationValidator implements RequestPaginationValidatorInterface
      * @var string
      */
     protected const ERROR_MESSAGE_INVALID_PAGE_PARAMETERS = 'Pagination parameters are invalid.';
+
     /**
      * @var string
      */

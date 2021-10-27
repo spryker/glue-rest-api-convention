@@ -16,6 +16,7 @@ class RequestVersionBuilder implements RequestVersionBuilderInterface
      * @var string
      */
     protected const VERSION_REGULAR_EXPRESSION = '/(?:;\s(?:version=([\d]+)\.?([\d]+)?))/';
+
     /**
      * @var string
      */
@@ -41,7 +42,7 @@ class RequestVersionBuilder implements RequestVersionBuilderInterface
         $glueRequest->setVersion(
             (new GlueVersionTransfer())
                 ->setMajor($versionParts[0])
-                ->setMinor($versionParts[1])
+                ->setMinor($versionParts[1]),
         );
 
         return $glueRequest;

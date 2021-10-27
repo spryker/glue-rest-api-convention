@@ -16,14 +16,17 @@ interface GlueRestApiConventionConstants
      * @var string
      */
     public const QUERY_SORT = 'sort';
+
     /**
      * @var string
      */
     public const QUERY_PAGINATION = 'page';
+
     /**
      * @var string
      */
     public const PAGINATION_OFFSET = 'offset';
+
     /**
      * @var string
      */

@@ -10,11 +10,11 @@ namespace Glue\GlueRestApiConvention\Resource;
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
+use Spryker\Glue\GlueRestApiConvention\Resource\MissingResourceInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\MissingResourceInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
 use Spryker\Glue\Kernel\BundleControllerAction;
 use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 use Spryker\Shared\Kernel\ClassResolver\Controller\ControllerNotFoundException;
@@ -47,7 +47,7 @@ class ResourceBuilderTest extends Unit
         $builder = new ResourceBuilder($controllerResolverMock, $config);
         $result = $builder->buildPreFlightResource(
             (new ResourceRouteCollection())->addGet('foo')->addDelete('bar'),
-            $resourceRoutePluginMock
+            $resourceRoutePluginMock,
         );
 
         $this->assertInstanceOf(ResourceInterface::class, $result);
@@ -154,7 +154,7 @@ class ResourceBuilderTest extends Unit
      * @param string $expectController
      * @param string $expectedAction
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     protected function createResourceForControllerAction(
         string $expectController,
@@ -185,14 +185,14 @@ class ResourceBuilderTest extends Unit
         return $builder->buildResource(
             $resourceRoutePlugin,
             (new ResourceRouteCollection())->addGet($expectedAction),
-            'GET'
+            'GET',
         );
     }
 
     /**
      * @param object $controllerStub
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     protected function executeResourceBuilderWithMockedController($controllerStub): ResourceInterface
     {
@@ -215,7 +215,7 @@ class ResourceBuilderTest extends Unit
         return $builder->buildResource(
             $resourceRoutePlugin,
             (new ResourceRouteCollection())->addGet('get'),
-            'GET'
+            'GET',
         );
     }
 

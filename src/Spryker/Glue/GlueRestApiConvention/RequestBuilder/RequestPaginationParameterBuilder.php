@@ -35,7 +35,7 @@ class RequestPaginationParameterBuilder implements RequestPaginationParameterBui
             $glueRequest->setPagination(
                 (new GluePaginationTransfer())
                     ->setOffset($page[GlueRestApiConventionConstants::PAGINATION_OFFSET])
-                    ->setLimit($page[GlueRestApiConventionConstants::PAGINATION_LIMIT])
+                    ->setLimit($page[GlueRestApiConventionConstants::PAGINATION_LIMIT]),
             );
         }
 

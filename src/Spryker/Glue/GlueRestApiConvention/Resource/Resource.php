@@ -9,7 +9,6 @@ namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueApplication\Resource\Resource as GlueApplicationResource;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 class Resource extends GlueApplicationResource implements ResourceInterface

@@ -47,7 +47,7 @@ class RequestResourcePluginFilter implements RequestResourcePluginFilterInterfac
             $routePlugins,
             function (ResourceRoutePluginInterface $resourceRoutePlugin) use ($glueRequest): bool {
                 return $glueRequest->getResource()->getType() === $resourceRoutePlugin->getResourceType();
-            }
+            },
         );
     }
 
@@ -87,7 +87,7 @@ class RequestResourcePluginFilter implements RequestResourcePluginFilterInterfac
                 }
 
                 return false;
-            }
+            },
         );
     }
 
@@ -119,7 +119,7 @@ class RequestResourcePluginFilter implements RequestResourcePluginFilterInterfac
                 $diff = array_diff($pluginWithParents->getParentResourceTypes(), $parentTypes);
 
                 return count($diff) === 0;
-            }
+            },
         );
     }
 
@@ -196,7 +196,7 @@ class RequestResourcePluginFilter implements RequestResourcePluginFilterInterfac
     {
         return new AmbiguousRouteMatchingException(sprintf(
             'More than one %s plugin was found to match',
-            ResourceRoutePluginInterface::class
+            ResourceRoutePluginInterface::class,
         ));
     }
 }

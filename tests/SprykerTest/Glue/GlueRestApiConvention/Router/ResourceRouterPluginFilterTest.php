@@ -34,18 +34,22 @@ class ResourceRouterPluginFilterTest extends Unit
      * @var string
      */
     public const EXPECTED_RESOURCE = 'foo';
+
     /**
      * @var string
      */
     public const EXPECTED_FIRST_PARENT_RESOURCE = 'bar';
+
     /**
      * @var string
      */
     public const EXPECTED_SECOND_PARENT_RESOURCE = 'baz';
+
     /**
      * @var array
      */
     public const EXPECTED_PARENT_RESOURCES = [self::EXPECTED_FIRST_PARENT_RESOURCE, self::EXPECTED_SECOND_PARENT_RESOURCE];
+
     /**
      * @var string
      */
@@ -104,7 +108,7 @@ class ResourceRouterPluginFilterTest extends Unit
         $routePlugin = $this->findPlugin(
             [$routePluginMock],
             $resourceTransfer,
-            (new GlueVersionTransfer())->setMajor(3)->setMinor(1)
+            (new GlueVersionTransfer())->setMajor(3)->setMinor(1),
         );
         $this->assertNull($routePlugin);
     }
@@ -123,7 +127,7 @@ class ResourceRouterPluginFilterTest extends Unit
         $routePlugin = $this->findPlugin(
             [$additionalRoutePluginMock, $routePluginMock],
             $resourceTransfer,
-            $expectedVersion
+            $expectedVersion,
         );
         $this->assertInstanceOf(VersionedResourceRoutePluginInterface::class, $routePlugin);
         $this->assertSame($routePluginMock, $routePlugin);
@@ -155,7 +159,7 @@ class ResourceRouterPluginFilterTest extends Unit
         $routePlugin = $this->findPlugin(
             [$additionalRoutePluginMock, $routePluginMock],
             $resourceTransfer,
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(0)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(0),
         );
         $this->assertInstanceOf(VersionedResourceRoutePluginInterface::class, $routePlugin);
         $this->assertSame($routePluginMock, $routePlugin);
@@ -178,7 +182,7 @@ class ResourceRouterPluginFilterTest extends Unit
 
         $routePlugin = $router->filterPlugins(
             $glueRequest,
-            [$additionalRoutePluginMock, $routePluginMock]
+            [$additionalRoutePluginMock, $routePluginMock],
         );
         $this->assertInstanceOf(ResourceRouteWithParentsPluginInterface::class, $routePlugin);
         $this->assertSame($routePluginMock, $routePlugin);
@@ -202,7 +206,7 @@ class ResourceRouterPluginFilterTest extends Unit
 
         $routePlugin = $router->filterPlugins(
             $glueRequest,
-            [$additionalRoutePluginMock, $routePluginMock]
+            [$additionalRoutePluginMock, $routePluginMock],
         );
         $this->assertInstanceOf(ResourceRouteWithParentsPluginInterface::class, $routePlugin);
         $this->assertSame($routePluginMock, $routePlugin);
@@ -220,7 +224,7 @@ class ResourceRouterPluginFilterTest extends Unit
 
         $routePlugin = $router->filterPlugins(
             $glueRequest,
-            [$additionalRoutePluginMock, $routePluginMock]
+            [$additionalRoutePluginMock, $routePluginMock],
         );
         $this->assertInstanceOf(ResourceRouteWithParentsPluginInterface::class, $routePlugin);
         $this->assertSame($routePluginMock, $routePlugin);
@@ -244,7 +248,7 @@ class ResourceRouterPluginFilterTest extends Unit
 
         $routePlugin = $router->filterPlugins(
             $glueRequest,
-            [$routePluginMock]
+            [$routePluginMock],
         );
         $this->assertNull($routePlugin);
     }
@@ -257,28 +261,28 @@ class ResourceRouterPluginFilterTest extends Unit
         $oldestRoutingPlugin = new RouterPluginStub(
             static::EXPECTED_RESOURCE,
             static::EXPECTED_PARENT_RESOURCES,
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(0)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(0),
         );
         $olderRoutingPlugin = new RouterPluginStub(
             static::EXPECTED_RESOURCE,
             static::EXPECTED_PARENT_RESOURCES,
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(2)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(2),
         );
         $newestRoutingPlugin = new RouterPluginStub(
             static::EXPECTED_RESOURCE,
             static::EXPECTED_PARENT_RESOURCES,
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(3)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(3),
         );
         $nonVersionedPluginMock = $this->createRoutePluginWithParentsMock(static::EXPECTED_RESOURCE, static::EXPECTED_PARENT_RESOURCES);
         $nonMatchingPluginMock = new RouterPluginStub(
             static::NON_MATCHING_RESOURCE,
             static::EXPECTED_PARENT_RESOURCES,
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(3)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(3),
         );
         $nonMatchingParentsPluginMock = new RouterPluginStub(
             static::EXPECTED_RESOURCE,
             [static::NON_MATCHING_RESOURCE],
-            (new GlueVersionTransfer())->setMajor(1)->setMinor(3)
+            (new GlueVersionTransfer())->setMajor(1)->setMinor(3),
         );
 
         $glueRequest = $this->createResourceRequestWithTwoParents();
@@ -293,7 +297,7 @@ class ResourceRouterPluginFilterTest extends Unit
                 $nonVersionedPluginMock,
                 $newestRoutingPlugin,
                 $nonMatchingPluginMock,
-            ]
+            ],
         );
         $this->assertInstanceOf(VersionedResourceRoutePluginInterface::class, $routePlugin);
         $this->assertSame($newestRoutingPlugin, $routePlugin);
@@ -317,7 +321,7 @@ class ResourceRouterPluginFilterTest extends Unit
             [
                 $firstRoutePluginMock,
                 $secondRoutePluginMock,
-            ]
+            ],
         );
     }
 
@@ -343,7 +347,7 @@ class ResourceRouterPluginFilterTest extends Unit
             [
                 $firstRoutePluginMock,
                 $secondRoutePluginMock,
-            ]
+            ],
         );
     }
 
@@ -366,7 +370,7 @@ class ResourceRouterPluginFilterTest extends Unit
             [
                 $firstRoutePluginMock,
                 $secondRoutePluginMock,
-            ]
+            ],
         );
         $this->assertInstanceOf(ResourceRouteWithParentsPluginInterface::class, $routePlugin);
         $this->assertSame($firstRoutePluginMock, $routePlugin);

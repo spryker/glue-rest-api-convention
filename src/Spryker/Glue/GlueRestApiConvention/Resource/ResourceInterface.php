@@ -7,16 +7,18 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
-use Spryker\Glue\GlueApplication\Resource\MissingResource as GlueApplicationMissingResource;
+use Spryker\Glue\GlueApplication\Resource\ResourceInterface as GlueApplicationResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
-class MissingResource extends GlueApplicationMissingResource implements MissingResourceInterface
+interface ResourceInterface extends GlueApplicationResourceInterface
 {
     /**
+     * Specification:
+     * - retrieve the configured HTTP to action mappings for this resource
+     *
+     * @api
+     *
      * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface|null
      */
-    public function getMatchingResourceCollection(): ?ResourceRouteCollectionInterface
-    {
-        return null;
-    }
+    public function getMatchingResourceCollection(): ?ResourceRouteCollectionInterface;
 }

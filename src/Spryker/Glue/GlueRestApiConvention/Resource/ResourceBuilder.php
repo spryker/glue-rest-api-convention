@@ -12,7 +12,6 @@ use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 use Spryker\Glue\Kernel\BundleControllerAction;
 use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
@@ -40,7 +39,7 @@ class ResourceBuilder implements ResourceBuilderInterface
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     public function buildPreFlightResource(
         ResourceRouteCollectionInterface $resourceRouteCollection,
@@ -53,7 +52,7 @@ class ResourceBuilder implements ResourceBuilderInterface
                     ->addMeta(CorsConstants::HEADER_ACCESS_CONTROL_ALLOW_HEADERS, $this->config->getCorsAllowedHeaders());
             },
             $resourceRoutePlugin,
-            $resourceRouteCollection
+            $resourceRouteCollection,
         );
     }
 
@@ -64,7 +63,7 @@ class ResourceBuilder implements ResourceBuilderInterface
     {
         return new MissingResource(
             '404',
-            'No route found'
+            'No route found',
         );
     }
 
@@ -73,7 +72,7 @@ class ResourceBuilder implements ResourceBuilderInterface
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param string $requestMethod
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     public function buildResource(
         ResourceRoutePluginInterface $resourceRoutePlugin,
@@ -102,7 +101,7 @@ class ResourceBuilder implements ResourceBuilderInterface
             'Neither %s() nor %s() found in %s',
             $method,
             $methodAction,
-            get_class($controller)
+            get_class($controller),
         ));
     }
 
@@ -111,7 +110,7 @@ class ResourceBuilder implements ResourceBuilderInterface
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     protected function createResource(
         callable $action,
@@ -137,7 +136,7 @@ class ResourceBuilder implements ResourceBuilderInterface
         $bundleControllerAction = new BundleControllerAction(
             $resourceRoutePlugin->getModuleName(),
             $controllerName,
-            $action
+            $action,
         );
 
         return $this->controllerResolver->resolve($bundleControllerAction);

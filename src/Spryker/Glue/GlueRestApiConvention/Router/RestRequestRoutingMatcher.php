@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Spryker\Glue\GlueRestApiConvention\Exception\Router\MissingRequestMethodException;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface;
 
 class RestRequestRoutingMatcher implements RestRequestRoutingMatcherInterface
 {
@@ -35,7 +35,7 @@ class RestRequestRoutingMatcher implements RestRequestRoutingMatcherInterface
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface> $resourceRoutePlugins
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */
     public function matchRequest(GlueRequestTransfer $glueRequestTransfer, array $resourceRoutePlugins): ResourceInterface
     {
