@@ -36,4 +36,12 @@ class Resource extends GlueApplicationResource implements ResourceInterface
     {
         return $this->resourceRouteCollection;
     }
+
+    /**
+     * @return callable():\Generated\Shared\Transfer\GlueResponseTransfer|null
+     */
+    public function getResource(): callable
+    {
+        return parent::getResource();
+    }
 }

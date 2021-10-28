@@ -24,6 +24,8 @@ use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidat
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceExecutor;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceExecutorInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilter;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher;
@@ -101,6 +103,14 @@ class GlueJsonApiConventionFactory extends AbstractFactory
             $this->createRequestResourcePluginFilter(),
             $this->createResourceBuilder(),
         );
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceExecutorInterface
+     */
+    public function createResourceExecutor(): ResourceExecutorInterface
+    {
+        return new ResourceExecutor();
     }
 
     /**
