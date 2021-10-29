@@ -215,7 +215,7 @@ class RequestCorsValidatorTest extends Unit
     /**
      * @param \PHPUnit\Framework\MockObject\Rule\InvokedCount|null $invokedCount
      *
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig|mixed
      */
     protected function createConfigMock(?InvokedCountMatcher $invokedCount = null)
     {

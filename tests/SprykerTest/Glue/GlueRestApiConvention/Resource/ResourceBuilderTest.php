@@ -220,7 +220,7 @@ class ResourceBuilderTest extends Unit
     }
 
     /**
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver|mixed
      */
     protected function createNonCalledControllerResolverMock()
     {
@@ -233,7 +233,7 @@ class ResourceBuilderTest extends Unit
     }
 
     /**
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig|mixed
      */
     protected function createMockConfig()
     {

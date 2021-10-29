@@ -16,7 +16,7 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncoderPluginInterface
 {
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function getAcceptedFormats(): array
     {
