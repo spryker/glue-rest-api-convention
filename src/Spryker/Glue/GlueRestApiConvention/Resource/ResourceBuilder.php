@@ -12,7 +12,6 @@ use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 use Spryker\Glue\Kernel\BundleControllerAction;
 use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 use Spryker\Shared\Kernel\ClassResolver\Controller\ControllerNotFoundException;
@@ -36,7 +35,7 @@ class ResourceBuilder implements ResourceBuilderInterface
     }
 
     /**
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
@@ -69,7 +68,7 @@ class ResourceBuilder implements ResourceBuilderInterface
 
     /**
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param string $requestMethod
      *
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
@@ -108,7 +107,7 @@ class ResourceBuilder implements ResourceBuilderInterface
     /**
      * @param callable $action
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      *
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
      */

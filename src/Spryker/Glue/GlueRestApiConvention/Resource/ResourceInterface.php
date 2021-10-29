@@ -8,7 +8,6 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueApplication\Resource\ResourceInterface as GlueApplicationResourceInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 interface ResourceInterface extends GlueApplicationResourceInterface
 {
@@ -18,7 +17,7 @@ interface ResourceInterface extends GlueApplicationResourceInterface
      *
      * @api
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface|null
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface|null
      */
     public function getMatchingResourceCollection(): ?ResourceRouteCollectionInterface;
 }

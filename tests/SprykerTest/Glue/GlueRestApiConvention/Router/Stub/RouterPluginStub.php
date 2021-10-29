@@ -46,9 +46,9 @@ class RouterPluginStub extends AbstractPlugin implements VersionedResourceRouteP
     }
 
     /**
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      *
-     * @return \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface
      */
     public function configure(ResourceRouteCollectionInterface $resourceRouteCollection): ResourceRouteCollectionInterface
     {

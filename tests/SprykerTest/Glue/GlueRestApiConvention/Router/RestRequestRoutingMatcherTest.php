@@ -17,12 +17,12 @@ use Spryker\Glue\GlueRestApiConvention\Resource\Resource;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher;
 use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcherInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 /**
  * Auto-generated group annotations

@@ -8,12 +8,11 @@
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
 
 interface ResourceBuilderInterface
 {
     /**
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
      *
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface
@@ -30,7 +29,7 @@ interface ResourceBuilderInterface
 
     /**
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
+     * @param \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface $resourceRouteCollection
      * @param string $requestMethod
      *
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceInterface

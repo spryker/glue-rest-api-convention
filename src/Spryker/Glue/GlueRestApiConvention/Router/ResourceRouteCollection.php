@@ -7,7 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\Router;
 
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Resource\ResourceRouteCollectionInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface;
 
 class ResourceRouteCollection implements ResourceRouteCollectionInterface
 {

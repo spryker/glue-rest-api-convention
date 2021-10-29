@@ -26,17 +26,22 @@ use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceExecutor;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceExecutorInterface;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilter;
 use Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface;
 use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher;
 use Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcherInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
+use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig getConfig()
  */
-class GlueJsonApiConventionFactory extends AbstractFactory
+class GlueRestApiConventionFactory extends AbstractFactory
 {
     /**
      * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
@@ -114,6 +119,33 @@ class GlueJsonApiConventionFactory extends AbstractFactory
     }
 
     /**
+     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     */
+    public function getEncodingService(): UtilEncodingServiceInterface
+    {
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::SERVICE_ENCODING);
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface
+     */
+    public function createAttributesExpander(): AttributeExpanderInterface
+    {
+        return new AttributeExpander();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilderInterface
+     */
+    public function createResponseContentBuilder(): ResponseContentBuilderInterface
+    {
+        return new ResponseContentBuilder(
+            $this->getResponseEncoderPlugins(),
+            $this->getResponseExpanderPlugins(),
+        );
+    }
+
+    /**
      * @return \Spryker\Glue\GlueRestApiConvention\Router\RequestResourcePluginFilterInterface
      */
     protected function createRequestResourcePluginFilter(): RequestResourcePluginFilterInterface
@@ -135,5 +167,21 @@ class GlueJsonApiConventionFactory extends AbstractFactory
     protected function createControllerResolver(): AbstractControllerResolver
     {
         return new ControllerResolver();
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface>
+     */
+    protected function getResponseEncoderPlugins(): array
+    {
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGIN_RESPONSE_ENCODER);
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface>
+     */
+    protected function getResponseExpanderPlugins(): array
+    {
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGIN_RESPONSE_EXPANDER);
     }
 }
