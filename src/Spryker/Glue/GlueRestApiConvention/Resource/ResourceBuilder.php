@@ -15,6 +15,7 @@ use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRouteP
 use Spryker\Glue\Kernel\BundleControllerAction;
 use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 use Spryker\Shared\Kernel\ClassResolver\Controller\ControllerNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceBuilder implements ResourceBuilderInterface
 {
@@ -61,7 +62,7 @@ class ResourceBuilder implements ResourceBuilderInterface
     public function buildMissingResource(): MissingResource
     {
         return new MissingResource(
-            '404',
+            (string)Response::HTTP_NOT_FOUND,
             'No route found',
         );
     }
@@ -83,7 +84,7 @@ class ResourceBuilder implements ResourceBuilderInterface
         try {
             $controller = $this->getController($resourceRoutePlugin, $method);
         } catch (ControllerNotFoundException $exception) {
-            return new MissingResource('500', $exception->getMessage());
+            return new MissingResource((string)Response::HTTP_INTERNAL_SERVER_ERROR, $exception->getMessage());
         }
 
         if (method_exists($controller, $method)) {
@@ -96,7 +97,7 @@ class ResourceBuilder implements ResourceBuilderInterface
             return $this->createResource([$controller, $methodAction], $resourceRoutePlugin, $resourceRouteCollection);
         }
 
-        return new MissingResource('500', sprintf(
+        return new MissingResource((string)Response::HTTP_INTERNAL_SERVER_ERROR, sprintf(
             'Neither %s() nor %s() found in %s',
             $method,
             $methodAction,

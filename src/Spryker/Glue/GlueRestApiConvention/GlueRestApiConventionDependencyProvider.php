@@ -80,9 +80,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      */
     protected function getResponseEncoderPlugins(): array
     {
-        return [
-            new JsonResponseEncoderPlugin(),
-        ];
+        return [];
     }
 
     /**
@@ -104,8 +102,6 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      */
     protected function getResponseExpanderPlugins(): array
     {
-        return [
-            new AttributeResponseExpanderPlugin(),
-        ];
+        return [];
     }
 }

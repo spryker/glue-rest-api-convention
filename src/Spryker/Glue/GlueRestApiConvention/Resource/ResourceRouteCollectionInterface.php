@@ -13,9 +13,9 @@ interface ResourceRouteCollectionInterface extends GlueResourceRouteCollectionIn
 {
     /**
      * Specification:
-     * - map pre flight method (OPTIONS)
-     * - should be mapped to a controller action that returns the according CORS headers
-     * - @see \Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher will provide a default if not mapped
+     * - Map pre-flight method (OPTIONS).
+     * - Should be mapped to a controller action that returns the according CORS headers.
+     * - @see \Spryker\Glue\GlueRestApiConvention\Router\RestRequestRoutingMatcher will provide a default if not mapped.
      *
      * @api
      *
@@ -28,10 +28,10 @@ interface ResourceRouteCollectionInterface extends GlueResourceRouteCollectionIn
 
     /**
      * Specification:
-     * - map GET method to a controller action
-     * - is only called to retrieve a collection of resources, for a single resources use addGet()
-     * - configures if the controller action can be called with valid authentication token only
-     * - additional context can be passed that will be passed into the controller action
+     * - Map GET method to a controller action.
+     * - Is only called to retrieve a collection of resources, for a single resources use addGet().
+     * - Configures if the controller action can be called with valid authentication token only.
+     * - Additional context can be passed that will be passed into the controller action.
      *
      * @api
      *

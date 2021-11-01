@@ -26,7 +26,7 @@ class RequestPaginationParameterBuilder implements RequestPaginationParameterBui
         $queryParameters = $glueRequest->getQueryFields();
 
         if (!isset($queryParameters[GlueRestApiConventionConstants::QUERY_PAGINATION])) {
-            return $glueRequest->setPagination(null);
+            return $glueRequest;
         }
 
         $page = $queryParameters[GlueRestApiConventionConstants::QUERY_PAGINATION];

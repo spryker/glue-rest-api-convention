@@ -35,7 +35,7 @@ class RequestVersionBuilder implements RequestVersionBuilderInterface
 
         $versionParts = $this->extractVersionParts($glueRequest);
 
-        if (empty($versionParts)) {
+        if (!$versionParts) {
             return $glueRequest->setVersion(null);
         }
 

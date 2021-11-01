@@ -13,7 +13,7 @@ interface ResourceInterface extends GlueApplicationResourceInterface
 {
     /**
      * Specification:
-     * - retrieve the configured HTTP to action mappings for this resource
+     * - Retrieve the configured HTTP to action mappings for this resource.
      *
      * @api
      *

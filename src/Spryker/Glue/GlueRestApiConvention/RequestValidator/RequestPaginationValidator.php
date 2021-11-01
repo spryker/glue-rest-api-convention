@@ -36,11 +36,7 @@ class RequestPaginationValidator implements RequestPaginationValidatorInterface
         $offset = $glueRequest->getPagination()->getOffset();
         $limit = $glueRequest->getPagination()->getLimit();
 
-        if ($offset === null || !is_int(filter_var($offset, FILTER_VALIDATE_INT))) {
-            return $this->buildInvalidValidationResult();
-        }
-
-        if ($limit === null || !is_int(filter_var($limit, FILTER_VALIDATE_INT))) {
+        if (!is_numeric($offset) || !is_numeric($limit)) {
             return $this->buildInvalidValidationResult();
         }
 

@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface;
 use stdClass;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResponseContentBuilder implements ResponseContentBuilderInterface
 {
@@ -80,7 +81,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
     public function buildResponse(GlueResponseTransfer $glueResponse, GlueRequestTransfer $glueRequest): GlueResponseTransfer
     {
         if (!$glueResponse->getStatus()) {
-            $glueResponse->setStatus('200');
+            $glueResponse->setStatus((string)Response::HTTP_OK);
         }
 
         if ($glueResponse->getContent()) {
@@ -90,7 +91,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
         $format = $glueRequest->getAcceptedFormat();
 
         if (!$format || !array_key_exists($format, $this->responseEncoders)) {
-            $glueResponse->setStatus('400');
+            $glueResponse->setStatus((string)Response::HTTP_BAD_REQUEST);
             $glueResponse->setContent('invalid format: ' . $format);
 
             return $glueResponse;
@@ -119,7 +120,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
                 continue;
             }
 
-            if (empty($data)) {
+            if (!$data) {
                 $data = new stdClass();
             }
 
@@ -128,7 +129,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
             return $glueResponse;
         }
 
-        $glueResponse->setStatus('500');
+        $glueResponse->setStatus((string)Response::HTTP_INTERNAL_SERVER_ERROR);
         $glueResponse->setContent('Missing encoder for ' . $format);
 
         return $glueResponse;
