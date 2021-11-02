@@ -412,7 +412,7 @@ class ResourceRouterPluginFilterTest extends Unit
             ->willReturn($expectedResource);
         $routePluginMock->expects($expectedParentResources === null ? $this->never() : $this->once())
             ->method('getParentResourceTypes')
-            ->willReturn($expectedParentResources === null ? [] : $expectedParentResources);
+            ->willReturn($expectedParentResources ?? []);
 
         return $routePluginMock;
     }
