@@ -7,8 +7,6 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
-use Spryker\Glue\GlueRestApiConvention\Plugin\AttributeResponseExpanderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\JsonResponseEncoderPlugin;
 use Spryker\Glue\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Glue\Kernel\Container;
 
