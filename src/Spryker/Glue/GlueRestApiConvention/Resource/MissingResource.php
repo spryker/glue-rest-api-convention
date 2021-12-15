@@ -7,9 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\Resource;
 
-use Spryker\Glue\GlueApplication\Resource\MissingResource as GlueApplicationMissingResource;
-
-class MissingResource extends GlueApplicationMissingResource implements MissingResourceInterface
+class MissingResource implements MissingResourceInterface
 {
     /**
      * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceRouteCollectionInterface|null
