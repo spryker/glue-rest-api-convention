@@ -12,6 +12,8 @@ use Spryker\Glue\Kernel\AbstractBundleConfig;
 
 class GlueRestApiConventionConfig extends AbstractBundleConfig
 {
+    public const CONVENTION_REST_API = 'rest_api';
+
     /**
      * Specification:
      *  - List of allowed CORS headers.

@@ -8,7 +8,7 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Codeception\Test\Unit;
-use Generated\Shared\Transfer\GluePaginationTransfer;
+use Generated\Shared\Transfer\PaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
@@ -70,7 +70,7 @@ class RequestPaginationParameterBuilderTest extends Unit
     public function testCompletePage(): void
     {
         $result = $this->buildRequest(0, 10);
-        $this->assertInstanceOf(GluePaginationTransfer::class, $result->getPagination());
+        $this->assertInstanceOf(PaginationTransfer::class, $result->getPagination());
         $this->assertSame(0, $result->getPagination()->getOffset());
         $this->assertSame(10, $result->getPagination()->getLimit());
     }

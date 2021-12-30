@@ -8,7 +8,7 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\RequestValidator;
 
 use Codeception\Test\Unit;
-use Generated\Shared\Transfer\GluePaginationTransfer;
+use Generated\Shared\Transfer\PaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidator;
@@ -44,7 +44,7 @@ class RequestPaginationValidatorTest extends Unit
      */
     public function testPaginationWithMissingOffset(): void
     {
-        $pagination = (new GluePaginationTransfer())->setLimit(10)->setOffset(null);
+        $pagination = (new PaginationTransfer())->setLimit(10)->setOffset(null);
         $result = $this->validatePagination($pagination);
 
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
@@ -58,7 +58,7 @@ class RequestPaginationValidatorTest extends Unit
      */
     public function testPaginationWithMissingLimit(): void
     {
-        $pagination = (new GluePaginationTransfer())->setLimit(null)->setOffset(0);
+        $pagination = (new PaginationTransfer())->setLimit(null)->setOffset(0);
         $result = $this->validatePagination($pagination);
 
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
@@ -72,7 +72,7 @@ class RequestPaginationValidatorTest extends Unit
      */
     public function testPaginationWithZeroLimit(): void
     {
-        $pagination = (new GluePaginationTransfer())->setLimit(0)->setOffset(0);
+        $pagination = (new PaginationTransfer())->setLimit(0)->setOffset(0);
         $result = $this->validatePagination($pagination);
 
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
@@ -86,7 +86,7 @@ class RequestPaginationValidatorTest extends Unit
      */
     public function testPagination(): void
     {
-        $pagination = (new GluePaginationTransfer())->setLimit(10)->setOffset(0);
+        $pagination = (new PaginationTransfer())->setLimit(10)->setOffset(0);
         $result = $this->validatePagination($pagination);
 
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
@@ -96,11 +96,11 @@ class RequestPaginationValidatorTest extends Unit
     }
 
     /**
-     * @param \Generated\Shared\Transfer\GluePaginationTransfer|null $pagination
+     * @param \Generated\Shared\Transfer\PaginationTransfer|null $pagination
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    protected function validatePagination(?GluePaginationTransfer $pagination): GlueRequestValidationTransfer
+    protected function validatePagination(?PaginationTransfer $pagination): GlueRequestValidationTransfer
     {
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setPagination($pagination);

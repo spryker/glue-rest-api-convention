@@ -7,6 +7,12 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestCorsValidatorPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestPaginationParameterBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestQueryParameterBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestSortParameterBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestVersionBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RestApiResponseBuilderPlugin;
 use Spryker\Glue\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Glue\Kernel\Container;
 
@@ -31,6 +37,26 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     public const PLUGIN_RESPONSE_EXPANDER = 'PLUGIN_RESPONSE_EXPANDER';
 
     /**
+     * @var string
+     */
+    public const PLUGINS_REQUEST_BUILDER = 'PLUGINS_REQUEST_BUILDER';
+
+    /**
+     * @var string
+     */
+    public const PLUGINS_REQUEST_VALIDATOR = 'PLUGINS_REQUEST_VALIDATOR';
+
+    /**
+     * @var string
+     */
+    public const PLUGINS_REQUEST_AFTER_ROUTING_VALIDATOR = 'PLUGINS_REQUEST_AFTER_ROUTING_VALIDATOR';
+
+    /**
+     * @var string
+     */
+    public const PLUGINS_RESPONSE_FORMATTER = 'PLUGINS_RESPONSE_FORMATTER';
+
+    /**
      * @param \Spryker\Glue\Kernel\Container $container
      *
      * @return \Spryker\Glue\Kernel\Container
@@ -41,6 +67,10 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
         $container = $this->addJsonEncoder($container);
         $container = $this->addResponseEncoderPlugins($container);
         $container = $this->addResponseExpanderPlugins($container);
+        $container = $this->addRequestBuilderPlugins($container);
+        $container = $this->addRequestValidatorPlugins($container);
+        $container = $this->addRequestAfterRoutingValidatorPlugins($container);
+        $container = $this->addResponseFormatterPlugins($container);
 
         return $container;
     }
@@ -101,5 +131,101 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     protected function getResponseExpanderPlugins(): array
     {
         return [];
+    }
+
+    /**
+     * @param \Spryker\Glue\Kernel\Container $container
+     *
+     * @return \Spryker\Glue\Kernel\Container
+     */
+    protected function addRequestBuilderPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_REQUEST_BUILDER, function (Container $container) {
+            return $this->getRequestBuilderPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Glue\Kernel\Container $container
+     *
+     * @return \Spryker\Glue\Kernel\Container
+     */
+    protected function addRequestValidatorPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_REQUEST_VALIDATOR, function (Container $container) {
+            return $this->getRequestValidatorPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Glue\Kernel\Container $container
+     *
+     * @return \Spryker\Glue\Kernel\Container
+     */
+    protected function addRequestAfterRoutingValidatorPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_REQUEST_AFTER_ROUTING_VALIDATOR, function (Container $container) {
+            return $this->getRequestAfterRoutingValidatorPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Glue\Kernel\Container $container
+     *
+     * @return \Spryker\Glue\Kernel\Container
+     */
+    protected function addResponseFormatterPlugins(Container $container): Container
+    {
+        $container->set(static::PLUGINS_RESPONSE_FORMATTER, function (Container $container) {
+            return $this->getResponseFormatterPlugins();
+        });
+
+        return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface>
+     */
+    protected function getRequestBuilderPlugins(): array
+    {
+        return [
+            new RequestQueryParameterBuilderPlugin(),
+            new RequestPaginationParameterBuilderPlugin(),
+            new RequestSortParameterBuilderPlugin(),
+        ];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface>
+     */
+    protected function getRequestValidatorPlugins(): array
+    {
+        return [pag];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface>
+     */
+    protected function getRequestAfterRoutingValidatorPlugins(): array
+    {
+        return [
+            new RequestCorsValidatorPlugin(),
+        ];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface>
+     */
+    protected function getResponseFormatterPlugins(): array
+    {
+        return [
+            new RestApiResponseBuilderPlugin(),
+        ];
     }
 }

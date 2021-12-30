@@ -9,8 +9,8 @@
         <property name="queryFields" type="array" associative="true" singular="queryField"/>
         <property name="version" type="GlueVersion"/>
         <property name="filters" type="GlueFilter[]" singular="filter"/>
-        <property name="sortings" type="GlueSorting[]" singular="sorting"/>
-        <property name="pagination" type="GluePagination"/>
+        <property name="sortings" type="Sort[]" singular="sorting"/>
+        <property name="pagination" type="Pagination"/>
         <property name="resource" type="GlueResource"/>
         <property name="parentResources" type="GlueResource[]" singular="parentResource" associative="true"/>
     </transfer>
@@ -23,11 +23,11 @@
         <property name="field" type="string"/>
         <property name="value" type="string"/>
     </transfer>
-    <transfer name="GlueSorting">
+    <transfer name="Sort">
         <property name="field" type="string"/>
         <property name="isAscending" type="bool"/>
     </transfer>
-    <transfer name="GluePagination">
+    <transfer name="Pagination">
         <property name="offset" type="int"/>
         <property name="limit" type="int"/>
         <property name="total" type="int"/>
@@ -41,15 +41,13 @@
         <property name="type" type="string"/>
     </transfer>
     <transfer name="GlueResponse">
-        <property name="alternativePath" type="string"/>
         <property name="status" type="string"/>
         <property name="content" type="string"/>
-        <property name="format" type="string"/>
         <property name="attributes" type="Abstract"/>
         <property name="meta" type="array" associative="true" singular="meta"/>
         <property name="filters" type="GlueFilter[]" singular="filter"/>
-        <property name="sortings" type="GlueSorting[]" singular="sorting"/>
-        <property name="pagination" type="GluePagination"/>
+        <property name="sortings" type="Sort[]" singular="sorting"/>
+        <property name="pagination" type="Pagination"/>
         <property name="resource" type="GlueResource"/>
     </transfer>
 </transfers>

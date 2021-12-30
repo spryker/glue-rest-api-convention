@@ -7,8 +7,8 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
-use Generated\Shared\Transfer\GluePaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
+use Generated\Shared\Transfer\PaginationTransfer;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
@@ -33,7 +33,7 @@ class RequestPaginationParameterBuilder implements RequestPaginationParameterBui
 
         if (isset($page[GlueRestApiConventionConstants::PAGINATION_OFFSET], $page[GlueRestApiConventionConstants::PAGINATION_LIMIT])) {
             $glueRequest->setPagination(
-                (new GluePaginationTransfer())
+                (new PaginationTransfer())
                     ->setOffset($page[GlueRestApiConventionConstants::PAGINATION_OFFSET])
                     ->setLimit($page[GlueRestApiConventionConstants::PAGINATION_LIMIT]),
             );

@@ -8,7 +8,7 @@
 namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Generated\Shared\Transfer\GlueSortingTransfer;
+use Generated\Shared\Transfer\SortTransfer;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
@@ -38,7 +38,7 @@ class RequestSortParameterBuilder implements RequestSortParameterBuilderInterfac
             }
 
             $glueRequest->addSorting(
-                (new GlueSortingTransfer())
+                (new SortTransfer())
                     ->setField($field)
                     ->setIsAscending($isAscending),
             );

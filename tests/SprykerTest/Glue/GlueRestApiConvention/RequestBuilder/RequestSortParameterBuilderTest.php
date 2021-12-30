@@ -9,7 +9,7 @@ namespace SprykerTest\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Generated\Shared\Transfer\GlueSortingTransfer;
+use Generated\Shared\Transfer\SortTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
 use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
@@ -59,7 +59,7 @@ class RequestSortParameterBuilderTest extends Unit
 
         $this->assertCount(1, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $firstSorting);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
         $this->assertTrue($firstSorting->getIsAscending());
     }
@@ -73,7 +73,7 @@ class RequestSortParameterBuilderTest extends Unit
 
         $this->assertCount(1, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $firstSorting);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
         $this->assertFalse($firstSorting->getIsAscending());
     }
@@ -87,12 +87,12 @@ class RequestSortParameterBuilderTest extends Unit
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $firstSorting);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
         $this->assertTrue($firstSorting->getIsAscending());
 
         $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $secondSorting);
+        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
         $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
         $this->assertTrue($secondSorting->getIsAscending());
     }
@@ -106,12 +106,12 @@ class RequestSortParameterBuilderTest extends Unit
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $firstSorting);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
         $this->assertFalse($firstSorting->getIsAscending());
 
         $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $secondSorting);
+        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
         $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
         $this->assertFalse($secondSorting->getIsAscending());
     }
@@ -125,12 +125,12 @@ class RequestSortParameterBuilderTest extends Unit
 
         $this->assertCount(2, $result->getSortings());
         $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $firstSorting);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
         $this->assertFalse($firstSorting->getIsAscending());
 
         $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(GlueSortingTransfer::class, $secondSorting);
+        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
         $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
         $this->assertTrue($secondSorting->getIsAscending());
     }
