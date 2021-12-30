@@ -12,6 +12,9 @@ use Spryker\Glue\Kernel\AbstractBundleConfig;
 
 class GlueRestApiConventionConfig extends AbstractBundleConfig
 {
+    /**
+     * @var string
+     */
     public const CONVENTION_REST_API = 'rest_api';
 
     /**

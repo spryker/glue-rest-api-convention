@@ -11,7 +11,6 @@ use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestCorsV
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestPaginationParameterBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestQueryParameterBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestSortParameterBuilderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestVersionBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RestApiResponseBuilderPlugin;
 use Spryker\Glue\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Glue\Kernel\Container;
