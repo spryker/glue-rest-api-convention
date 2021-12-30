@@ -155,6 +155,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
     {
         return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_FORMATTER);
     }
+
     /**
      * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
      */
