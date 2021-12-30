@@ -8,13 +8,13 @@
 namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RequestSortParameterBuilderPlugin extends AbstractPlugin implements ResponseFormatterPluginInterface
+class RequestSortParameterBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
 {
     /**
      * {@inheritDoc}

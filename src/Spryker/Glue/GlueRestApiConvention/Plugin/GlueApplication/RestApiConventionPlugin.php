@@ -11,13 +11,14 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface;
+use Spryker\Glue\GlueApplication\ApiApplication\Type\RequestFlowAwareApiApplication;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RestApiConventionPlugin implements ApiConventionPluginInterface
+class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements ApiConventionPluginInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
@@ -29,6 +30,21 @@ class RestApiConventionPlugin implements ApiConventionPluginInterface
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceInterface $resource
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\GlueResponseTransfer
+     */
+    public function executeResource(ResourceInterface $resource, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
+    {
+        // TODO: plugins were here, but they are not required, there is one way to execute for convention.
+        return new GlueResponseTransfer();
+    }
     /**
      * @return string
      */
