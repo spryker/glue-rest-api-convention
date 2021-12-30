@@ -9,15 +9,15 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 
 interface RequestCorsValidatorInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function validate(GlueRequestTransfer $glueRequest, ResourceRoutePluginInterface $resourceRoutePlugin): GlueRequestValidationTransfer;
+    public function validate(GlueRequestTransfer $glueRequest, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer;
 }

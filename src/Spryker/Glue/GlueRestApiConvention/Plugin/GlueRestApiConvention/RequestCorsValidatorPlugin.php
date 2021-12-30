@@ -9,8 +9,8 @@ namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
-use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceRoutePluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**
@@ -24,15 +24,15 @@ class RequestCorsValidatorPlugin extends AbstractPlugin implements RequestAfterR
      * @api
      *
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function validateRequest(GlueRequestTransfer $glueRequestTransfer, ResourceRoutePluginInterface $resourceRoutePlugin): GlueRequestValidationTransfer
+    public function validateRequest(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer
     {
         return $this->getFactory()->createRequestCorsValidator()->validate(
             $glueRequestTransfer,
-            $resourceRoutePlugin,
+            $restResourcePlugin,
         );
     }
 }

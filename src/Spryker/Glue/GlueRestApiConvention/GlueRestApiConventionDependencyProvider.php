@@ -8,6 +8,7 @@
 namespace Spryker\Glue\GlueRestApiConvention;
 
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestCorsValidatorPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestFormatBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestPaginationParameterBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestQueryParameterBuilderPlugin;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestSortParameterBuilderPlugin;
@@ -194,6 +195,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     protected function getRequestBuilderPlugins(): array
     {
         return [
+            new RequestFormatBuilderPlugin(),
             new RequestQueryParameterBuilderPlugin(),
             new RequestPaginationParameterBuilderPlugin(),
             new RequestSortParameterBuilderPlugin(),
@@ -205,7 +207,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      */
     protected function getRequestValidatorPlugins(): array
     {
-        return [pag];
+        return [];
     }
 
     /**

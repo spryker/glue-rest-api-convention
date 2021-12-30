@@ -8,6 +8,8 @@
 namespace Spryker\Glue\GlueRestApiConvention;
 
 use Spryker\Glue\GlueRestApiConvention\Controller\ControllerResolver;
+use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilder;
+use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilder;
@@ -16,8 +18,6 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilde
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
-use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidator;
-use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
@@ -55,14 +55,6 @@ class GlueRestApiConventionFactory extends AbstractFactory
     public function createRequestSortParameterBuilder(): RequestSortParameterBuilderInterface
     {
         return new RequestSortParameterBuilder();
-    }
-
-    /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestPaginationValidatorInterface
-     */
-    public function createRequestPaginationValidator(): RequestPaginationValidatorInterface
-    {
-        return new RequestPaginationValidator();
     }
 
     /**
@@ -162,5 +154,12 @@ class GlueRestApiConventionFactory extends AbstractFactory
     public function getResponseFormatterPlugins(): array
     {
         return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_FORMATTER);
+    }
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
+     */
+    public function createRequestFormatBuilder(): RequestFormatBuilderInterface
+    {
+        return new RequestFormatBuilder();
     }
 }

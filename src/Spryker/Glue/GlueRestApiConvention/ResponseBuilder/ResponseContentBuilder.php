@@ -88,7 +88,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
             return $glueResponse;
         }
 
-        $format = $glueRequest->getAcceptedFormat();
+        $format = $glueRequest->getRequestedFormat();
 
         if (!$format || !array_key_exists($format, $this->responseEncoders)) {
             $glueResponse->setStatus((string)Response::HTTP_BAD_REQUEST);

@@ -20,7 +20,7 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
      */
     public function getAcceptedFormats(): array
     {
-        return ['json'];
+        return ['json', 'application/json'];
     }
 
     /**

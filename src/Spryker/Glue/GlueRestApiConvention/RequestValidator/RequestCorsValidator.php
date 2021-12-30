@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 
 class RequestCorsValidator implements RequestCorsValidatorInterface
 {
@@ -28,17 +28,17 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
 
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
     public function validate(
         GlueRequestTransfer $glueRequest,
-        ResourceRoutePluginInterface $resourceRoutePlugin
+        RestResourceInterface $restResourcePlugin
     ): GlueRequestValidationTransfer {
         $headers = $glueRequest->getMeta();
 
-        $corsMethodValidation = $this->validateCorsMethod($headers, $resourceRoutePlugin);
+        $corsMethodValidation = $this->validateCorsMethod($headers, $restResourcePlugin);
 
         if ($corsMethodValidation === null) {
             return (new GlueRequestValidationTransfer())->setIsValid(true);
@@ -82,11 +82,11 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
 
     /**
      * @param array $headers
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer|null
      */
-    protected function validateCorsMethod(array $headers, ResourceRoutePluginInterface $resourceRoutePlugin): ?GlueRequestValidationTransfer
+    protected function validateCorsMethod(array $headers, RestResourceInterface $restResourcePlugin): ?GlueRequestValidationTransfer
     {
         $headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD] ??= null;
         $method = strtoupper($headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD]);
@@ -97,7 +97,7 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
 
         $validationResult = (new GlueRequestValidationTransfer());
 
-        $availableMethods = $this->getAvailableMethods($resourceRoutePlugin);
+        $availableMethods = $this->getAvailableMethods($restResourcePlugin);
 
         if (!in_array($method, $availableMethods)) {
             return $validationResult
@@ -110,13 +110,13 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
     }
 
     /**
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface $resourceRoutePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return array
      */
-    protected function getAvailableMethods(ResourceRoutePluginInterface $resourceRoutePlugin): array
+    protected function getAvailableMethods(RestResourceInterface $restResourcePlugin): array
     {
-        $availableMethods = $resourceRoutePlugin->configure(new ResourceRouteCollection())
+        $availableMethods = $restResourcePlugin->configure(new ResourceRouteCollection())
             ->getAvailableMethods();
 
         $index = array_search(ResourceRouteCollection::METHOD_GET_COLLECTION, $availableMethods);
