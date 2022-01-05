@@ -16,14 +16,24 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncoderPluginInterface
 {
     /**
+     * {@inheritDoc}
+     * - Return all formats the encoder can handle.
+     *
+     * @api
+     *
      * @return array<string>
      */
     public function getAcceptedFormats(): array
     {
-        return ['json', 'application/json'];
+        return ['application/json'];
     }
 
     /**
+     * {@inheritDoc}
+     * - Check if the given content can be encoded by this implementation.
+     *
+     * @api
+     *
      * @param mixed $content
      *
      * @return bool
@@ -34,6 +44,11 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
     }
 
     /**
+     * {@inheritDoc}
+     * - Transform given content into the format these encoder implements.
+     *
+     * @api
+     *
      * @param mixed $content
      *
      * @return string

@@ -18,6 +18,12 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 class AttributeResponseExpanderPlugin extends AbstractPlugin implements ResponseExpanderPluginInterface
 {
     /**
+     * {@inheritDoc}
+     * - Copy response transfer properties into responseData so they will be encoded and send as body in
+     * the next step.
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      * @param array $responseData

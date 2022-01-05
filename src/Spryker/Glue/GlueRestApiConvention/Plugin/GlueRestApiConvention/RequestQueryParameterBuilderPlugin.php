@@ -18,6 +18,7 @@ class RequestQueryParameterBuilderPlugin extends AbstractPlugin implements Reque
 {
     /**
      * {@inheritDoc}
+     * - Build the request by extracting query field.
      *
      * @api
      *

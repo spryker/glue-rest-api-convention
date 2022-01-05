@@ -24,17 +24,17 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     /**
      * @var string
      */
-    public const SERVICE_ENCODING = 'UTIL_JSON_ENCODER';
+    public const SERVICE_UTIL_ENCODING = 'SERVICE_UTIL_ENCODING';
 
     /**
      * @var string
      */
-    public const PLUGIN_RESPONSE_ENCODER = 'PLUGIN_RESPONSE_ENCODER';
+    public const PLUGINS_RESPONSE_ENCODER = 'PLUGINS_RESPONSE_ENCODER';
 
     /**
      * @var string
      */
-    public const PLUGIN_RESPONSE_EXPANDER = 'PLUGIN_RESPONSE_EXPANDER';
+    public const PLUGINS_RESPONSE_EXPANDER = 'PLUGINS_RESPONSE_EXPANDER';
 
     /**
      * @var string
@@ -64,7 +64,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     public function provideDependencies(Container $container)
     {
         $container = parent::provideDependencies($container);
-        $container = $this->addJsonEncoder($container);
+        $container = $this->addServiceUtilEncoding($container);
         $container = $this->addResponseEncoderPlugins($container);
         $container = $this->addResponseExpanderPlugins($container);
         $container = $this->addRequestBuilderPlugins($container);
@@ -80,9 +80,9 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      *
      * @return \Spryker\Glue\Kernel\Container
      */
-    protected function addJsonEncoder(Container $container): Container
+    protected function addServiceUtilEncoding(Container $container): Container
     {
-        $container->set(static::SERVICE_ENCODING, function (Container $container) {
+        $container->set(static::SERVICE_UTIL_ENCODING, function (Container $container) {
             return $container->getLocator()->utilEncoding()->service();
         });
 
@@ -96,7 +96,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      */
     protected function addResponseEncoderPlugins(Container $container): Container
     {
-        $container->set(static::PLUGIN_RESPONSE_ENCODER, function () {
+        $container->set(static::PLUGINS_RESPONSE_ENCODER, function () {
             return $this->getResponseEncoderPlugins();
         });
 
@@ -118,7 +118,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      */
     protected function addResponseExpanderPlugins(Container $container): Container
     {
-        $container->set(static::PLUGIN_RESPONSE_EXPANDER, function () {
+        $container->set(static::PLUGINS_RESPONSE_EXPANDER, function () {
             return $this->getResponseExpanderPlugins();
         });
 

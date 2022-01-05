@@ -20,6 +20,7 @@ class RequestCorsValidatorPlugin extends AbstractPlugin implements RequestAfterR
 {
     /**
      * {@inheritDoc}
+     * - Execute validations that need to be aware of the resolved route.
      *
      * @api
      *

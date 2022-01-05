@@ -20,6 +20,8 @@ use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
 use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutor;
+use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutorInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
@@ -70,7 +72,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
      */
     public function getEncodingService(): UtilEncodingServiceInterface
     {
-        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::SERVICE_ENCODING);
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::SERVICE_UTIL_ENCODING);
     }
 
     /**
@@ -113,7 +115,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
      */
     protected function getResponseEncoderPlugins(): array
     {
-        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGIN_RESPONSE_ENCODER);
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_ENCODER);
     }
 
     /**
@@ -121,7 +123,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
      */
     protected function getResponseExpanderPlugins(): array
     {
-        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGIN_RESPONSE_EXPANDER);
+        return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_EXPANDER);
     }
 
     /**
@@ -162,5 +164,14 @@ class GlueRestApiConventionFactory extends AbstractFactory
     public function createRequestFormatBuilder(): RequestFormatBuilderInterface
     {
         return new RequestFormatBuilder();
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutorInterface
+     */
+    // TODO: will be removed when GlueApplication will be done
+    public function createRestApiResourceExecutor(): RestApiResourceExecutorInterface
+    {
+        return new RestApiResourceExecutor();
     }
 }

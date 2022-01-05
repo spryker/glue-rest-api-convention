@@ -18,6 +18,7 @@ class RequestPaginationParameterBuilderPlugin extends AbstractPlugin implements 
 {
     /**
      * {@inheritDoc}
+     * - Build the request by extracting pagination field.
      *
      * @api
      *

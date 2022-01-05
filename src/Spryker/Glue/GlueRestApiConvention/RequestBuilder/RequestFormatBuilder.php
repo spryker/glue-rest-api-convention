@@ -8,7 +8,6 @@
 namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Symfony\Component\HttpFoundation\Request;
 
 class RequestFormatBuilder implements RequestFormatBuilderInterface
 {
@@ -19,33 +18,14 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
      */
     public function extract(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        $httpRequest = $this->getRequest();
-
-        if ($httpRequest->getContent()) {
-            $glueRequestTransfer->setContent($httpRequest->getContent());
+        $headers = $glueRequestTransfer->getMeta();
+        if (isset($headers['content-type'])) {
+            $glueRequestTransfer->setRequestedFormat($headers['content-type'][0]);
         }
-
-        if (isset($httpRequest->headers) && $httpRequest->headers->all()) {
-            $glueRequestTransfer->setMeta($httpRequest->headers->all());
-            $headers = $glueRequestTransfer->getMeta();
-            if (isset($headers['content-type'])) {
-                $glueRequestTransfer->setRequestedFormat($headers['content-type'][0]);
-            }
-            if (isset($headers['accept'])) {
-                $glueRequestTransfer->setAcceptedFormat(explode('/', $headers['accept'][0])[1]);
-            }
+        if (isset($headers['accept'])) {
+            $glueRequestTransfer->setAcceptedFormat(explode('/', $headers['accept'][0])[1]);
         }
-
-        $glueRequestTransfer->setPath($httpRequest->getPathInfo());
 
         return $glueRequestTransfer;
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    protected function getRequest(): Request
-    {
-        return Request::createFromGlobals();
     }
 }

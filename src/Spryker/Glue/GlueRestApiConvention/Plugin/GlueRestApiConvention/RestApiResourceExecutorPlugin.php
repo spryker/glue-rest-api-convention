@@ -9,29 +9,31 @@ namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceExecutorInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RestApiResponseBuilderPlugin extends AbstractPlugin implements ResponseFormatterPluginInterface
+// TODO: will be removed when GlueApplication will be done
+class RestApiResourceExecutorPlugin extends AbstractPlugin implements ResourceExecutorInterface
 {
     /**
      * {@inheritDoc}
-     * - Build response according to the REST API convention.
+     * - Transform given resource into a response.
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $resource
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueResponseTransfer
      */
-    public function build(GlueResponseTransfer $glueResponseTransfer, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
+    public function execute(RestResourceInterface $resource, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
-        return $this->getFactory()->createResponseContentBuilder()->buildResponse(
-            $glueResponseTransfer,
+        return $this->getFactory()->createRestApiResourceExecutor()->executeResource(
+            $resource,
             $glueRequestTransfer,
         );
     }

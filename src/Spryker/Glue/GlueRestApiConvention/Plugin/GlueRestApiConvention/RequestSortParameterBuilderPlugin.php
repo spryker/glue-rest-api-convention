@@ -18,6 +18,7 @@ class RequestSortParameterBuilderPlugin extends AbstractPlugin implements Reques
 {
     /**
      * {@inheritDoc}
+     * - Build the request by extracting sort related fields.
      *
      * @api
      *

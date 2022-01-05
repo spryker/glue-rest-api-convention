@@ -34,7 +34,7 @@ class JsonResponseEncoderPluginTest extends Unit
 
         $result = $plugin->getAcceptedFormats();
 
-        $this->assertSame(['json'], $result);
+        $this->assertSame(['application/json'], $result);
     }
 
     /**

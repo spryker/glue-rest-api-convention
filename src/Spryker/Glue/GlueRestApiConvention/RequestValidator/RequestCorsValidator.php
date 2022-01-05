@@ -11,11 +11,16 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
-use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class RequestCorsValidator implements RequestCorsValidatorInterface
 {
+    /**
+     * @var string
+     */
+    public const METHOD_GET_COLLECTION = 'get_collection';
+
     protected GlueRestApiConventionConfig $config;
 
     /**
@@ -27,16 +32,16 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
     public function validate(
-        GlueRequestTransfer $glueRequest,
+        GlueRequestTransfer $glueRequestTransfer,
         RestResourceInterface $restResourcePlugin
     ): GlueRequestValidationTransfer {
-        $headers = $glueRequest->getMeta();
+        $headers = $glueRequestTransfer->getMeta();
 
         $corsMethodValidation = $this->validateCorsMethod($headers, $restResourcePlugin);
 
@@ -91,7 +96,7 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
         $headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD] ??= null;
         $method = strtoupper($headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD]);
 
-        if (!$method || $method === ResourceRouteCollection::METHOD_OPTIONS) {
+        if (!$method || $method === Request::METHOD_OPTIONS) {
             return null;
         }
 
@@ -116,14 +121,13 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
      */
     protected function getAvailableMethods(RestResourceInterface $restResourcePlugin): array
     {
-        $availableMethods = $restResourcePlugin->configure(new ResourceRouteCollection())
-            ->getAvailableMethods();
+        $availableMethods = array_keys(array_filter($restResourcePlugin->getDeclaredMethods()->toArray()));
 
-        $index = array_search(ResourceRouteCollection::METHOD_GET_COLLECTION, $availableMethods);
+        $index = array_search(static::METHOD_GET_COLLECTION, $availableMethods);
 
         if ($index !== false) {
             unset($availableMethods[$index]);
-            $availableMethods[] = ResourceRouteCollection::METHOD_GET;
+            $availableMethods[] = Request::METHOD_GET;
         }
 
         return array_map('strtoupper', array_unique($availableMethods));

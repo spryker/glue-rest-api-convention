@@ -97,7 +97,7 @@ class ResponseContentBuilderTest extends Unit
     public function testInvalidFormat(): void
     {
         $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setAcceptedFormat('bad_format');
+        $glueRequest->setRequestedFormat('bad_format');
         $glueResponse = new GlueResponseTransfer();
 
         $responseBuilder = new ResponseContentBuilder([], []);
@@ -112,7 +112,7 @@ class ResponseContentBuilderTest extends Unit
     public function testResponseExpander(): void
     {
         $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setAcceptedFormat('json');
+        $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
 
         $expanderPluginMock = $this->createMock(ResponseExpanderPluginInterface::class);
@@ -136,7 +136,7 @@ class ResponseContentBuilderTest extends Unit
     public function testEmptyResponse(): void
     {
         $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setAcceptedFormat('json');
+        $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
 
         $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], []);
@@ -152,12 +152,12 @@ class ResponseContentBuilderTest extends Unit
     public function testNoAcceptingEncoder(): void
     {
         $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setAcceptedFormat('json');
+        $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
         $encoderMock = $this->createMock(ResponseEncoderPluginInterface::class);
         $encoderMock->expects($this->once())
             ->method('getAcceptedFormats')
-            ->willReturn(['json']);
+            ->willReturn(['application/json']);
         $encoderMock->expects($this->once())
             ->method('accepts')
             ->willReturn(false);
@@ -166,7 +166,7 @@ class ResponseContentBuilderTest extends Unit
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
 
         $this->assertSame('500', $result->getStatus());
-        $this->assertSame('Missing encoder for json', $glueResponse->getContent());
+        $this->assertSame('Missing encoder for application/json', $glueResponse->getContent());
     }
 
     /**
@@ -177,7 +177,7 @@ class ResponseContentBuilderTest extends Unit
         $jsonEncoderMock = $this->createMock(ResponseEncoderPluginInterface::class);
         $jsonEncoderMock->expects($this->once())
             ->method('getAcceptedFormats')
-            ->willReturn(['json']);
+            ->willReturn(['application/json']);
         $jsonEncoderMock->expects($this->once())
             ->method('accepts')
             ->willReturn(true);

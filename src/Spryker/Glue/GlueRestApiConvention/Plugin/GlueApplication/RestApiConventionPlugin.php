@@ -18,9 +18,14 @@ use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements ApiConventionPluginInterface
+class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements ApiConventionPluginInterface
 {
     /**
+     * {@inheritDoc}
+     * - Check if request transfer is applicable.
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return bool
@@ -32,6 +37,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
 
     /**
      * {@inheritDoc}
+     * - Execute resources according to the REST API convention.
      *
      * @api
      *
@@ -43,9 +49,15 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
     public function executeResource(ResourceInterface $resource, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
         // TODO: plugins were here, but they are not required, there is one way to execute for convention.
-        return new GlueResponseTransfer();
+        return $this->getFactory()->createRestApiResourceExecutor()->executeResource($resource, $glueRequestTransfer);
     }
+
     /**
+     * {@inheritDoc}
+     * - Return convention name.
+     *
+     * @api
+     *
      * @return string
      */
     public function getName(): string
@@ -55,6 +67,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
 
     /**
      * {@inheritDoc}
+     * - Build request according to the REST API convention.
      *
      * @api
      *
@@ -73,6 +86,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
 
     /**
      * {@inheritDoc}
+     * - Validate request according to the REST API convention.
      *
      * @api
      *
@@ -95,6 +109,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
 
     /**
      * {@inheritDoc}
+     * - Validate request after routing step according to the REST API convention.
      *
      * @api
      *
@@ -109,6 +124,10 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
     ): GlueRequestValidationTransfer {
         foreach ($this->getFactory()->getRequestAfterRoutingValidatorPlugins() as $validateRequestAfterRoutingPlugin) {
             $glueRequestValidationTransfer = $validateRequestAfterRoutingPlugin->validateRequest($glueRequestTransfer, $resource);
+
+            if ($glueRequestValidationTransfer->getIsValid() === false) {
+                break;
+            }
         }
 
         return $glueRequestValidationTransfer ?? (new GlueRequestValidationTransfer())->setIsValid(true);
@@ -116,6 +135,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication  implements
 
     /**
      * {@inheritDoc}
+     * - Format response according to the REST API convention.
      *
      * @api
      *

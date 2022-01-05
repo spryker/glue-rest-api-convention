@@ -10,12 +10,14 @@ namespace SprykerTest\Glue\GlueRestApiConvention\RequestValidator;
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
+use Generated\Shared\Transfer\GlueResourceMethodCollectionTransfer;
+use Generated\Shared\Transfer\GlueResourceMethodConfigurationTransfer;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
 use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
-use Spryker\Glue\GlueRestApiConvention\Router\ResourceRouteCollection;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResourceRoutePluginInterface;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Auto-generated group annotations
@@ -48,15 +50,15 @@ class RequestCorsValidatorTest extends Unit
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => null,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->never())
-            ->method('configure')
-            ->willReturn(new ResourceRouteCollection());
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->never())
+            ->method('getDeclaredMethods')
+            ->willReturn(new GlueResourceMethodCollectionTransfer());
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock($this->never()));
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
         $this->assertTrue($result->getIsValid());
     }
@@ -70,15 +72,18 @@ class RequestCorsValidatorTest extends Unit
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => 'GET',
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->once())
-            ->method('configure')
-            ->willReturn((new ResourceRouteCollection())->addDelete('delete'));
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->once())
+            ->method('getDeclaredMethods')
+            ->willReturn((new GlueResourceMethodCollectionTransfer())->setDelete(
+                (new GlueResourceMethodConfigurationTransfer())
+                ->setAction('deleteAction'),
+            ));
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock($this->never()));
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
         $this->assertFalse($result->getIsValid());
     }
@@ -89,18 +94,21 @@ class RequestCorsValidatorTest extends Unit
     public function testMethodOptionsIsAlwaysAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_OPTIONS,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_OPTIONS,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->never())
-            ->method('configure')
-            ->willReturn((new ResourceRouteCollection())->addGet('get'));
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->never())
+            ->method('getDeclaredMethods')
+            ->willReturn((new GlueResourceMethodCollectionTransfer())->setGet(
+                (new GlueResourceMethodConfigurationTransfer())
+                    ->setAction('getAction'),
+            ));
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock($this->never()));
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
         $this->assertTrue($result->getIsValid());
     }
@@ -111,7 +119,7 @@ class RequestCorsValidatorTest extends Unit
     public function testGetWithNoError(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_GET,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
         ];
         $result = $this->validateRequest($expectedCorsHeaders);
@@ -124,18 +132,21 @@ class RequestCorsValidatorTest extends Unit
     public function testGetCollectionWillBeHandledAsGet(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_GET,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
         ];
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->once())
-            ->method('configure')
-            ->willReturn((new ResourceRouteCollection())->addGetCollection('collection'));
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->once())
+            ->method('getDeclaredMethods')
+            ->willReturn((new GlueResourceMethodCollectionTransfer())->setGetCollection(
+                (new GlueResourceMethodConfigurationTransfer())
+                    ->setAction('getCollectionAction'),
+            ));
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock());
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
         $this->assertTrue($result->getIsValid());
     }
@@ -146,7 +157,7 @@ class RequestCorsValidatorTest extends Unit
     public function testDeniedHeadersWillReturnBadRequest(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_GET,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, 'non-allowed-header']),
         ];
 
@@ -160,7 +171,7 @@ class RequestCorsValidatorTest extends Unit
     public function testAllHeadersAreAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_GET,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, static::OTHER_ALLOWED_HEADER]),
         ];
 
@@ -174,19 +185,22 @@ class RequestCorsValidatorTest extends Unit
     public function testEmptyHeadersAreAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => ResourceRouteCollection::METHOD_GET,
+            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
             CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => '',
         ];
 
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->once())
-            ->method('configure')
-            ->willReturn((new ResourceRouteCollection())->addGet('get'));
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->once())
+            ->method('getDeclaredMethods')
+            ->willReturn((new GlueResourceMethodCollectionTransfer())->setGet(
+                (new GlueResourceMethodConfigurationTransfer())
+                    ->setAction('getAction'),
+            ));
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock($this->never()));
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
         $this->assertTrue($result->getIsValid());
     }
@@ -198,15 +212,18 @@ class RequestCorsValidatorTest extends Unit
      */
     protected function validateRequest(array $expectedCorsHeaders): GlueRequestValidationTransfer
     {
-        $resourceRoutePluginMock = $this->createMock(ResourceRoutePluginInterface::class);
-        $resourceRoutePluginMock->expects($this->once())
-            ->method('configure')
-            ->willReturn((new ResourceRouteCollection())->addGet('get'));
+        $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
+        $restResourcePluginMock->expects($this->once())
+            ->method('getDeclaredMethods')
+            ->willReturn((new GlueResourceMethodCollectionTransfer())->setGet(
+                (new GlueResourceMethodConfigurationTransfer())
+                    ->setAction('getAction'),
+            ));
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setMeta($expectedCorsHeaders);
         $corsValidator = new RequestCorsValidator($this->createConfigMock());
 
-        $result = $corsValidator->validate($glueRequest, $resourceRoutePluginMock);
+        $result = $corsValidator->validate($glueRequest, $restResourcePluginMock);
         $this->assertInstanceOf(GlueRequestValidationTransfer::class, $result);
 
         return $result;

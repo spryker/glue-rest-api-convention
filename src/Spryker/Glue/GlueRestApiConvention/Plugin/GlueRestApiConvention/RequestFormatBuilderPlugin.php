@@ -18,6 +18,7 @@ class RequestFormatBuilderPlugin extends AbstractPlugin implements RequestBuilde
 {
     /**
      * {@inheritDoc}
+     * - Build the request by extracting content-type and accept specific fields.
      *
      * @api
      *
