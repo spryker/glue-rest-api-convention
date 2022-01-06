@@ -7,12 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestCorsValidatorPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestFormatBuilderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestPaginationParameterBuilderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestQueryParameterBuilderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RequestSortParameterBuilderPlugin;
-use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\RestApiResponseBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceBridge;
 use Spryker\Glue\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Glue\Kernel\Container;
 
@@ -64,7 +59,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     public function provideDependencies(Container $container)
     {
         $container = parent::provideDependencies($container);
-        $container = $this->addServiceUtilEncoding($container);
+        $container = $this->addUtilEncodingService($container);
         $container = $this->addResponseEncoderPlugins($container);
         $container = $this->addResponseExpanderPlugins($container);
         $container = $this->addRequestBuilderPlugins($container);
@@ -80,10 +75,10 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      *
      * @return \Spryker\Glue\Kernel\Container
      */
-    protected function addServiceUtilEncoding(Container $container): Container
+    protected function addUtilEncodingService(Container $container): Container
     {
         $container->set(static::SERVICE_UTIL_ENCODING, function (Container $container) {
-            return $container->getLocator()->utilEncoding()->service();
+            return new GlueRestApiConventionToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
         });
 
         return $container;
@@ -187,46 +182,5 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
         });
 
         return $container;
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface>
-     */
-    protected function getRequestBuilderPlugins(): array
-    {
-        return [
-            new RequestFormatBuilderPlugin(),
-            new RequestQueryParameterBuilderPlugin(),
-            new RequestPaginationParameterBuilderPlugin(),
-            new RequestSortParameterBuilderPlugin(),
-        ];
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface>
-     */
-    protected function getRequestValidatorPlugins(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface>
-     */
-    protected function getRequestAfterRoutingValidatorPlugins(): array
-    {
-        return [
-            new RequestCorsValidatorPlugin(),
-        ];
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface>
-     */
-    protected function getResponseFormatterPlugins(): array
-    {
-        return [
-            new RestApiResponseBuilderPlugin(),
-        ];
     }
 }

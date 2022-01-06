@@ -54,7 +54,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Return convention name.
+     * - Returns convention name.
      *
      * @api
      *
@@ -67,7 +67,8 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Build request according to the REST API convention.
+     * - Builds request according to the REST API convention.
+     * - Runs a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface` plugins.
      *
      * @api
      *
@@ -86,7 +87,9 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Validate request according to the REST API convention.
+     * - Validates the request according to the REST API convention.
+     * - Executes a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface` plugins.
+     * - Plugins are executed until the first one fails, then the failed validation response is returned and subsequent validators are not executed.
      *
      * @api
      *
@@ -109,7 +112,9 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Validate request after routing step according to the REST API convention.
+     * - Validates the request after routing step according to the REST API convention.
+     * - Executes a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface` plugins.
+     * - Plugins are executed until the first one fails, then the failed validation response is returned and subsequent validators are not executed.
      *
      * @api
      *
@@ -135,7 +140,8 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Format response according to the REST API convention.
+     * - Formats the response according to the REST API convention.
+     * - Runs a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface` plugins.
      *
      * @api
      *

@@ -14,11 +14,12 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RequestQueryParameterBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
+class PaginationRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Build the request by extracting query field.
+     * - Validates pagination parameters of request.
+     * - Returns error if parameters are invalid.
      *
      * @api
      *
@@ -28,6 +29,6 @@ class RequestQueryParameterBuilderPlugin extends AbstractPlugin implements Reque
      */
     public function build(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        return $this->getFactory()->createRequestQueryParameterBuilder()->buildRequest($glueRequestTransfer);
+        return $this->getFactory()->createRequestPaginationParameterBuilder()->buildRequest($glueRequestTransfer);
     }
 }

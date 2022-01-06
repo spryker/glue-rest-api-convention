@@ -7,7 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
-use Spryker\Glue\GlueRestApiConvention\Controller\ControllerResolver;
+use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
@@ -18,8 +18,6 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilde
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
-use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilder;
-use Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutor;
 use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutorInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
@@ -27,8 +25,6 @@ use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpande
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilderInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
-use Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig getConfig()
@@ -68,9 +64,9 @@ class GlueRestApiConventionFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface
      */
-    public function getEncodingService(): UtilEncodingServiceInterface
+    public function getUtilEncodingService(): GlueRestApiConventionToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::SERVICE_UTIL_ENCODING);
     }
@@ -95,25 +91,9 @@ class GlueRestApiConventionFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\Resource\ResourceBuilderInterface
-     */
-    protected function createResourceBuilder(): ResourceBuilderInterface
-    {
-        return new ResourceBuilder($this->createControllerResolver(), $this->getConfig());
-    }
-
-    /**
-     * @return \Spryker\Shared\Kernel\ClassResolver\Controller\AbstractControllerResolver
-     */
-    protected function createControllerResolver(): AbstractControllerResolver
-    {
-        return new ControllerResolver();
-    }
-
-    /**
      * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface>
      */
-    protected function getResponseEncoderPlugins(): array
+    public function getResponseEncoderPlugins(): array
     {
         return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_ENCODER);
     }
@@ -121,7 +101,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
     /**
      * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface>
      */
-    protected function getResponseExpanderPlugins(): array
+    public function getResponseExpanderPlugins(): array
     {
         return $this->getProvidedDependency(GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_EXPANDER);
     }

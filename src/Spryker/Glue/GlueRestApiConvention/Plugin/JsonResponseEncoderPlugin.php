@@ -56,7 +56,7 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
     public function encode($content): string
     {
         return $this->getFactory()
-            ->getEncodingService()
+            ->getUtilEncodingService()
             ->encodeJson($content);
     }
 }

@@ -16,11 +16,12 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RequestCorsValidatorPlugin extends AbstractPlugin implements RequestAfterRoutingValidatorPluginInterface
+class CorsRequestAfterRoutingValidatorPlugin extends AbstractPlugin implements RequestAfterRoutingValidatorPluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Execute validations that need to be aware of the resolved route.
+     * - Validates that the access-control-request-method header is present and allowed.
+     * - Validates that the access-control-request-headers header is present.
      *
      * @api
      *

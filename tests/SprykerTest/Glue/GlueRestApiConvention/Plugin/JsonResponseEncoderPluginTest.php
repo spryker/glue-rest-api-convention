@@ -8,9 +8,9 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Plugin;
 
 use Codeception\Test\Unit;
+use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory;
 use Spryker\Glue\GlueRestApiConvention\Plugin\JsonResponseEncoderPlugin;
-use Spryker\Service\UtilEncoding\UtilEncodingServiceInterface;
 use stdClass;
 
 /**
@@ -62,7 +62,7 @@ class JsonResponseEncoderPluginTest extends Unit
      */
     public function testUsesEncodingService($content): void
     {
-        $encoderMock = $this->createMock(UtilEncodingServiceInterface::class);
+        $encoderMock = $this->createMock(GlueRestApiConventionToUtilEncodingServiceInterface::class);
         $encoderMock->expects($this->once())
             ->method('encodeJson')
             ->willReturnCallback(function ($data) {
@@ -70,7 +70,7 @@ class JsonResponseEncoderPluginTest extends Unit
             });
         $factoryMock = $this->createMock(GlueRestApiConventionFactory::class);
         $factoryMock->expects($this->once())
-            ->method('getEncodingService')
+            ->method('getUtilEncodingService')
             ->willReturn($encoderMock);
 
         $plugin = new JsonResponseEncoderPlugin();

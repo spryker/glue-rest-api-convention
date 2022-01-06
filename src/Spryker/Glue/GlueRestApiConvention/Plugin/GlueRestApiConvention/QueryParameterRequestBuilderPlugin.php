@@ -14,11 +14,11 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RequestSortParameterBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
+class QueryParameterRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Build the request by extracting sort related fields.
+     * - Build the request by extracting query field.
      *
      * @api
      *
@@ -28,6 +28,6 @@ class RequestSortParameterBuilderPlugin extends AbstractPlugin implements Reques
      */
     public function build(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        return $this->getFactory()->createRequestSortParameterBuilder()->buildRequest($glueRequestTransfer);
+        return $this->getFactory()->createRequestQueryParameterBuilder()->buildRequest($glueRequestTransfer);
     }
 }

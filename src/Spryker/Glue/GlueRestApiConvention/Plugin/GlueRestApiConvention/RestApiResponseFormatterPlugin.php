@@ -15,7 +15,7 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RestApiResponseBuilderPlugin extends AbstractPlugin implements ResponseFormatterPluginInterface
+class RestApiResponseFormatterPlugin extends AbstractPlugin implements ResponseFormatterPluginInterface
 {
     /**
      * {@inheritDoc}

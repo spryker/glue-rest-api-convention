@@ -14,11 +14,13 @@ use Spryker\Glue\Kernel\AbstractPlugin;
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RequestPaginationParameterBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
+class SortRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Build the request by extracting pagination field.
+     * - Adds status code 200 if it does not exist
+     * - Uses response content if it exist, if not, checks if format is allowed and if yes, uses data from response
+     * - attributes and encode it
      *
      * @api
      *
@@ -28,6 +30,6 @@ class RequestPaginationParameterBuilderPlugin extends AbstractPlugin implements 
      */
     public function build(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        return $this->getFactory()->createRequestPaginationParameterBuilder()->buildRequest($glueRequestTransfer);
+        return $this->getFactory()->createRequestSortParameterBuilder()->buildRequest($glueRequestTransfer);
     }
 }

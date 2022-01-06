@@ -19,7 +19,7 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
     /**
      * @var string
      */
-    public const METHOD_GET_COLLECTION = 'get_collection';
+    protected const METHOD_GET_COLLECTION = 'get_collection';
 
     protected GlueRestApiConventionConfig $config;
 
