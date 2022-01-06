@@ -183,4 +183,36 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
 
         return $container;
     }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface>
+     */
+    protected function getRequestBuilderPlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface>
+     */
+    protected function getRequestValidatorPlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface>
+     */
+    protected function getRequestAfterRoutingValidatorPlugins(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseFormatterPluginInterface>
+     */
+    protected function getResponseFormatterPlugins(): array
+    {
+        return [];
+    }
 }
