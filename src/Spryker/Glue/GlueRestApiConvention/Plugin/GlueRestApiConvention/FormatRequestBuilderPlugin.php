@@ -18,7 +18,8 @@ class FormatRequestBuilderPlugin extends AbstractPlugin implements RequestBuilde
 {
     /**
      * {@inheritDoc}
-     * - Build the request by extracting content-type and accept specific fields.
+     * - Extracts `content-type` header value into `GlueRequestTransfer.requestedFormat`.
+     * - Extracts `accept` header values into `GlueRequestTransfer.acceptedFormats`.
      *
      * @api
      *

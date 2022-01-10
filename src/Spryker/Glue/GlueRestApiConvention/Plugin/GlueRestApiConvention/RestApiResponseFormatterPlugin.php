@@ -19,7 +19,15 @@ class RestApiResponseFormatterPlugin extends AbstractPlugin implements ResponseF
 {
     /**
      * {@inheritDoc}
-     * - Build response according to the REST API convention.
+     * - Build response for the REST API convention.
+     * - Adds the default `GlueResponseTransfer.status` 200 if status is not set.
+     * - If `GlueResponseTransfer.content` is already set, exits.
+     * - If none of the `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface`
+     * can serve the accepted `GlueRequestTransfer.acceptedFormats`, returns error.
+     * - Runs a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface`
+     * to expand the response.
+     * - Runs the first suitable `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface`
+     * to format the content.
      *
      * @api
      *

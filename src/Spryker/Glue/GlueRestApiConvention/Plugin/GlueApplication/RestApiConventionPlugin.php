@@ -11,18 +11,20 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface;
-use Spryker\Glue\GlueApplication\ApiApplication\Type\RequestFlowAwareApiApplication;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
+use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
+use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements ApiConventionPluginInterface
+class RestApiConventionPlugin extends AbstractPlugin implements ApiConventionPluginInterface
 {
     /**
      * {@inheritDoc}
      * - Check if request transfer is applicable.
+     * - Returns true, thus needs to be wired the last one.
      *
      * @api
      *
@@ -37,24 +39,7 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
 
     /**
      * {@inheritDoc}
-     * - Execute resources according to the REST API convention.
-     *
-     * @api
-     *
-     * @param \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceInterface $resource
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
-     *
-     * @return \Generated\Shared\Transfer\GlueResponseTransfer
-     */
-    public function executeResource(ResourceInterface $resource, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
-    {
-        // TODO: plugins were here, but they are not required, there is one way to execute for convention.
-        return $this->getFactory()->createRestApiResourceExecutor()->executeResource($resource, $glueRequestTransfer);
-    }
-
-    /**
-     * {@inheritDoc}
-     * - Returns convention name.
+     * - Returns REST API convention name.
      *
      * @api
      *
@@ -63,6 +48,17 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
     public function getName(): string
     {
         return GlueRestApiConventionConfig::CONVENTION_REST_API;
+    }
+
+    /**
+     * {@inheritDoc}
+     * - Returns REST API Resource type.
+     *
+     * @return string
+     */
+    public function getResourceType(): string
+    {
+        return RestResourceInterface::class;
     }
 
     /**
@@ -78,6 +74,8 @@ class RestApiConventionPlugin extends RequestFlowAwareApiApplication implements 
      */
     public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
+        $glueRequestTransfer->setConvention($this->getName());
+
         foreach ($this->getFactory()->getRequestBuilderPlugins() as $builderRequestPlugin) {
             $glueRequestTransfer = $builderRequestPlugin->build($glueRequestTransfer);
         }

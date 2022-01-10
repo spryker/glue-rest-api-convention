@@ -5,16 +5,17 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
+namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
+use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 
-interface RequestQueryParameterBuilderInterface
+interface AcceptedFormatValidatorInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
-     * @return \Generated\Shared\Transfer\GlueRequestTransfer
+     * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer;
+    public function validate(GlueRequestTransfer $glueRequestTransfer): GlueRequestValidationTransfer;
 }

@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\Plugin;
+namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
@@ -17,7 +17,7 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
 {
     /**
      * {@inheritDoc}
-     * - Return all formats the encoder can handle.
+     * - Return all formats that mean the JSON encoder can be used.
      *
      * @api
      *
@@ -31,6 +31,7 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
     /**
      * {@inheritDoc}
      * - Check if the given content can be encoded by this implementation.
+     * - Always returns true, is the default encoder.
      *
      * @api
      *
@@ -45,7 +46,7 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
 
     /**
      * {@inheritDoc}
-     * - Transform given content into the format these encoder implements.
+     * - Transform given content into JSON format.
      *
      * @api
      *

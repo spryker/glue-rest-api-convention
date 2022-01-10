@@ -9,7 +9,6 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
-use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
  * Should run after @see \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
@@ -17,28 +16,43 @@ use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 class RequestPaginationParameterBuilder implements RequestPaginationParameterBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @var string
+     */
+    protected const QUERY_PAGINATION = 'page';
+
+    /**
+     * @var string
+     */
+    protected const PAGINATION_OFFSET = 'offset';
+
+    /**
+     * @var string
+     */
+    protected const PAGINATION_LIMIT = 'limit';
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function buildRequest(GlueRequestTransfer $glueRequest): GlueRequestTransfer
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        $queryParameters = $glueRequest->getQueryFields();
+        $queryParameters = $glueRequestTransfer->getQueryFields();
 
-        if (!isset($queryParameters[GlueRestApiConventionConstants::QUERY_PAGINATION])) {
-            return $glueRequest;
+        if (!isset($queryParameters[static::QUERY_PAGINATION])) {
+            return $glueRequestTransfer;
         }
 
-        $page = $queryParameters[GlueRestApiConventionConstants::QUERY_PAGINATION];
+        $page = $queryParameters[static::QUERY_PAGINATION];
 
-        if (isset($page[GlueRestApiConventionConstants::PAGINATION_OFFSET], $page[GlueRestApiConventionConstants::PAGINATION_LIMIT])) {
-            $glueRequest->setPagination(
+        if (isset($page[static::PAGINATION_OFFSET], $page[static::PAGINATION_LIMIT])) {
+            $glueRequestTransfer->setPagination(
                 (new PaginationTransfer())
-                    ->setOffset($page[GlueRestApiConventionConstants::PAGINATION_OFFSET])
-                    ->setLimit($page[GlueRestApiConventionConstants::PAGINATION_LIMIT]),
+                    ->setOffset($page[static::PAGINATION_OFFSET])
+                    ->setLimit($page[static::PAGINATION_LIMIT]),
             );
         }
 
-        return $glueRequest;
+        return $glueRequestTransfer;
     }
 }

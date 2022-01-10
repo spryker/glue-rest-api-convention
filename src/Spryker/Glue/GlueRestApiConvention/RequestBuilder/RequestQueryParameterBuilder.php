@@ -12,17 +12,17 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 class RequestQueryParameterBuilder implements RequestQueryParameterBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function buildRequest(GlueRequestTransfer $glueRequest): GlueRequestTransfer
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
         $queryParameters = [];
-        parse_str(parse_url($glueRequest->getPath(), PHP_URL_QUERY), $queryParameters);
+        parse_str($glueRequestTransfer->getParametersString(), $queryParameters);
 
-        $glueRequest->setQueryFields($queryParameters);
+        $glueRequestTransfer->setQueryFields($queryParameters);
 
-        return $glueRequest;
+        return $glueRequestTransfer;
     }
 }

@@ -16,10 +16,10 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuild
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidator;
+use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
-use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutor;
-use Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutorInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
@@ -139,7 +139,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface
      */
     public function createRequestFormatBuilder(): RequestFormatBuilderInterface
     {
@@ -147,11 +147,10 @@ class GlueRestApiConventionFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\Resource\RestApiResourceExecutorInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidatorInterface
      */
-    // TODO: will be removed when GlueApplication will be done
-    public function createRestApiResourceExecutor(): RestApiResourceExecutorInterface
+    public function createAcceptedFormatValidator(): AcceptedFormatValidatorInterface
     {
-        return new RestApiResourceExecutor();
+        return new AcceptedFormatValidator($this->getResponseEncoderPlugins());
     }
 }

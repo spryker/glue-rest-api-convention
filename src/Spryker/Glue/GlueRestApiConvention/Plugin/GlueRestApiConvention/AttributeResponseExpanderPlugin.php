@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\Plugin;
+namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
@@ -19,8 +19,7 @@ class AttributeResponseExpanderPlugin extends AbstractPlugin implements Response
 {
     /**
      * {@inheritDoc}
-     * - Copy response transfer properties into responseData so they will be encoded and send as body in
-     * the next step.
+     * - Converts `GlueResponseTransfer.attributes` to array and copies them to response data.
      *
      * @api
      *

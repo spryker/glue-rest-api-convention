@@ -12,9 +12,9 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 interface RequestSortParameterBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function buildRequest(GlueRequestTransfer $glueRequest): GlueRequestTransfer;
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer;
 }

@@ -12,15 +12,15 @@ use Generated\Shared\Transfer\GlueResponseTransfer;
 class AttributeExpander implements AttributeExpanderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponse
+     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
      * @param array $data
      *
      * @return array
      */
-    public function expandResponseData(GlueResponseTransfer $glueResponse, array $data): array
+    public function expandResponseData(GlueResponseTransfer $glueResponseTransfer, array $data): array
     {
-        if ($glueResponse->getAttributes()) {
-            $data += $glueResponse->getAttributes()->toArray(true, true);
+        if ($glueResponseTransfer->getAttributes()) {
+            $data += $glueResponseTransfer->getAttributes()->toArray(true, true);
         }
 
         return $data;

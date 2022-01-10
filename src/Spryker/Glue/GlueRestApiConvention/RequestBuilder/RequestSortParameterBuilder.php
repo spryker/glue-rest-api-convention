@@ -17,19 +17,24 @@ use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 class RequestSortParameterBuilder implements RequestSortParameterBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @var string
+     */
+    protected const QUERY_SORT = 'sort';
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function buildRequest(GlueRequestTransfer $glueRequest): GlueRequestTransfer
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        $queryParameters = $glueRequest->getQueryFields();
+        $queryParameters = $glueRequestTransfer->getQueryFields();
 
-        if (!isset($queryParameters[GlueRestApiConventionConstants::QUERY_SORT]) || empty($queryParameters[GlueRestApiConventionConstants::QUERY_SORT])) {
-            return $glueRequest;
+        if (empty($queryParameters[static::QUERY_SORT])) {
+            return $glueRequestTransfer;
         }
 
-        $sortFields = explode(',', $queryParameters[GlueRestApiConventionConstants::QUERY_SORT]);
+        $sortFields = explode(',', $queryParameters[static::QUERY_SORT]);
         foreach ($sortFields as $field) {
             $isAscending = true;
             if ($field[0] === '-') {
@@ -37,13 +42,13 @@ class RequestSortParameterBuilder implements RequestSortParameterBuilderInterfac
                 $field = trim($field, '-');
             }
 
-            $glueRequest->addSorting(
+            $glueRequestTransfer->addSorting(
                 (new SortTransfer())
                     ->setField($field)
                     ->setIsAscending($isAscending),
             );
         }
 
-        return $glueRequest;
+        return $glueRequestTransfer;
     }
 }

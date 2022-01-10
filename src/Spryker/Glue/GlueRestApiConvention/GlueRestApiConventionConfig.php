@@ -7,7 +7,6 @@
 
 namespace Spryker\Glue\GlueRestApiConvention;
 
-use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\Kernel\AbstractBundleConfig;
 
 class GlueRestApiConventionConfig extends AbstractBundleConfig
@@ -18,8 +17,33 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
     public const CONVENTION_REST_API = 'rest_api';
 
     /**
+     * @var string
+     */
+    protected const HEADER_ACCEPT = 'accept';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCEPT_LANGUAGE = 'accept-language';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_CONTENT_TYPE = 'content-type';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_CONTENT_LANGUAGE = 'content-language';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_AUTHORIZATION = 'authorization';
+
+    /**
      * Specification:
-     *  - List of allowed CORS headers.
+     * - List of allowed CORS headers.
      *
      * @api
      *
@@ -28,11 +52,11 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
     public function getCorsAllowedHeaders(): array
     {
         return [
-            CorsConstants::HEADER_ACCEPT,
-            CorsConstants::HEADER_CONTENT_TYPE,
-            CorsConstants::HEADER_CONTENT_LANGUAGE,
-            CorsConstants::HEADER_ACCEPT_LANGUAGE,
-            CorsConstants::HEADER_AUTHORIZATION,
+            static::HEADER_ACCEPT,
+            static::HEADER_CONTENT_TYPE,
+            static::HEADER_CONTENT_LANGUAGE,
+            static::HEADER_ACCEPT_LANGUAGE,
+            static::HEADER_AUTHORIZATION,
         ];
     }
 }

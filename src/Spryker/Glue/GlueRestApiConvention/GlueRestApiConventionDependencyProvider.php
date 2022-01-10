@@ -143,6 +143,14 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     }
 
     /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface>
+     */
+    protected function getRequestBuilderPlugins(): array
+    {
+        return [];
+    }
+
+    /**
      * @param \Spryker\Glue\Kernel\Container $container
      *
      * @return \Spryker\Glue\Kernel\Container
@@ -154,6 +162,14 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
         });
 
         return $container;
+    }
+
+    /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface>
+     */
+    protected function getRequestValidatorPlugins(): array
+    {
+        return [];
     }
 
     /**
@@ -171,6 +187,14 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
     }
 
     /**
+     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface>
+     */
+    protected function getRequestAfterRoutingValidatorPlugins(): array
+    {
+        return [];
+    }
+
+    /**
      * @param \Spryker\Glue\Kernel\Container $container
      *
      * @return \Spryker\Glue\Kernel\Container
@@ -182,30 +206,6 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
         });
 
         return $container;
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface>
-     */
-    protected function getRequestBuilderPlugins(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface>
-     */
-    protected function getRequestValidatorPlugins(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface>
-     */
-    protected function getRequestAfterRoutingValidatorPlugins(): array
-    {
-        return [];
     }
 
     /**

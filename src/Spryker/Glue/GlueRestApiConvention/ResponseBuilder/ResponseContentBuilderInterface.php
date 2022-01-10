@@ -29,10 +29,10 @@ interface ResponseContentBuilderInterface
     public function addResponseExpanderPlugin(ResponseExpanderPluginInterface $responseExpanderPlugin);
 
     /**
-     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponse
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueResponseTransfer
      */
-    public function buildResponse(GlueResponseTransfer $glueResponse, GlueRequestTransfer $glueRequest): GlueResponseTransfer;
+    public function buildResponse(GlueResponseTransfer $glueResponseTransfer, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer;
 }

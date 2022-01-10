@@ -18,7 +18,8 @@ class QueryParameterRequestBuilderPlugin extends AbstractPlugin implements Reque
 {
     /**
      * {@inheritDoc}
-     * - Build the request by extracting query field.
+     * - Splits the `GlueRequestTransfer.parametersString` into associative array of name => value.
+     * - Fills `GlueRequestTransfer.queryFields` with the result.
      *
      * @api
      *

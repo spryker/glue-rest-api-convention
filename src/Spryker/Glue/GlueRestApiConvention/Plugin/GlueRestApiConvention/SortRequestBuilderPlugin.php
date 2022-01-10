@@ -18,9 +18,10 @@ class SortRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderP
 {
     /**
      * {@inheritDoc}
-     * - Adds status code 200 if it does not exist
-     * - Uses response content if it exist, if not, checks if format is allowed and if yes, uses data from response
-     * - attributes and encode it
+     * - Extracts `GlueRequestTransfer.sortings` from the `GlueRequestTransfer.queryFields`.
+     * - Looks for `GlueRequestTransfer.queryFields` equal to "sort".
+     * - Splits sort values by comma, interprets each part as sort field.
+     * - Interprets minus sign before the value as DESC direction, otherwise ASC order applies.
      *
      * @api
      *

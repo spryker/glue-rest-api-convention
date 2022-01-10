@@ -14,10 +14,10 @@ use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceIn
 interface RequestCorsValidatorInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function validate(GlueRequestTransfer $glueRequest, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer;
+    public function validate(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer;
 }

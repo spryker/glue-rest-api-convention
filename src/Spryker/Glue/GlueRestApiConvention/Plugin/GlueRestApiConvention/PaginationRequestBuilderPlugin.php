@@ -18,8 +18,9 @@ class PaginationRequestBuilderPlugin extends AbstractPlugin implements RequestBu
 {
     /**
      * {@inheritDoc}
-     * - Validates pagination parameters of request.
-     * - Returns error if parameters are invalid.
+     * - Extracts pagination parameters into `GlueRequestTransfer.pagination`.
+     * - Uses `page[offset]` and `page[limit]` query parameter.
+     * - If above parameters are not among the query parameters, does nothing.
      *
      * @api
      *

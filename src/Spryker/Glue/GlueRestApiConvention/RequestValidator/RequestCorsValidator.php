@@ -9,13 +9,32 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
-use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class RequestCorsValidator implements RequestCorsValidatorInterface
 {
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_ALLOW_HEADERS = 'access-control-allow-headers';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_REQUEST_HEADERS = 'access-control-request-headers';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_REQUEST_METHOD = 'access-control-request-method';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_ALLOW_METHODS = 'access-control-allow-methods';
+
     /**
      * @var string
      */
@@ -63,11 +82,11 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
      */
     protected function validateHeaders(array $headers): GlueRequestValidationTransfer
     {
-        if (!isset($headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS]) || empty($headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS])) {
+        if (empty($headers[static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS])) {
             return (new GlueRequestValidationTransfer())->setIsValid(true);
         }
 
-        $requestedHeaders = explode(', ', (string)$headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS]);
+        $requestedHeaders = explode(', ', (string)$headers[static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS]);
         $requestedHeaders = array_map('strtolower', $requestedHeaders);
         $allowedHeaders = array_map('strtolower', $this->config->getCorsAllowedHeaders());
 
@@ -93,8 +112,8 @@ class RequestCorsValidator implements RequestCorsValidatorInterface
      */
     protected function validateCorsMethod(array $headers, RestResourceInterface $restResourcePlugin): ?GlueRequestValidationTransfer
     {
-        $headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD] ??= null;
-        $method = strtoupper($headers[CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD]);
+        $headers[static::HEADER_ACCESS_CONTROL_REQUEST_METHOD] ??= null;
+        $method = strtoupper($headers[static::HEADER_ACCESS_CONTROL_REQUEST_METHOD]);
 
         if (!$method || $method === Request::METHOD_OPTIONS) {
             return null;

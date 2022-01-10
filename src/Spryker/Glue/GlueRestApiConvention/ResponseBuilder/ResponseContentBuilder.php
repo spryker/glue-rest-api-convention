@@ -73,47 +73,50 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponse
-     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequest
+     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueResponseTransfer
      */
-    public function buildResponse(GlueResponseTransfer $glueResponse, GlueRequestTransfer $glueRequest): GlueResponseTransfer
-    {
-        if (!$glueResponse->getStatus()) {
-            $glueResponse->setStatus((string)Response::HTTP_OK);
+    public function buildResponse(
+        GlueResponseTransfer $glueResponseTransfer,
+        GlueRequestTransfer $glueRequestTransfer
+    ): GlueResponseTransfer {
+        if (!$glueResponseTransfer->getStatus()) {
+            $glueResponseTransfer->setStatus((string)Response::HTTP_OK);
         }
 
-        if ($glueResponse->getContent()) {
-            return $glueResponse;
+        if ($glueResponseTransfer->getContent()) {
+            return $glueResponseTransfer;
         }
 
-        $format = $glueRequest->getRequestedFormat();
+        $formats = array_flip($glueRequestTransfer->getAcceptedFormats());
+        $usedFormats = array_keys(array_intersect_key($formats, $this->responseEncoders));
 
-        if (!$format || !array_key_exists($format, $this->responseEncoders)) {
-            $glueResponse->setStatus((string)Response::HTTP_BAD_REQUEST);
-            $glueResponse->setContent('invalid format: ' . $format);
+        if (!$formats || !$usedFormats) {
+            $glueResponseTransfer->setStatus((string)Response::HTTP_BAD_REQUEST);
+            $glueResponseTransfer->setContent('invalid formats: ' . $formats);
 
-            return $glueResponse;
+            return $glueResponseTransfer;
         }
 
         $data = [];
 
         foreach ($this->responseExpanders as $responseExpander) {
-            $data = $responseExpander->expand($glueResponse, $glueRequest, $data);
+            $data = $responseExpander->expand($glueResponseTransfer, $glueRequestTransfer, $data);
         }
 
-        return $this->formatResponse($format, $data, $glueResponse);
+        return $this->formatResponse($usedFormats[0], $data, $glueResponseTransfer);
     }
 
     /**
      * @param string $format
      * @param array $data
-     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponse
+     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
      *
      * @return \Generated\Shared\Transfer\GlueResponseTransfer
      */
-    protected function formatResponse(string $format, array $data, GlueResponseTransfer $glueResponse): GlueResponseTransfer
+    protected function formatResponse(string $format, array $data, GlueResponseTransfer $glueResponseTransfer): GlueResponseTransfer
     {
         foreach ($this->responseEncoders[$format] as $responseEncoder) {
             if (!$responseEncoder->accepts($data)) {
@@ -124,14 +127,16 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
                 $data = new stdClass();
             }
 
-            $glueResponse->setContent($responseEncoder->encode($data));
+            $glueResponseTransfer->setContent($responseEncoder->encode($data));
+            $glueResponseTransfer->addMeta('Content-Type', 'application/json');
 
-            return $glueResponse;
+            return $glueResponseTransfer;
         }
 
-        $glueResponse->setStatus((string)Response::HTTP_INTERNAL_SERVER_ERROR);
-        $glueResponse->setContent('Missing encoder for ' . $format);
+        $glueResponseTransfer->addMeta('Content-Type', '');
+        $glueResponseTransfer->setStatus((string)Response::HTTP_INTERNAL_SERVER_ERROR);
+        $glueResponseTransfer->setContent('Missing encoder for ' . $format);
 
-        return $glueResponse;
+        return $glueResponseTransfer;
     }
 }

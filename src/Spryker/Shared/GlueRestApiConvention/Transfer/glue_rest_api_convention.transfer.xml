@@ -4,10 +4,9 @@
         <property name="path" type="string"/>
         <property name="method" type="string"/>
         <property name="requestedFormat" type="string"/>
-        <property name="acceptedFormat" type="string"/>
+        <property name="acceptedFormats" type="string[]" singular="acceptedFormat"/>
         <property name="meta" type="array" associative="true" singular="meta"/>
         <property name="queryFields" type="array" associative="true" singular="queryField"/>
-        <property name="version" type="GlueVersion"/>
         <property name="filters" type="GlueFilter[]" singular="filter"/>
         <property name="sortings" type="Sort[]" singular="sorting"/>
         <property name="pagination" type="Pagination"/>

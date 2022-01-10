@@ -23,9 +23,23 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
             $glueRequestTransfer->setRequestedFormat($headers['content-type'][0]);
         }
         if (isset($headers['accept'])) {
-            $glueRequestTransfer->setAcceptedFormat(explode('/', $headers['accept'][0])[1]);
+            $glueRequestTransfer->setAcceptedFormats(
+                $this->getAcceptedFormat($headers['accept'][0])
+            );
         }
 
         return $glueRequestTransfer;
+    }
+
+    /**
+     * @param string $acceptHeaders
+     *
+     * @return array<int, string>
+     */
+    protected function getAcceptedFormat(string $acceptHeaders): array
+    {
+        $splitAcceptHeaderValues = explode(',', $acceptHeaders);
+
+        return array_map('trim', $splitAcceptHeaderValues);
     }
 }
