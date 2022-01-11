@@ -8,9 +8,23 @@
 namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
+use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 
 class RequestFormatBuilder implements RequestFormatBuilderInterface
 {
+    /**
+     * @var \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface[]
+     */
+    protected array $responseEncoderPlugins;
+
+    /**
+     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface> $responseEncoderPlugins
+     */
+    public function __construct(array $responseEncoderPlugins)
+    {
+        $this->responseEncoderPlugins = $responseEncoderPlugins;
+    }
+
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
@@ -23,9 +37,19 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
             $glueRequestTransfer->setRequestedFormat($headers['content-type'][0]);
         }
         if (isset($headers['accept'])) {
-            $glueRequestTransfer->setAcceptedFormats(
-                $this->getAcceptedFormat($headers['accept'][0])
-            );
+            $acceptedFormatsFromRequest = $this->getAcceptedFormat($headers['accept'][0]);
+
+            if (!$acceptedFormatsFromRequest) {
+                $glueRequestTransfer->setAcceptedFormat(
+                    current($this->responseEncoderPlugins)->getAcceptedFormats()[0]
+                );
+            }
+
+            foreach ($this->responseEncoderPlugins as $responseEncoderPlugin) {
+                if (array_intersect($acceptedFormatsFromRequest, $responseEncoderPlugin->getAcceptedFormats())) {
+                    $glueRequestTransfer->setAcceptedFormat($responseEncoderPlugin->getAcceptedFormats()[0]);
+                }
+            }
         }
 
         return $glueRequestTransfer;

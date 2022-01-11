@@ -9,6 +9,7 @@ namespace Spryker\Glue\GlueRestApiConvention\ResponseBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
+use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface;
 use stdClass;
@@ -26,13 +27,16 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
      */
     protected array $responseExpanders = [];
 
+    protected GlueRestApiConventionConfig $glueRestApiConventionConfig;
+
     /**
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface> $responseEncoderPlugins
      * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface> $responseExpanderPlugins
      */
     public function __construct(
         array $responseEncoderPlugins,
-        array $responseExpanderPlugins
+        array $responseExpanderPlugins,
+        GlueRestApiConventionConfig $glueRestApiConventionConfig
     ) {
         array_map(function (ResponseEncoderPluginInterface $responseEncoderPlugin): void {
             $this->addResponseEncoderPlugin($responseEncoderPlugin);
@@ -40,6 +44,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
         array_map(function (ResponseExpanderPluginInterface $responseExpanderPlugin): void {
             $this->addResponseExpanderPlugin($responseExpanderPlugin);
         }, $responseExpanderPlugins);
+        $this->glueRestApiConventionConfig = $glueRestApiConventionConfig;
     }
 
     /**
@@ -90,14 +95,10 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
             return $glueResponseTransfer;
         }
 
-        $formats = array_flip($glueRequestTransfer->getAcceptedFormats());
-        $usedFormats = array_keys(array_intersect_key($formats, $this->responseEncoders));
-
-        if (!$formats || !$usedFormats) {
-            $glueResponseTransfer->setStatus((string)Response::HTTP_BAD_REQUEST);
-            $glueResponseTransfer->setContent('invalid formats: ' . $formats);
-
-            return $glueResponseTransfer;
+        if (!array_key_exists($glueRequestTransfer->getAcceptedFormat(), $this->responseEncoders)) {
+            $glueRequestTransfer->setAcceptedFormat(
+                $this->glueRestApiConventionConfig->getDefaultFormat()
+            );
         }
 
         $data = [];
@@ -106,7 +107,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
             $data = $responseExpander->expand($glueResponseTransfer, $glueRequestTransfer, $data);
         }
 
-        return $this->formatResponse($usedFormats[0], $data, $glueResponseTransfer);
+        return $this->formatResponse($glueRequestTransfer->getAcceptedFormat(), $data, $glueResponseTransfer);
     }
 
     /**
@@ -128,6 +129,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
             }
 
             $glueResponseTransfer->setContent($responseEncoder->encode($data));
+            // TODO: rework the whole encoders concept, place header into the encoder.
             $glueResponseTransfer->addMeta('Content-Type', 'application/json');
 
             return $glueResponseTransfer;

@@ -7,6 +7,7 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 
+use Generated\Shared\Transfer\GlueErrorTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,19 +39,32 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
      */
     public function validate(GlueRequestTransfer $glueRequestTransfer): GlueRequestValidationTransfer
     {
-        if (!$glueRequestTransfer->getAcceptedFormats()) {
-            return (new GlueRequestValidationTransfer())->setIsValid(true);
+        if (!$glueRequestTransfer->getAcceptedFormat()) {
+            $glueErrorTransfer = (new GlueErrorTransfer())
+                ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+                ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+                ->setMessage('Unsupported "Accept" format used.');
+
+            return (new GlueRequestValidationTransfer())
+                ->setIsValid(false)
+                ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+                ->addError($glueErrorTransfer);
         }
 
         foreach ($this->responseEncoderPlugins as $responseEncoderPlugin) {
-            if (array_intersect($glueRequestTransfer->getAcceptedFormats(), $responseEncoderPlugin->getAcceptedFormats())) {
+            if (in_array($glueRequestTransfer->getAcceptedFormat(), $responseEncoderPlugin->getAcceptedFormats())) {
                 return (new GlueRequestValidationTransfer())->setIsValid(true);
             }
         }
 
+        $glueErrorTransfer = (new GlueErrorTransfer())
+            ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->setMessage('Unsupported "Accept" format used.');
+
         return (new GlueRequestValidationTransfer())
             ->setIsValid(false)
             ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->setValidationError('Unsupported "Accept" format used. ');
+            ->addError($glueErrorTransfer);
     }
 }

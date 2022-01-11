@@ -22,6 +22,8 @@ use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\ErrorExpander;
+use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\ErrorExpanderInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilderInterface;
 use Spryker\Glue\Kernel\AbstractFactory;
@@ -87,6 +89,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
         return new ResponseContentBuilder(
             $this->getResponseEncoderPlugins(),
             $this->getResponseExpanderPlugins(),
+            $this->getConfig()
         );
     }
 
@@ -143,7 +146,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
      */
     public function createRequestFormatBuilder(): RequestFormatBuilderInterface
     {
-        return new RequestFormatBuilder();
+        return new RequestFormatBuilder($this->getResponseEncoderPlugins());
     }
 
     /**
@@ -152,5 +155,13 @@ class GlueRestApiConventionFactory extends AbstractFactory
     public function createAcceptedFormatValidator(): AcceptedFormatValidatorInterface
     {
         return new AcceptedFormatValidator($this->getResponseEncoderPlugins());
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\ErrorExpanderInterface
+     */
+    public function createErrorExpander(): ErrorExpanderInterface
+    {
+        return new ErrorExpander();
     }
 }

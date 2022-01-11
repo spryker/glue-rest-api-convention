@@ -59,4 +59,17 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
             static::HEADER_AUTHORIZATION,
         ];
     }
+
+    /**
+     * Specification:
+     * - Returns the default format REST API will use if none could be negotiated.
+     *
+     * @api
+     *
+     * @return string
+     */
+    public function getDefaultFormat(): string
+    {
+        return 'application/json';
+    }
 }
