@@ -12,8 +12,6 @@ use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilder;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidator;
@@ -33,14 +31,6 @@ use Spryker\Glue\Kernel\AbstractFactory;
  */
 class GlueRestApiConventionFactory extends AbstractFactory
 {
-    /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestQueryParameterBuilderInterface
-     */
-    public function createRequestQueryParameterBuilder(): RequestQueryParameterBuilderInterface
-    {
-        return new RequestQueryParameterBuilder();
-    }
-
     /**
      * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface
      */
