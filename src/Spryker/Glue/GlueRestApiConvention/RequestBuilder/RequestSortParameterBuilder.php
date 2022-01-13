@@ -9,7 +9,6 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\SortTransfer;
-use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 class RequestSortParameterBuilder implements RequestSortParameterBuilderInterface
 {

@@ -79,7 +79,7 @@ class GlueRestApiConventionFactory extends AbstractFactory
         return new ResponseContentBuilder(
             $this->getResponseEncoderPlugins(),
             $this->getResponseExpanderPlugins(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
