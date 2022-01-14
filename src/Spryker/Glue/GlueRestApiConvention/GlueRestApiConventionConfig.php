@@ -42,6 +42,11 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
     protected const HEADER_AUTHORIZATION = 'authorization';
 
     /**
+     * @var string
+     */
+    protected const DEFAULT_FORMAT = 'application/json';
+
+    /**
      * Specification:
      * - List of allowed CORS headers.
      *
@@ -70,6 +75,6 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
      */
     public function getDefaultFormat(): string
     {
-        return 'application/json';
+        return static::DEFAULT_FORMAT;
     }
 }

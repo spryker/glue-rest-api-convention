@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Generated\Shared\Transfer\GlueResourceMethodCollectionTransfer;
 use Generated\Shared\Transfer\GlueResourceMethodConfigurationTransfer;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
-use Spryker\Glue\GlueRestApiConvention\Cors\CorsConstants;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
@@ -42,13 +41,23 @@ class RequestCorsValidatorTest extends Unit
     protected const OTHER_ALLOWED_HEADER = 'other-allowed-header';
 
     /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_REQUEST_HEADERS = 'access-control-request-headers';
+
+    /**
+     * @var string
+     */
+    protected const HEADER_ACCESS_CONTROL_REQUEST_METHOD = 'access-control-request-method';
+
+    /**
      * @return void
      */
     public function testEmptyCorsMethodHeaderWillSkipValidation(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => null,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => null,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
         $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
         $restResourcePluginMock->expects($this->never())
@@ -69,8 +78,8 @@ class RequestCorsValidatorTest extends Unit
     public function testMethodIsNotAllowedWillReturnBadRequest(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => 'GET',
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => 'GET',
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
         $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
         $restResourcePluginMock->expects($this->once())
@@ -94,8 +103,8 @@ class RequestCorsValidatorTest extends Unit
     public function testMethodOptionsIsAlwaysAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_OPTIONS,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_OPTIONS,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => null,
         ];
         $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
         $restResourcePluginMock->expects($this->never())
@@ -119,8 +128,8 @@ class RequestCorsValidatorTest extends Unit
     public function testGetWithNoError(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
         ];
         $result = $this->validateRequest($expectedCorsHeaders);
         $this->assertTrue($result->getIsValid());
@@ -132,8 +141,8 @@ class RequestCorsValidatorTest extends Unit
     public function testGetCollectionWillBeHandledAsGet(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => static::ALLOWED_HEADER,
         ];
         $restResourcePluginMock = $this->createMock(RestResourceInterface::class);
         $restResourcePluginMock->expects($this->once())
@@ -157,8 +166,8 @@ class RequestCorsValidatorTest extends Unit
     public function testDeniedHeadersWillReturnBadRequest(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, 'non-allowed-header']),
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, 'non-allowed-header']),
         ];
 
         $result = $this->validateRequest($expectedCorsHeaders);
@@ -171,8 +180,8 @@ class RequestCorsValidatorTest extends Unit
     public function testAllHeadersAreAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, static::OTHER_ALLOWED_HEADER]),
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => implode(', ', [static::ALLOWED_HEADER, static::OTHER_ALLOWED_HEADER]),
         ];
 
         $result = $this->validateRequest($expectedCorsHeaders);
@@ -185,8 +194,8 @@ class RequestCorsValidatorTest extends Unit
     public function testEmptyHeadersAreAllowed(): void
     {
         $expectedCorsHeaders = [
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
-            CorsConstants::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => '',
+            static::HEADER_ACCESS_CONTROL_REQUEST_METHOD => Request::METHOD_GET,
+            static::HEADER_ACCESS_CONTROL_REQUEST_HEADERS => '',
         ];
 
         $restResourcePluginMock = $this->createMock(RestResourceInterface::class);

@@ -11,7 +11,6 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\SortTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
-use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
  * Auto-generated group annotations
@@ -39,6 +38,11 @@ class RequestSortParameterBuilderTest extends Unit
      * @var string
      */
     protected const URL_WITH_SORT_PARAMETER = '/foo/bar?sort=';
+
+    /**
+     * @var string
+     */
+    protected const QUERY_SORT = 'sort';
 
     /**
      * @return void
@@ -143,7 +147,7 @@ class RequestSortParameterBuilderTest extends Unit
     protected function buildRequest(array $sorting = []): GlueRequestTransfer
     {
         $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setQueryFields([GlueRestApiConventionConstants::QUERY_SORT => implode(',', $sorting)]);
+        $glueRequest->setQueryFields([static::QUERY_SORT => implode(',', $sorting)]);
 
         $builder = new RequestSortParameterBuilder();
 

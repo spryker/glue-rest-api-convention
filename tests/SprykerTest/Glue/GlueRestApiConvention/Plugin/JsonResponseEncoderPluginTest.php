@@ -10,7 +10,7 @@ namespace SprykerTest\Glue\GlueRestApiConvention\Plugin;
 use Codeception\Test\Unit;
 use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory;
-use Spryker\Glue\GlueRestApiConvention\Plugin\JsonResponseEncoderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\JsonResponseEncoderPlugin;
 use stdClass;
 
 /**

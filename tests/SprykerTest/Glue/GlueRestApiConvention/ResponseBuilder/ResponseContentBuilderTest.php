@@ -10,6 +10,7 @@ namespace Bundles\GlueRestApiConvention\tests\SprykerTest\Glue\GlueRestApiConven
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
+use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\ResponseContentBuilder;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface;
@@ -30,6 +31,11 @@ use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpand
 class ResponseContentBuilderTest extends Unit
 {
     /**
+     * @var string
+     */
+    protected const DEFAULT_FORMAT = 'application/json';
+
+    /**
      * @return void
      */
     public function testSkipWhenContentIsAlreadySet(): void
@@ -39,7 +45,7 @@ class ResponseContentBuilderTest extends Unit
         $glueResponse->setStatus('200');
         $glueResponse->setContent('test');
 
-        $responseBuilder = new ResponseContentBuilder([], []);
+        $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
@@ -54,7 +60,7 @@ class ResponseContentBuilderTest extends Unit
         $glueResponse = new GlueResponseTransfer();
         $glueResponse->setContent('test');
 
-        $responseBuilder = new ResponseContentBuilder([], []);
+        $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
@@ -70,40 +76,10 @@ class ResponseContentBuilderTest extends Unit
         $glueResponse->setStatus('300');
         $glueResponse->setContent('test');
 
-        $responseBuilder = new ResponseContentBuilder([], []);
+        $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
         $this->assertSame('300', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
-    }
-
-    /**
-     * @return void
-     */
-    public function testEmptyFormat(): void
-    {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setAcceptedFormat(null);
-        $glueResponse = new GlueResponseTransfer();
-
-        $responseBuilder = new ResponseContentBuilder([], []);
-        $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
-        $this->assertSame('400', $result->getStatus());
-        $this->assertSame('invalid format: ', $glueResponse->getContent());
-    }
-
-    /**
-     * @return void
-     */
-    public function testInvalidFormat(): void
-    {
-        $glueRequest = new GlueRequestTransfer();
-        $glueRequest->setRequestedFormat('bad_format');
-        $glueResponse = new GlueResponseTransfer();
-
-        $responseBuilder = new ResponseContentBuilder([], []);
-        $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
-        $this->assertSame('400', $result->getStatus());
-        $this->assertSame('invalid format: bad_format', $glueResponse->getContent());
     }
 
     /**
@@ -124,7 +100,7 @@ class ResponseContentBuilderTest extends Unit
                 return $data;
             });
 
-        $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], [$expanderPluginMock]);
+        $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], [$expanderPluginMock], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('{"hello":"world"}', $glueResponse->getContent());
@@ -139,7 +115,7 @@ class ResponseContentBuilderTest extends Unit
         $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
 
-        $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], []);
+        $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
 
         $this->assertSame('200', $result->getStatus());
@@ -162,7 +138,7 @@ class ResponseContentBuilderTest extends Unit
             ->method('accepts')
             ->willReturn(false);
 
-        $responseBuilder = new ResponseContentBuilder([$encoderMock], []);
+        $responseBuilder = new ResponseContentBuilder([$encoderMock], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
 
         $this->assertSame('500', $result->getStatus());
@@ -188,5 +164,18 @@ class ResponseContentBuilderTest extends Unit
             });
 
         return $jsonEncoderMock;
+    }
+
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig|mixed
+     */
+    protected function getRestApiConventionConfigMock()
+    {
+        $configMock = $this->createMock(GlueRestApiConventionConfig::class);
+        $configMock->expects($this->any())
+            ->method('getDefaultFormat')
+            ->willReturn(static::DEFAULT_FORMAT);
+
+        return $configMock;
     }
 }

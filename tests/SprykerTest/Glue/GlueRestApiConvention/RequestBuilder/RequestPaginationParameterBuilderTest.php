@@ -8,10 +8,9 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Codeception\Test\Unit;
-use Generated\Shared\Transfer\PaginationTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
+use Generated\Shared\Transfer\PaginationTransfer;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
-use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
 
 /**
  * Auto-generated group annotations
@@ -25,6 +24,21 @@ use Spryker\Shared\GlueRestApiConvention\GlueRestApiConventionConstants;
  */
 class RequestPaginationParameterBuilderTest extends Unit
 {
+    /**
+     * @var string
+     */
+    protected const QUERY_PAGINATION = 'page';
+
+    /**
+     * @var string
+     */
+    protected const PAGINATION_OFFSET = 'offset';
+
+    /**
+     * @var string
+     */
+    protected const PAGINATION_LIMIT = 'limit';
+
     /**
      * @return void
      */
@@ -85,9 +99,9 @@ class RequestPaginationParameterBuilderTest extends Unit
     {
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setQueryFields([
-            GlueRestApiConventionConstants::QUERY_PAGINATION => [
-                GlueRestApiConventionConstants::PAGINATION_OFFSET => $offset,
-                GlueRestApiConventionConstants::PAGINATION_LIMIT => $limit,
+            static::QUERY_PAGINATION => [
+                static::PAGINATION_OFFSET => $offset,
+                static::PAGINATION_LIMIT => $limit,
             ],
         ]);
 
