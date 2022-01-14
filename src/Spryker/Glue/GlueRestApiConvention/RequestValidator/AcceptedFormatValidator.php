@@ -40,15 +40,11 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
     public function validate(GlueRequestTransfer $glueRequestTransfer): GlueRequestValidationTransfer
     {
         if (!$glueRequestTransfer->getAcceptedFormat()) {
-            $glueErrorTransfer = (new GlueErrorTransfer())
-                ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-                ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-                ->setMessage('Unsupported "Accept" format used.');
 
             return (new GlueRequestValidationTransfer())
                 ->setIsValid(false)
                 ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-                ->addError($glueErrorTransfer);
+                ->addError($this->createUnsupportedAcceptFormatGlueError());
         }
 
         foreach ($this->responseEncoderPlugins as $responseEncoderPlugin) {
@@ -57,14 +53,20 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
             }
         }
 
-        $glueErrorTransfer = (new GlueErrorTransfer())
-            ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->setMessage('Unsupported "Accept" format used.');
-
         return (new GlueRequestValidationTransfer())
             ->setIsValid(false)
             ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->addError($glueErrorTransfer);
+            ->addError($this->createUnsupportedAcceptFormatGlueError());
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\GlueErrorTransfer
+     */
+    protected function createUnsupportedAcceptFormatGlueError(): GlueErrorTransfer
+    {
+        return (new GlueErrorTransfer())
+            ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->setMessage('Unsupported "Accept" format used.');
     }
 }
