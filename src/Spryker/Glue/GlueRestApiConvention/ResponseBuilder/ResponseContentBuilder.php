@@ -30,8 +30,9 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
     protected GlueRestApiConventionConfig $glueRestApiConventionConfig;
 
     /**
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface> $responseEncoderPlugins
-     * @param array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface> $responseExpanderPlugins
+     * @param array $responseEncoderPlugins
+     * @param array $responseExpanderPlugins
+     * @param \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig $glueRestApiConventionConfig
      */
     public function __construct(
         array $responseEncoderPlugins,
@@ -97,7 +98,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
 
         if (!array_key_exists($glueRequestTransfer->getAcceptedFormat(), $this->responseEncoders)) {
             $glueRequestTransfer->setAcceptedFormat(
-                $this->glueRestApiConventionConfig->getDefaultFormat()
+                $this->glueRestApiConventionConfig->getDefaultFormat(),
             );
         }
 
