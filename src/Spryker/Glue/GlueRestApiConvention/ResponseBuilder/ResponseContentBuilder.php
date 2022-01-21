@@ -27,6 +27,9 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
      */
     protected array $responseExpanders = [];
 
+    /**
+     * @var \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig
+     */
     protected GlueRestApiConventionConfig $glueRestApiConventionConfig;
 
     /**

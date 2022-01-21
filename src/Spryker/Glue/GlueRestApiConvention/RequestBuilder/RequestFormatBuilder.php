@@ -58,7 +58,7 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
     /**
      * @param string $acceptHeaders
      *
-     * @return array<int, string>
+     * @return array
      */
     protected function getAcceptedFormat(string $acceptHeaders): array
     {
