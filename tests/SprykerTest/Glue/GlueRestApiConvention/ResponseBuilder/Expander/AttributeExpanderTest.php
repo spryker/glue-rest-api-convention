@@ -33,11 +33,14 @@ class AttributeExpanderTest extends Unit
      */
     public function testWithoutAttributes(): void
     {
+        //Arrange
         $glueResponse = new GlueResponseTransfer();
 
+        //Act
         $expander = new AttributeExpander();
         $result = $expander->expandResponseData($glueResponse, []);
 
+        //Assert
         $this->assertSame([], $result);
     }
 
@@ -46,8 +49,8 @@ class AttributeExpanderTest extends Unit
      */
     public function testCamelCasedFieldNames(): void
     {
+        //Arrange
         $expectedData = ['greetingMessage' => 'helloWorld'];
-
         $glueResponse = new GlueResponseTransfer();
         $transferMock = $this->createMock(AbstractTransfer::class);
         $transferMock->expects($this->once())
@@ -60,9 +63,11 @@ class AttributeExpanderTest extends Unit
             });
         $glueResponse->setAttributes($transferMock);
 
+        //Act
         $expander = new AttributeExpander();
         $result = $expander->expandResponseData($glueResponse, []);
 
+        //Assert
         $this->assertSame($expectedData, $result);
     }
 }

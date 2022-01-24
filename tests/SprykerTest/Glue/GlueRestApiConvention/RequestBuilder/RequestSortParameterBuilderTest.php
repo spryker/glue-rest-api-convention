@@ -49,9 +49,11 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testEmptySorting(): void
     {
-        $result = $this->buildRequest([]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest([]);
 
-        $this->assertCount(0, $result->getSortings());
+        //Assert
+        $this->assertCount(0, $glueRequestTransfer->getSortings());
     }
 
     /**
@@ -59,13 +61,12 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testAscendingSortField(): void
     {
-        $result = $this->buildRequest([static::FIRST_FIELD_NAME]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest([static::FIRST_FIELD_NAME]);
 
-        $this->assertCount(1, $result->getSortings());
-        $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
-        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
-        $this->assertTrue($firstSorting->getIsAscending());
+        //Assert
+        $this->firstSortingAsserts($glueRequestTransfer, 1);
+        $this->assertTrue($glueRequestTransfer->getSortings()->offsetGet(0)->getIsAscending());
     }
 
     /**
@@ -73,13 +74,12 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testDescendingSortField(): void
     {
-        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest(['-' . static::FIRST_FIELD_NAME]);
 
-        $this->assertCount(1, $result->getSortings());
-        $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
-        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
-        $this->assertFalse($firstSorting->getIsAscending());
+        //Assert
+        $this->firstSortingAsserts($glueRequestTransfer, 1);
+        $this->assertFalse($glueRequestTransfer->getSortings()->offsetGet(0)->getIsAscending());
     }
 
     /**
@@ -87,18 +87,13 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleAscendingSortingFields(): void
     {
-        $result = $this->buildRequest([static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest([static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
 
-        $this->assertCount(2, $result->getSortings());
-        $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
-        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
-        $this->assertTrue($firstSorting->getIsAscending());
-
-        $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
-        $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
-        $this->assertTrue($secondSorting->getIsAscending());
+        //Assert
+        $this->firstSortingAsserts($glueRequestTransfer, 2);
+        $this->secondSortingAsserts($glueRequestTransfer);
+        $this->assertTrue($glueRequestTransfer->getSortings()->offsetGet(0)->getIsAscending());
     }
 
     /**
@@ -106,18 +101,13 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleDescendingSortingFields(): void
     {
-        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, '-' . static::SECOND_FIELD_NAME]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, '-' . static::SECOND_FIELD_NAME]);
 
-        $this->assertCount(2, $result->getSortings());
-        $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
-        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
-        $this->assertFalse($firstSorting->getIsAscending());
-
-        $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
-        $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
-        $this->assertFalse($secondSorting->getIsAscending());
+        //Assert
+        $this->firstSortingAsserts($glueRequestTransfer, 2);
+        $this->secondSortingAsserts($glueRequestTransfer);
+        $this->assertFalse($glueRequestTransfer->getSortings()->offsetGet(0)->getIsAscending());
     }
 
     /**
@@ -125,18 +115,12 @@ class RequestSortParameterBuilderTest extends Unit
      */
     public function testMultipleSortingFieldsWithDifferentDirections(): void
     {
-        $result = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
+        //Act
+        $glueRequestTransfer = $this->buildRequest(['-' . static::FIRST_FIELD_NAME, static::SECOND_FIELD_NAME]);
 
-        $this->assertCount(2, $result->getSortings());
-        $firstSorting = $result->getSortings()->offsetGet(0);
-        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
-        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
-        $this->assertFalse($firstSorting->getIsAscending());
-
-        $secondSorting = $result->getSortings()->offsetGet(1);
-        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
-        $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
-        $this->assertTrue($secondSorting->getIsAscending());
+        //Assert
+        $this->firstSortingAsserts($glueRequestTransfer, 2);
+        $this->secondSortingAsserts($glueRequestTransfer);
     }
 
     /**
@@ -146,11 +130,39 @@ class RequestSortParameterBuilderTest extends Unit
      */
     protected function buildRequest(array $sorting = []): GlueRequestTransfer
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setQueryFields([static::QUERY_SORT => implode(',', $sorting)]);
 
+        //Act
         $builder = new RequestSortParameterBuilder();
 
         return $builder->buildRequest($glueRequest);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
+     * @param int $expectedCount
+     *
+     * @return void
+     */
+    protected function firstSortingAsserts(GlueRequestTransfer $glueRequestTransfer, int $expectedCount): void
+    {
+        $this->assertCount($expectedCount, $glueRequestTransfer->getSortings());
+        $firstSorting = $glueRequestTransfer->getSortings()->offsetGet(0);
+        $this->assertInstanceOf(SortTransfer::class, $firstSorting);
+        $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
+     *
+     * @return void
+     */
+    protected function secondSortingAsserts(GlueRequestTransfer $glueRequestTransfer): void
+    {
+        $secondSorting = $glueRequestTransfer->getSortings()->offsetGet(1);
+        $this->assertInstanceOf(SortTransfer::class, $secondSorting);
+        $this->assertSame(static::SECOND_FIELD_NAME, $secondSorting->getField());
     }
 }

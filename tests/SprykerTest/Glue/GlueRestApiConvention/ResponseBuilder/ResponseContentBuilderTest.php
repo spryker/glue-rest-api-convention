@@ -40,13 +40,17 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testSkipWhenContentIsAlreadySet(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueResponse = new GlueResponseTransfer();
         $glueResponse->setStatus('200');
         $glueResponse->setContent('test');
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
+
+        //Assert
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
     }
@@ -56,12 +60,16 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testDefaultStatusCodeIsSet(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueResponse = new GlueResponseTransfer();
         $glueResponse->setContent('test');
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
+
+        //Assert
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
     }
@@ -71,13 +79,17 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testAlreadySetStatusCodeIsNotOverwritten(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueResponse = new GlueResponseTransfer();
         $glueResponse->setStatus('300');
         $glueResponse->setContent('test');
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
+
+        //Assert
         $this->assertSame('300', $result->getStatus());
         $this->assertSame('test', $glueResponse->getContent());
     }
@@ -87,6 +99,7 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testResponseExpander(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
@@ -100,8 +113,11 @@ class ResponseContentBuilderTest extends Unit
                 return $data;
             });
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], [$expanderPluginMock], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
+
+        //Assert
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('{"hello":"world"}', $glueResponse->getContent());
     }
@@ -111,13 +127,16 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testEmptyResponse(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([$this->createJsonEncoderMock()], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
 
+        //Assert
         $this->assertSame('200', $result->getStatus());
         $this->assertSame('{}', $glueResponse->getContent());
     }
@@ -127,6 +146,7 @@ class ResponseContentBuilderTest extends Unit
      */
     public function testNoAcceptingEncoder(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
         $glueRequest->setRequestedFormat('application/json');
         $glueResponse = new GlueResponseTransfer();
@@ -138,9 +158,11 @@ class ResponseContentBuilderTest extends Unit
             ->method('accepts')
             ->willReturn(false);
 
+        //Act
         $responseBuilder = new ResponseContentBuilder([$encoderMock], [], $this->getRestApiConventionConfigMock());
         $result = $responseBuilder->buildResponse($glueResponse, $glueRequest);
 
+        //Assert
         $this->assertSame('500', $result->getStatus());
         $this->assertSame('Missing encoder for application/json', $glueResponse->getContent());
     }

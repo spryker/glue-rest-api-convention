@@ -44,10 +44,14 @@ class RequestPaginationParameterBuilderTest extends Unit
      */
     public function testNoPagination(): void
     {
+        //Arrange
         $glueRequest = new GlueRequestTransfer();
+
+        //Act
         $builder = new RequestPaginationParameterBuilder();
         $result = $builder->buildRequest($glueRequest);
 
+        //Assert
         $this->assertNull($result->getPagination());
     }
 
@@ -56,7 +60,10 @@ class RequestPaginationParameterBuilderTest extends Unit
      */
     public function testEmptyPagination(): void
     {
+        //Act
         $result = $this->buildRequest(null, null);
+
+        //Assert
         $this->assertNull($result->getPagination());
     }
 
@@ -65,7 +72,10 @@ class RequestPaginationParameterBuilderTest extends Unit
      */
     public function testMissingOffset(): void
     {
+        //Act
         $result = $this->buildRequest(null, 10);
+
+        //Assert
         $this->assertNull($result->getPagination());
     }
 
@@ -74,7 +84,10 @@ class RequestPaginationParameterBuilderTest extends Unit
      */
     public function testMissingLimit(): void
     {
+        //Act
         $result = $this->buildRequest(0, null);
+
+        //Assert
         $this->assertNull($result->getPagination());
     }
 
@@ -83,7 +96,10 @@ class RequestPaginationParameterBuilderTest extends Unit
      */
     public function testCompletePage(): void
     {
+        //Act
         $result = $this->buildRequest(0, 10);
+
+        //Assert
         $this->assertInstanceOf(PaginationTransfer::class, $result->getPagination());
         $this->assertSame(0, $result->getPagination()->getOffset());
         $this->assertSame(10, $result->getPagination()->getLimit());

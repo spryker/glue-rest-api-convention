@@ -5,11 +5,9 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace SprykerTest\Glue\GlueRestApiConvention\Plugin;
+namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Codeception\Test\Unit;
-use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
-use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\JsonResponseEncoderPlugin;
 use stdClass;
 
@@ -20,6 +18,7 @@ use stdClass;
  * @group Glue
  * @group GlueRestApiConvention
  * @group Plugin
+ * @group GlueRestApiConvention
  * @group JsonResponseEncoderPluginTest
  * Add your own group annotations below this line
  */
@@ -30,10 +29,11 @@ class JsonResponseEncoderPluginTest extends Unit
      */
     public function testAcceptedFormatJson(): void
     {
+        //Act
         $plugin = new JsonResponseEncoderPlugin();
-
         $result = $plugin->getAcceptedFormats();
 
+        //Assert
         $this->assertSame(['application/json'], $result);
     }
 
@@ -46,10 +46,11 @@ class JsonResponseEncoderPluginTest extends Unit
      */
     public function testAcceptTypes($content): void
     {
+        //Act
         $plugin = new JsonResponseEncoderPlugin();
-
         $result = $plugin->accepts($content);
 
+        //Assert
         $this->assertTrue($result);
     }
 
@@ -62,21 +63,9 @@ class JsonResponseEncoderPluginTest extends Unit
      */
     public function testUsesEncodingService($content): void
     {
-        $encoderMock = $this->createMock(GlueRestApiConventionToUtilEncodingServiceInterface::class);
-        $encoderMock->expects($this->once())
-            ->method('encodeJson')
-            ->willReturnCallback(function ($data) {
-                return json_encode($data);
-            });
-        $factoryMock = $this->createMock(GlueRestApiConventionFactory::class);
-        $factoryMock->expects($this->once())
-            ->method('getUtilEncodingService')
-            ->willReturn($encoderMock);
-
-        $plugin = new JsonResponseEncoderPlugin();
-        $plugin->setFactory($factoryMock);
-
-        $plugin->encode($content);
+        //Act
+        $jsonResponseEncoderPlugin = new JsonResponseEncoderPlugin();
+        $jsonResponseEncoderPlugin->encode($content);
     }
 
     /**
