@@ -8,7 +8,10 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\GlueRequestTransfer;
+use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionDependencyProvider;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\AcceptFormatRequestValidatorPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\JsonResponseEncoderPlugin;
 
 /**
  * Auto-generated group annotations
@@ -34,10 +37,20 @@ class AcceptFormatRequestValidatorPluginTest extends Unit
     public function testAcceptFormatRequestValidatorPlugin(): void
     {
         //Arrange
-        $glueRequestTransfer = $this->tester->createGlueRequestTransfer();
+        $this->tester->setDependency(
+            GlueRestApiConventionDependencyProvider::PLUGINS_RESPONSE_ENCODER,
+            [
+                new JsonResponseEncoderPlugin(),
+            ],
+        );
+        $glueRequestTransfer = (new GlueRequestTransfer())->setAcceptedFormat('application/json');
 
         //Act
         $acceptFormatRequestValidatorPlugin = new AcceptFormatRequestValidatorPlugin();
-        $acceptFormatRequestValidatorPlugin->validate($glueRequestTransfer);
+        $glueRequestValidationTransfer = $acceptFormatRequestValidatorPlugin->validate($glueRequestTransfer);
+
+        //Assert
+        $this->assertTrue($glueRequestValidationTransfer->getIsValid());
+        $this->assertEquals(0, $glueRequestValidationTransfer->getErrors()->count());
     }
 }

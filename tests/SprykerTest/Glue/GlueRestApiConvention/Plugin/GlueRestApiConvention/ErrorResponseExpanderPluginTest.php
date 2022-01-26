@@ -8,6 +8,8 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\GlueErrorTransfer;
+use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\ErrorResponseExpanderPlugin;
 
 /**
@@ -29,16 +31,61 @@ class ErrorResponseExpanderPluginTest extends Unit
     protected $tester;
 
     /**
+     * @var string
+     */
+    protected const ERROR_CODE_VALUE = '500';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_CODE_KEY = 'code';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_MESSAGE_VALUE = 'Internal Server Error';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_MESSAGE_KEY = 'message';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_DETAIL_VALUE = 'Test detail';
+
+    /**
+     * @var string
+     */
+    protected const ERROR_DETAIL_KEY = 'detail';
+
+    /**
      * @return void
      */
     public function testErrorResponseExpanderPlugin(): void
     {
         //Arrange
         $glueRequestTransfer = $this->tester->createGlueRequestTransfer();
-        $glueResponseTransfer = $this->tester->createGlueResponseTransfer();
+        //Arrange
+        $errorTransfer = (new GlueErrorTransfer())
+            ->setCode(static::ERROR_CODE_VALUE)
+            ->setMessage(static::ERROR_MESSAGE_VALUE)
+            ->setDetail(static::ERROR_DETAIL_VALUE);
+        $glueResponseTransfer = (new GlueResponseTransfer())
+            ->addError($errorTransfer);
 
         //Act
         $errorResponseExpanderPlugin = new ErrorResponseExpanderPlugin();
-        $errorResponseExpanderPlugin->expand($glueResponseTransfer, $glueRequestTransfer, []);
+        $result = $errorResponseExpanderPlugin->expand($glueResponseTransfer, $glueRequestTransfer, []);
+
+        //Assert
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey(static::ERROR_CODE_KEY, $result);
+        $this->assertSame(static::ERROR_CODE_VALUE, $result[static::ERROR_CODE_KEY]);
+        $this->assertArrayHasKey(static::ERROR_MESSAGE_KEY, $result);
+        $this->assertSame(static::ERROR_MESSAGE_VALUE, $result[static::ERROR_MESSAGE_KEY]);
+        $this->assertArrayHasKey(static::ERROR_DETAIL_KEY, $result);
+        $this->assertSame(static::ERROR_DETAIL_VALUE, $result[static::ERROR_DETAIL_KEY]);
     }
 }

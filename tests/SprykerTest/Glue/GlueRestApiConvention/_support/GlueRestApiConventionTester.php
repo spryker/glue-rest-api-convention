@@ -44,12 +44,12 @@ class GlueRestApiConventionTester extends Actor
     /**
      * @var string
      */
-    protected const META_KEY = 'content-type';
+    public const CONTENT_TYPE = 'application/json';
 
     /**
      * @var string
      */
-    protected const CONTENT_TYPE = 'application/json';
+    protected const META_KEY = 'content-type';
 
     /**
      * @var string
@@ -80,6 +80,7 @@ class GlueRestApiConventionTester extends Actor
                 'limit' => 1,
                 'offset' => 10,
             ],
+            'sort' => 'field1,field2',
         ])
             ->setPath(static::PATH)
             ->setMeta([static::META_KEY => [static::CONTENT_TYPE]])

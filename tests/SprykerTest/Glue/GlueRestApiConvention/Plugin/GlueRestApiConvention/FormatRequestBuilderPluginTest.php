@@ -38,6 +38,10 @@ class FormatRequestBuilderPluginTest extends Unit
 
         //Act
         $formatRequestBuilderPlugin = new FormatRequestBuilderPlugin();
-        $formatRequestBuilderPlugin->build($glueRequestTransfer);
+        $glueRequestTransfer = $formatRequestBuilderPlugin->build($glueRequestTransfer);
+
+        //Assert
+        $this->assertEquals($this->tester::CONTENT_TYPE, $glueRequestTransfer->getRequestedFormat());
+        $this->assertEmpty($glueRequestTransfer->getAcceptedFormat());
     }
 }

@@ -148,8 +148,9 @@ class RequestSortParameterBuilderTest extends Unit
      */
     protected function firstSortingAsserts(GlueRequestTransfer $glueRequestTransfer, int $expectedCount): void
     {
-        $this->assertCount($expectedCount, $glueRequestTransfer->getSortings());
-        $firstSorting = $glueRequestTransfer->getSortings()->offsetGet(0);
+        $sorting = $glueRequestTransfer->getSortings();
+        $this->assertCount($expectedCount, $sorting);
+        $firstSorting = $sorting->offsetGet(0);
         $this->assertInstanceOf(SortTransfer::class, $firstSorting);
         $this->assertSame(static::FIRST_FIELD_NAME, $firstSorting->getField());
     }

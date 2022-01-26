@@ -38,40 +38,37 @@ class JsonResponseEncoderPluginTest extends Unit
     }
 
     /**
-     * @dataProvider acceptedTypesDataProvider
-     *
-     * @param mixed $content
-     *
      * @return void
      */
-    public function testAcceptTypes($content): void
+    public function testAcceptTypes(): void
     {
         //Act
         $plugin = new JsonResponseEncoderPlugin();
-        $result = $plugin->accepts($content);
+        $result = $plugin->accepts($this->acceptedTypesDataProvider());
 
         //Assert
         $this->assertTrue($result);
     }
 
     /**
-     * @dataProvider acceptedTypesDataProvider
-     *
-     * @param mixed $content
-     *
      * @return void
      */
-    public function testUsesEncodingService($content): void
+    public function testUsesEncodingService(): void
     {
         //Act
         $jsonResponseEncoderPlugin = new JsonResponseEncoderPlugin();
-        $jsonResponseEncoderPlugin->encode($content);
+        $result = $jsonResponseEncoderPlugin->encode($this->acceptedTypesDataProvider());
+
+        //Assert
+        $this->assertIsString($result);
+        $this->assertStringContainsString('string', $result);
+        $this->assertStringContainsString('array_value', $result);
     }
 
     /**
      * @return array
      */
-    public function acceptedTypesDataProvider(): array
+    protected function acceptedTypesDataProvider(): array
     {
         return [
             ['string'],

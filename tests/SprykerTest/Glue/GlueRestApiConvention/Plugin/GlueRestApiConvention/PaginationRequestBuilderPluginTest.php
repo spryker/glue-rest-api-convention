@@ -8,6 +8,7 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\PaginationTransfer;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\PaginationRequestBuilderPlugin;
 
 /**
@@ -38,6 +39,12 @@ class PaginationRequestBuilderPluginTest extends Unit
 
         //Act
         $paginationRequestBuilderPlugin = new PaginationRequestBuilderPlugin();
-        $paginationRequestBuilderPlugin->build($glueRequestTransfer);
+        $glueRequestTransfer = $paginationRequestBuilderPlugin->build($glueRequestTransfer);
+
+        //Assert
+        $paginationTransfer = $glueRequestTransfer->getPagination();
+        $this->assertInstanceOf(PaginationTransfer::class, $paginationTransfer);
+        $this->assertSame(10, $paginationTransfer->getOffset());
+        $this->assertSame(1, $paginationTransfer->getLimit());
     }
 }

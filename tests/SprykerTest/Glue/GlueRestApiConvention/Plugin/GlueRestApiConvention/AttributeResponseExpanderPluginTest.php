@@ -8,6 +8,8 @@
 namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\GlueResponseTransfer;
+use Generated\Shared\Transfer\StoresRestAttributesTransfer;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\AttributeResponseExpanderPlugin;
 
 /**
@@ -29,16 +31,60 @@ class AttributeResponseExpanderPluginTest extends Unit
     protected $tester;
 
     /**
+     * @var string
+     */
+    protected const LOCALES_KEY = 'locales';
+
+    /**
+     * @var string
+     */
+    protected const TIME_ZONE_KEY = 'timeZone';
+
+    /**
+     * @var string
+     */
+    protected const TIME_ZONE_VALUE = 'Europe/Berlin';
+
+    /**
+     * @var string
+     */
+    protected const DEFAULT_CURRENCY_KEY = 'defaultCurrency';
+
+    /**
+     * @var string
+     */
+    protected const DEFAULT_CURRENCY_VALUE = 'EUR';
+
+    /**
      * @return void
      */
     public function testAttributeResponseExpanderPlugin(): void
     {
         //Arrange
         $glueRequestTransfer = $this->tester->createGlueRequestTransfer();
-        $glueResponseTransfer = $this->tester->createGlueResponseTransfer();
+        $glueResponseTransfer = (new GlueResponseTransfer())->setAttributes($this->createFakeStoresRestAttributeTransfer());
 
         //Act
         $attributeResponseExpanderPlugin = new AttributeResponseExpanderPlugin();
-        $attributeResponseExpanderPlugin->expand($glueResponseTransfer, $glueRequestTransfer, []);
+        $result = $attributeResponseExpanderPlugin->expand($glueResponseTransfer, $glueRequestTransfer, []);
+
+        //Assert
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey(static::TIME_ZONE_KEY, $result);
+        $this->assertSame(static::TIME_ZONE_VALUE, $result[static::TIME_ZONE_KEY]);
+        $this->assertArrayHasKey(static::DEFAULT_CURRENCY_KEY, $result);
+        $this->assertSame(static::DEFAULT_CURRENCY_VALUE, $result[static::DEFAULT_CURRENCY_KEY]);
+        $this->assertArrayHasKey(static::LOCALES_KEY, $result);
+        $this->assertEmpty($result[static::LOCALES_KEY]);
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\StoresRestAttributesTransfer
+     */
+    protected function createFakeStoresRestAttributeTransfer(): StoresRestAttributesTransfer
+    {
+        return (new StoresRestAttributesTransfer())
+            ->setTimezone(static::TIME_ZONE_VALUE)
+            ->setDefaultCurrency(static::DEFAULT_CURRENCY_VALUE);
     }
 }

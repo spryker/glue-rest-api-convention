@@ -10,7 +10,10 @@ namespace SprykerTest\Glue\GlueRestApiConvention\Plugin\GlueApplication;
 use Codeception\Test\Unit;
 use Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
+use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionDependencyProvider;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueApplication\RestApiConventionPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\FormatRequestBuilderPlugin;
+use Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention\PaginationRequestBuilderPlugin;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
 
 /**
@@ -30,14 +33,6 @@ class RestApiConventionPluginTest extends Unit
      * @var \SprykerTest\Glue\GlueRestApiConvention\GlueRestApiConventionTester
      */
     protected $tester;
-
-    /**
-     * @return \Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface
-     */
-    public function createRestApiConventionPlugin(): ApiConventionPluginInterface
-    {
-        return new RestApiConventionPlugin();
-    }
 
     /**
      * @return void
@@ -87,12 +82,33 @@ class RestApiConventionPluginTest extends Unit
     public function testRestApiConventionPluginBuildRequest(): void
     {
         //Arrange
+//        $this->getGlueRestApiConventionFactoryMock();
+
+        $this->tester->setDependency(
+            GlueRestApiConventionDependencyProvider::PLUGINS_REQUEST_BUILDER,
+            [
+                new FormatRequestBuilderPlugin(),
+                new PaginationRequestBuilderPlugin(),
+            ],
+        );
         $glueRequestTransfer = $this->tester->createGlueRequestTransfer();
 
         //Act
         $restApiConventionPlugin = $this->createRestApiConventionPlugin();
         $restApiApiConventionName = $restApiConventionPlugin->buildRequest($glueRequestTransfer);
     }
+
+//    /**
+//     * @return \PHPUnit\Framework\MockObject\MockObject|\Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory
+//     */
+//    protected function getGlueRestApiConventionFactoryMock(): GlueRestApiConventionFactory
+//    {
+//        $factoryMock = $this->getMockForAbstractClass(GlueRestApiConventionFactory::class, [], '', true, true, true, ['getRequestBuilderPlugins', 'getRequestValidatorPlugins']);
+//        $factoryMock->expects($this->once())->method('getRequestBuilderPlugins')->willReturn([new FormatRequestBuilderPlugin()]);
+//        $factoryMock->expects($this->once())->method('getRequestValidatorPlugins')->willReturn([getGlueDomain]);
+//
+//        return $factoryMock;
+//    }
 
     /**
      * @return void
@@ -133,5 +149,13 @@ class RestApiConventionPluginTest extends Unit
         //Act
         $restApiConventionPlugin = $this->createRestApiConventionPlugin();
         $restApiApiConventionName = $restApiConventionPlugin->formatResponse($glueResponseTransfer, $glueRequestTransfer);
+    }
+
+    /**
+     * @return \Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface
+     */
+    protected function createRestApiConventionPlugin(): ApiConventionPluginInterface
+    {
+        return new RestApiConventionPlugin();
     }
 }
