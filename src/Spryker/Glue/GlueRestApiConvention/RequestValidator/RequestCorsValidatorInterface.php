@@ -15,9 +15,9 @@ interface RequestCorsValidatorInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResource
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function validate(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer;
+    public function validate(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResource): GlueRequestValidationTransfer;
 }

@@ -27,15 +27,15 @@ class CorsRequestAfterRoutingValidatorPlugin extends AbstractPlugin implements R
      * @api
      *
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResourcePlugin
+     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface $restResource
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer
      */
-    public function validateRequest(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResourcePlugin): GlueRequestValidationTransfer
+    public function validateRequest(GlueRequestTransfer $glueRequestTransfer, RestResourceInterface $restResource): GlueRequestValidationTransfer
     {
         return $this->getFactory()->createRequestCorsValidator()->validate(
             $glueRequestTransfer,
-            $restResourcePlugin,
+            $restResource,
         );
     }
 }
