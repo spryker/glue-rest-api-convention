@@ -8,12 +8,11 @@
 namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 
 class RequestFormatBuilder implements RequestFormatBuilderInterface
 {
     /**
-     * @var \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface[]
+     * @var array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface>
      */
     protected array $responseEncoderPlugins;
 
@@ -41,7 +40,7 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
 
             if (!$acceptedFormatsFromRequest) {
                 $glueRequestTransfer->setAcceptedFormat(
-                    current($this->responseEncoderPlugins)->getAcceptedFormats()[0]
+                    current($this->responseEncoderPlugins)->getAcceptedFormats()[0],
                 );
             }
 

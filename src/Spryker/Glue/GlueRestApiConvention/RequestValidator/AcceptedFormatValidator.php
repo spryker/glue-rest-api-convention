@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
 {
     /**
-     * @var \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface[]
+     * @var array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface>
      */
     protected array $responseEncoderPlugins;
 
@@ -40,7 +40,6 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
     public function validate(GlueRequestTransfer $glueRequestTransfer): GlueRequestValidationTransfer
     {
         if (!$glueRequestTransfer->getAcceptedFormat()) {
-
             return (new GlueRequestValidationTransfer())
                 ->setIsValid(false)
                 ->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY)
