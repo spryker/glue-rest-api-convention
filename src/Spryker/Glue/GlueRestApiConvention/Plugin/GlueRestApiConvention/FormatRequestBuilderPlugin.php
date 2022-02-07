@@ -29,6 +29,6 @@ class FormatRequestBuilderPlugin extends AbstractPlugin implements RequestBuilde
      */
     public function build(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        return $this->getFactory()->createRequestFormatBuilder()->extract($glueRequestTransfer);
+        return $this->getFactory()->createRequestFormatBuilder()->buildRequest($glueRequestTransfer);
     }
 }

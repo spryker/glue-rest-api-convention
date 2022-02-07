@@ -9,15 +9,11 @@ namespace Spryker\Glue\GlueRestApiConvention;
 
 use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilder;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface;
+use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidatorInterface;
-use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidator;
-use Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpander;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\AttributeExpanderInterface;
 use Spryker\Glue\GlueRestApiConvention\ResponseBuilder\Expander\ErrorExpander;
@@ -32,27 +28,19 @@ use Spryker\Glue\Kernel\AbstractFactory;
 class GlueRestApiConventionFactory extends AbstractFactory
 {
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilderInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface
      */
-    public function createRequestPaginationParameterBuilder(): RequestPaginationParameterBuilderInterface
+    public function createRequestPaginationParameterBuilder(): RequestBuilderInterface
     {
         return new RequestPaginationParameterBuilder();
     }
 
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilderInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface
      */
-    public function createRequestSortParameterBuilder(): RequestSortParameterBuilderInterface
+    public function createRequestSortParameterBuilder(): RequestBuilderInterface
     {
         return new RequestSortParameterBuilder();
-    }
-
-    /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestValidator\RequestCorsValidatorInterface
-     */
-    public function createRequestCorsValidator(): RequestCorsValidatorInterface
-    {
-        return new RequestCorsValidator($this->getConfig());
     }
 
     /**
@@ -132,9 +120,9 @@ class GlueRestApiConventionFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilderInterface
+     * @return \Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface
      */
-    public function createRequestFormatBuilder(): RequestFormatBuilderInterface
+    public function createRequestFormatBuilder(): RequestBuilderInterface
     {
         return new RequestFormatBuilder($this->getResponseEncoderPlugins());
     }

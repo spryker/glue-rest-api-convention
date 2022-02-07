@@ -9,12 +9,12 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 
-interface RequestFormatBuilderInterface
+interface RequestBuilderInterface
 {
     /**
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function extract(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer;
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer;
 }

@@ -10,7 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\SortTransfer;
 
-class RequestSortParameterBuilder implements RequestSortParameterBuilderInterface
+class RequestSortParameterBuilder implements RequestBuilderInterface
 {
     /**
      * @var string

@@ -9,7 +9,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 
-class RequestFormatBuilder implements RequestFormatBuilderInterface
+class RequestFormatBuilder implements RequestBuilderInterface
 {
     /**
      * @var array<\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface>
@@ -29,7 +29,7 @@ class RequestFormatBuilder implements RequestFormatBuilderInterface
      *
      * @return \Generated\Shared\Transfer\GlueRequestTransfer
      */
-    public function extract(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
+    public function buildRequest(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
         $headers = $glueRequestTransfer->getMeta();
         if (isset($headers['content-type'])) {

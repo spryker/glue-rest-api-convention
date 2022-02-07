@@ -10,7 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestBuilder;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
 
-class RequestPaginationParameterBuilder implements RequestPaginationParameterBuilderInterface
+class RequestPaginationParameterBuilder implements RequestBuilderInterface
 {
     /**
      * @var string

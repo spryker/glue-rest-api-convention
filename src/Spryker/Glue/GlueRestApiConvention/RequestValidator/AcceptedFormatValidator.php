@@ -28,11 +28,6 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
     }
 
     /**
-     * {@inheritDoc}
-     * - Validates if the requested doc format can be served by this convention.
-     *
-     * @api
-     *
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return \Generated\Shared\Transfer\GlueRequestValidationTransfer

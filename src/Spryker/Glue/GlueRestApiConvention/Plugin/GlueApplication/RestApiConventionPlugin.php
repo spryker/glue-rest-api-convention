@@ -10,7 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueApplication;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
-use Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ApiConventionPluginInterface;
 use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ResourceInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RestResourceInterface;
@@ -151,7 +151,7 @@ class RestApiConventionPlugin extends AbstractPlugin implements ApiConventionPlu
     public function formatResponse(GlueResponseTransfer $glueResponseTransfer, GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
         foreach ($this->getFactory()->getResponseFormatterPlugins() as $formatResponsePlugin) {
-            $glueResponseTransfer = $formatResponsePlugin->build($glueResponseTransfer, $glueRequestTransfer);
+            $glueResponseTransfer = $formatResponsePlugin->format($glueResponseTransfer, $glueRequestTransfer);
         }
 
         return $glueResponseTransfer;

@@ -49,7 +49,7 @@ class RequestFormatBuilderTest extends Unit
 
         //Act
         $requestFormatBuilder = new RequestFormatBuilder([$responseEncoderPluginInterfaceMock]);
-        $glueRequestTransfer = $requestFormatBuilder->extract(new GlueRequestTransfer());
+        $glueRequestTransfer = $requestFormatBuilder->buildRequest(new GlueRequestTransfer());
 
         //Assert
         $this->assertEmpty($glueRequestTransfer->getRequestedFormat());
@@ -66,7 +66,7 @@ class RequestFormatBuilderTest extends Unit
 
         //Act
         $requestFormatBuilder = new RequestFormatBuilder([$responseEncoderPluginInterfaceMock]);
-        $glueRequestTransfer = $requestFormatBuilder->extract($this->createGlueRequestTransfer());
+        $glueRequestTransfer = $requestFormatBuilder->buildRequest($this->createGlueRequestTransfer());
 
         //Assert
         $this->assertEquals(static::CONTENT_TYPE_AND_ACCEPT_VALUE, $glueRequestTransfer->getRequestedFormat());
@@ -86,7 +86,7 @@ class RequestFormatBuilderTest extends Unit
 
         //Act
         $requestFormatBuilder = new RequestFormatBuilder([$responseEncoderPluginInterfaceMock]);
-        $glueRequestTransfer = $requestFormatBuilder->extract($this->createGlueRequestTransfer());
+        $glueRequestTransfer = $requestFormatBuilder->buildRequest($this->createGlueRequestTransfer());
 
         //Assert
         $this->assertEquals(static::CONTENT_TYPE_AND_ACCEPT_VALUE, $glueRequestTransfer->getRequestedFormat());

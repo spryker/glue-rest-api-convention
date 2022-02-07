@@ -11,7 +11,7 @@ use Codeception\Test\Unit;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
-use Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ApiConventionPluginInterface;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionDependencyProvider;
 use Spryker\Glue\GlueRestApiConvention\Plugin\GlueApplication\RestApiConventionPlugin;
@@ -169,7 +169,7 @@ class RestApiConventionPluginTest extends Unit
     }
 
     /**
-     * @return \Spryker\Glue\GlueApplication\ApiApplication\Type\ApiConventionPluginInterface
+     * @return \Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\ApiConventionPluginInterface
      */
     protected function createRestApiConventionPlugin(): ApiConventionPluginInterface
     {
@@ -276,7 +276,7 @@ class RestApiConventionPluginTest extends Unit
             ->getMockBuilder(ResponseFormatterPluginInterface::class)
             ->getMock();
         $responseFormatterPluginInterfaceMock->expects($this->once())
-            ->method('build')
+            ->method('format')
             ->willReturn((new GlueResponseTransfer())->setContent(static::TEST_VALUE));
 
         return [$responseFormatterPluginInterfaceMock];

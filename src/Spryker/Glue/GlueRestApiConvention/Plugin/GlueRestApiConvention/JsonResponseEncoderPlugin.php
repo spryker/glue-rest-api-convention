@@ -7,6 +7,8 @@
 
 namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
 
+use Generated\Shared\Transfer\GlueRequestTransfer;
+use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
@@ -36,10 +38,11 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
      * @api
      *
      * @param mixed $content
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *
      * @return bool
      */
-    public function accepts($content): bool
+    public function accepts($content, GlueRequestTransfer $glueRequestTransfer): bool
     {
         return true;
     }
@@ -51,10 +54,11 @@ class JsonResponseEncoderPlugin extends AbstractPlugin implements ResponseEncode
      * @api
      *
      * @param mixed $content
+     * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
      *
      * @return string
      */
-    public function encode($content): string
+    public function encode($content, GlueResponseTransfer $glueResponseTransfer): string
     {
         return $this->getFactory()
             ->getUtilEncodingService()
