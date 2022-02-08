@@ -10,7 +10,6 @@ namespace Spryker\Glue\GlueRestApiConvention\ResponseBuilder;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface;
 
 interface ResponseContentBuilderInterface
 {

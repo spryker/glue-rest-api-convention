@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseEncoderPluginInterface;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface;
 use stdClass;
 use Symfony\Component\HttpFoundation\Response;
 

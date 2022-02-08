@@ -63,7 +63,8 @@ class RestApiConventionPlugin extends AbstractPlugin implements ApiConventionPlu
 
     /**
      * {@inheritDoc}
-     * - Builds request according to the REST API convention.
+     * - Builds request according to the Rest API convention.
+     * - Expands `GlueRequestTransfer` with Rest Api convention name.
      * - Runs a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface` plugins.
      *
      * @api
@@ -86,7 +87,7 @@ class RestApiConventionPlugin extends AbstractPlugin implements ApiConventionPlu
     /**
      * {@inheritDoc}
      * - Validates the request according to the REST API convention.
-     * - Executes a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface` plugins.
+     * - Executes a stack of {@link \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface} plugins.
      * - Plugins are executed until the first one fails, then the failed validation response is returned and subsequent validators are not executed.
      *
      * @api
@@ -111,7 +112,7 @@ class RestApiConventionPlugin extends AbstractPlugin implements ApiConventionPlu
     /**
      * {@inheritDoc}
      * - Validates the request after routing step according to the REST API convention.
-     * - Executes a stack of `\Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface` plugins.
+     * - Executes a stack of {@link \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestAfterRoutingValidatorPluginInterface} plugins.
      * - Plugins are executed until the first one fails, then the failed validation response is returned and subsequent validators are not executed.
      *
      * @api

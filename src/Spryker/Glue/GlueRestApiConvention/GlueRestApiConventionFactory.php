@@ -8,9 +8,9 @@
 namespace Spryker\Glue\GlueRestApiConvention;
 
 use Spryker\Glue\GlueRestApiConvention\Dependency\Service\GlueRestApiConventionToUtilEncodingServiceInterface;
+use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestFormatBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestPaginationParameterBuilder;
-use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestBuilderInterface;
 use Spryker\Glue\GlueRestApiConvention\RequestBuilder\RequestSortParameterBuilder;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidator;
 use Spryker\Glue\GlueRestApiConvention\RequestValidator\AcceptedFormatValidatorInterface;

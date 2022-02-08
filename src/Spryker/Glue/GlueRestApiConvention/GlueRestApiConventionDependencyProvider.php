@@ -56,7 +56,7 @@ class GlueRestApiConventionDependencyProvider extends AbstractBundleDependencyPr
      *
      * @return \Spryker\Glue\Kernel\Container
      */
-    public function provideDependencies(Container $container)
+    public function provideDependencies(Container $container): Container
     {
         $container = parent::provideDependencies($container);
         $container = $this->addUtilEncodingService($container);
