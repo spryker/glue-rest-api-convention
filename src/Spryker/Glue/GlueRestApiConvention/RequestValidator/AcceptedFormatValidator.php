@@ -10,6 +10,7 @@ namespace Spryker\Glue\GlueRestApiConvention\RequestValidator;
 use Generated\Shared\Transfer\GlueErrorTransfer;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
+use Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionConfig;
 use Symfony\Component\HttpFoundation\Response;
 
 class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
@@ -60,7 +61,7 @@ class AcceptedFormatValidator implements AcceptedFormatValidatorInterface
     {
         return (new GlueErrorTransfer())
             ->setStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->setCode(Response::HTTP_UNPROCESSABLE_ENTITY)
-            ->setMessage('Unsupported "Accept" format used.');
+            ->setCode(GlueRestApiConventionConfig::UNSUPPORTED_ACCEPT_FORMAT)
+            ->setMessage(GlueRestApiConventionConfig::UNSUPPORTED_ACCEPT_FORMAT_MESSAGE);
     }
 }

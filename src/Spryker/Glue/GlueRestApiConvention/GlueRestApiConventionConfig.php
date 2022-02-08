@@ -19,6 +19,16 @@ class GlueRestApiConventionConfig extends AbstractBundleConfig
     /**
      * @var string
      */
+    public const UNSUPPORTED_ACCEPT_FORMAT = '010';
+
+    /**
+     * @var string
+     */
+    public const UNSUPPORTED_ACCEPT_FORMAT_MESSAGE = 'Unsupported "Accept" format used.';
+
+    /**
+     * @var string
+     */
     protected const HEADER_ACCEPT = 'accept';
 
     /**

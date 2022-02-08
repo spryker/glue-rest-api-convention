@@ -22,13 +22,6 @@ interface ResponseContentBuilderInterface
     public function addResponseEncoderPlugin(ResponseEncoderPluginInterface $responseEncoder);
 
     /**
-     * @param \Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\ResponseExpanderPluginInterface $responseExpanderPlugin
-     *
-     * @return $this
-     */
-    public function addResponseExpanderPlugin(ResponseExpanderPluginInterface $responseExpanderPlugin);
-
-    /**
      * @param \Generated\Shared\Transfer\GlueResponseTransfer $glueResponseTransfer
      * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
      *

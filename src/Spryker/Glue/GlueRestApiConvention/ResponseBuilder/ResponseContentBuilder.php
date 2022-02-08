@@ -112,7 +112,7 @@ class ResponseContentBuilder implements ResponseContentBuilderInterface
         string $format,
         array $data,
         GlueResponseTransfer $glueResponseTransfer,
-        GlueRequestTransfer $glueRequestTransfer,
+        GlueRequestTransfer $glueRequestTransfer
     ): GlueResponseTransfer {
         foreach ($this->responseEncoders[$format] as $responseEncoder) {
             if (!$responseEncoder->accepts($data, $glueRequestTransfer)) {
