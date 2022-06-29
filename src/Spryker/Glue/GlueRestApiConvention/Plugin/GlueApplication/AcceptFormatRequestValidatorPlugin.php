@@ -5,11 +5,11 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
+namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueApplication;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueRequestValidationTransfer;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestValidatorPluginInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\RequestValidatorPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**

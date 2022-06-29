@@ -5,21 +5,22 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
+namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueApplication;
 
 use Generated\Shared\Transfer\GlueRequestTransfer;
-use Spryker\Glue\GlueRestApiConventionExtension\Dependency\Plugin\RequestBuilderPluginInterface;
+use Spryker\Glue\GlueApplicationExtension\Dependency\Plugin\RequestBuilderPluginInterface;
 use Spryker\Glue\Kernel\AbstractPlugin;
 
 /**
  * @method \Spryker\Glue\GlueRestApiConvention\GlueRestApiConventionFactory getFactory()
  */
-class FormatRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
+class SparseFieldRequestBuilderPlugin extends AbstractPlugin implements RequestBuilderPluginInterface
 {
     /**
      * {@inheritDoc}
-     * - Extracts `content-type` header value into `GlueRequestTransfer.requestedFormat`.
-     * - Extracts `accept` header values into `GlueRequestTransfer.acceptedFormats`.
+     * - Extracts `GlueRequestTransfer.fields` from the `GlueRequestTransfer.queryFields`.
+     * - Expects the fields to be a nested array parameter with key being the resource type and values - attribute names.
+     * - Expands `GlueRequestTransfer` with `GlueSparseResourceTransfer`.
      *
      * @api
      *
@@ -29,6 +30,6 @@ class FormatRequestBuilderPlugin extends AbstractPlugin implements RequestBuilde
      */
     public function build(GlueRequestTransfer $glueRequestTransfer): GlueRequestTransfer
     {
-        return $this->getFactory()->createRequestFormatBuilder()->buildRequest($glueRequestTransfer);
+        return $this->getFactory()->createRequestSparseFieldBuilder()->buildRequest($glueRequestTransfer);
     }
 }

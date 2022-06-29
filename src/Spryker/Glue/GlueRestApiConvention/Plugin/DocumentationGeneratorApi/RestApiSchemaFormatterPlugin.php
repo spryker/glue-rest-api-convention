@@ -5,7 +5,7 @@
  * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
  */
 
-namespace Spryker\Glue\GlueRestApiConvention\Plugin\GlueRestApiConvention;
+namespace Spryker\Glue\GlueRestApiConvention\Plugin\DocumentationGeneratorApi;
 
 use Generated\Shared\Transfer\ApiApplicationSchemaContextTransfer;
 use Spryker\Glue\DocumentationGeneratorApiExtension\Dependency\Plugin\SchemaFormatterPluginInterface;
