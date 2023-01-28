@@ -4,6 +4,9 @@
 
 Library that can be reused to build an API application following the REST convention
 
+**DEPRECATED - This module is not continued at this point.**
+Please use [spryker/glue-application](https://github.com/spryker/glue-application) instead.
+
 ## Installation
 
 ```
